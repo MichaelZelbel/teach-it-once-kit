@@ -28,6 +28,6 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 30. The Safety Net (git, GitHub, Obsidian) | `menerio/github-sync.md` | building |
 | 31. Procedures With Real Hands | `procedures/` (file versions) | building |
 | 32. The Always-On Server | `server/` | building |
-| 33. The Swap Test (OpenCode + Kimi K3) | `swap/` | building |
+| 33. The Swap Test (OpenCode + Kimi K3) | `swap/` | ready |
 
 Chapters not listed (1-4, 7, 15, 16, 25, 34) teach with no kit asset.

@@ -1,0 +1,31 @@
+// Chapter 33: save this file as opencode.json in your hub folder,
+// next to AGENTS.md. Lines starting with // are comments; remove them
+// if your editor complains.
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // The brain. Format: provider/company/model.
+  // Swap this one line to change models. Cheaper sibling for routine
+  // work: "openrouter/moonshotai/kimi-k2.7-code"
+  "model": "openrouter/moonshotai/kimi-k3",
+
+  // The leash. OpenCode's factory settings are generous; keep "ask"
+  // until a new model has earned your trust.
+  "permission": {
+    "edit": "ask",
+    "bash": "ask"
+  },
+
+  // Your memory. The token is read from your environment variables,
+  // where Chapter 28 put it. Endpoint exactly as shown, no path suffix.
+  "mcp": {
+    "menerio": {
+      "type": "remote",
+      "url": "https://mcp.menerio.com",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {env:MENERIO_MCP_TOKEN}"
+      }
+    }
+  }
+}

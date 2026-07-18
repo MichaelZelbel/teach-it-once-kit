@@ -1,3 +1,8 @@
 # swap
 
-Building. This folder fills when its Part VI chapter is verified and written. See `docs/CHAPTERS.md` for the map.
+Chapter 33: run your hub on a different vendor's tool and model.
+
+- `opencode-config.example.jsonc` — the `opencode.json` you drop next to
+  your `AGENTS.md` (model, permission leash, Menerio MCP).
+- `openrouter-notes.md` — the one-key-many-models account, the model ids
+  the book uses, and cost hygiene.
