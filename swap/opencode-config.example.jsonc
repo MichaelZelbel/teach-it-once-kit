@@ -9,6 +9,27 @@
   // work: "openrouter/moonshotai/kimi-k2.7-code"
   "model": "openrouter/moonshotai/kimi-k3",
 
+  // VARIATION: already paying the model maker's own plan? Point straight
+  // at their endpoint instead of OpenRouter (flat subscription instead of
+  // per-token billing). Example for Kimi's coding subscription: declare
+  // the provider below, set "model": "kimi-coding/k3", and put your
+  // subscription key into the KIMI_API_KEY environment variable.
+  //
+  // "provider": {
+  //   "kimi-coding": {
+  //     "npm": "@ai-sdk/openai-compatible",
+  //     "name": "Kimi Code (subscription)",
+  //     "options": {
+  //       "baseURL": "https://api.kimi.com/coding/v1",
+  //       "apiKey": "{env:KIMI_API_KEY}"
+  //     },
+  //     "models": {
+  //       "k3": { "name": "Kimi K3 (1M context)" },
+  //       "kimi-for-coding": { "name": "Kimi K2.7 for coding" }
+  //     }
+  //   }
+  // },
+
   // The leash. OpenCode's factory settings are generous; keep "ask"
   // until a new model has earned your trust.
   "permission": {
