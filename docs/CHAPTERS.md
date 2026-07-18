@@ -21,7 +21,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 22. Trust, but Verify | `living/two-questions-card.md` | ready |
 | 23. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 24. The One-Month Plan | `living/one-month-plan.md` | ready |
-| 26. The System Is a Folder | `starter-hub/` | building |
+| 26. The System Is a Folder | `starter-hub/` | ready |
 | 27. A Home for Your Memory (Menerio) | `menerio/` | building |
 | 28. Plug the Memory Into Everything (MCP) | `menerio/mcp-connection.md` | building |
 | 29. Hire an Agent That Lives in Your Folder | `starter-hub/AGENTS.md` | building |
