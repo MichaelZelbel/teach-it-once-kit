@@ -1,10 +1,13 @@
-# Practice Texts (Chapter 11 and 15)
+# Practice Texts (Chapters 10 and 13)
 
 Messy sample texts for testing your **Summarize for me** skill (or any
-skill that eats pasted text). Both are fictional. Paste one with
-"Summarize this:" in front and watch the recipe do its work.
+skill that eats pasted text). Both are fictional. Name your
+summarize skill, paste one of these under it, and watch the recipe do its
+work. (Paste it with a bare "Summarize this:" instead, and you will get a
+perfectly good generic summary that ignores your recipe entirely. That is
+Chapter 10's lesson, and it is worth seeing once.)
 
-## Text 1: the gym newsletter (used in Chapter 11)
+## Text 1: the gym newsletter (used in Chapters 10 and 14)
 
 ```
 Hi everyone, hope you are all doing great and enjoying the summer so far!
@@ -27,7 +30,7 @@ at the gym!
 What a good run finds: the one action that costs money (re-confirm the
 direct-debit mandate by the 31st), with its date, on its own line.
 
-## Text 2: the property manager's letter (used in Chapter 15)
+## Text 2: the property manager's letter (used in Chapter 13)
 
 ```
 Dear residents, as announced in spring the house facade will be

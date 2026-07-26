@@ -1,19 +1,26 @@
-# Craft-Skill Interview Prompt (Chapter 13)
+# Craft-Skill Interview Prompt (Chapter 12)
 
-Do not brainstorm your craft skills; get interviewed. Open a plain chat
-(no project) and paste:
+Do not brainstorm your craft skills; get interviewed. Open a session with
+your folder attached and paste:
 
 ```
-I want to build AI skills for my specific job: recipes I save once and
-reuse. Interview me to find my three best candidates. Ask me one
-question at a time, five questions maximum, about: tasks I repeat every
-week, the ones I always explain the same way, and the ones I dread.
-Then propose three skills, each with a name and what it would take as
-input and give back as output.
+I want to build skills for my specific job: recipes I save once as files
+in skills/ and reuse. Interview me to find my three best candidates. Ask
+one question at a time, five questions maximum, about the tasks I repeat
+every week, the ones I always explain the same way, and the ones I dread.
+Then propose three skills, each with a name and what it takes in and
+gives back.
 ```
 
 Answer honestly, especially about dread. The task you push to Friday
-afternoon usually has the clearest pattern.
+afternoon usually has the clearest pattern and the least joy, which makes
+it close to the perfect candidate.
+
+Answer the "what do you correct more than once" question honestly too.
+Those sentences are pure scar tissue, and they become the numbered rules
+in the file. In the run recorded for Chapter 12, one grumpy sentence
+("never promise a delivery date unless I said the date myself, and stop
+apologising twice") turned into two rules and a whole extra skill.
 
 ## Filter the three proposals
 
@@ -28,6 +35,13 @@ Build a proposed skill only if it passes all three filters:
    flags. It does not decide. If the task is mostly judgment, the skill
    is the briefing before your decision, not the decision.
 
-Then build each one exactly like Chapter 11: a project named after the
-job, the recipe in **Instructions** (job, shape, rules), **Save**.
-Write the never list from your scars.
+## Then build them
+
+Say "write number 1". Each one lands as a file in `skills/`, same anatomy
+as everything else: the job, the shape, the rules. Read the file before
+you accept it, and check that it names the context files it depends on
+(`context/projects.md`, `context/voice.md`) rather than assuming.
+
+Expect to feed each craft skill two or three corrections in its first
+week. That is the recipe learning your taste. Chapter 13 turns those
+corrections into a habit.
