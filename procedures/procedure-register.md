@@ -1,46 +1,76 @@
-# Procedure Register Template (Chapter 20)
+# The Register (Chapter 18)
 
 The automation rule: **never run a procedure you cannot see and stop.**
-This one page is how "see" scales past a single tool. It lives in a
-document you own (with your skill library is a fine place), not inside
-any AI app.
 
-Copy the block below once per procedure. Six lines, no more. List
-everything that runs on its own in your life, AI or not: scheduled AI
-tasks, email auto-replies, phone automations, standing orders.
+The register is not a document you keep somewhere. It is one file in your
+folder, `procedures.md`, and it ships with the starter hub. This card is
+how to fill it.
+
+## Why a file in your folder, and not the app's own list
+
+Your AI app knows what runs *inside the app*. It does not know about your
+email auto-reply, your phone's bedtime routine, or the standing order at
+your bank, which is the oldest procedure in your life. Your AI joined an
+existing staff. The register is the staff list.
+
+It also travels. Change AI provider and the app's list goes with the app.
+`procedures.md` stays in your folder, like everything else in this book.
+
+## The shape
+
+One block per procedure, six lines, in `procedures.md`:
 
 ```
-## [Name of the procedure]
-Does: [what it does and what problem it solves, in your own words]
-Rhythm: [when it fires]          Lands: [where the output arrives]
-Lives: [which tool runs it]      Off-switch: [exactly how to stop it]
-Last checked: [date]
+## (Name of the procedure)
+
+Does: (what it does and what problem it solves, in your own words).
+Rhythm: (when it fires).          Lands: (where the result waits).
+Lives: (which tool runs it).      Off-switch: (exactly how to stop it).
+Last checked: (date).
 ```
 
-## Filled example
+The *Does* line is the one no app can give you. It is the answer to the
+question you will ask yourself some Tuesday months from now, when your
+phone buzzes and you cannot remember why: what is this and why did I
+build it?
+
+## Ask for it in plain words
+
+In a session with your folder attached:
 
 ```
-## Product watchdog
-Does: watches the web for changes to the AI features I depend on;
-one quiet line if nothing changed.
-Rhythm: Fridays 16:00.           Lands: ChatGPT + phone notification.
-Lives: ChatGPT, Scheduled.       Off-switch: Scheduled page, Pause.
-Last checked: July 17.
+Set up my register. Use procedures.md in this folder, in the format
+that is already in it. Put a block in it for every job that runs, or
+is meant to run, without me. Then tell me in one line what is still
+missing before it can actually run on its own.
 ```
 
-## The quarterly audit (do it with the Chapter 10 spring-clean)
+Half-empty blocks are fine and honest. A "Rhythm: not scheduled yet"
+line is a true statement about the world. Fill it in when you attach the
+clock.
 
-Walk the page in both directions:
+## The quarterly audit
 
-1. **Downwards:** every task on the tool's Scheduled page must have a
-   register entry. Anything unexplained either earns an entry now or
-   gets deleted now.
-2. **Upwards:** every entry must still earn its slot. The firing rule:
-   if you ignored a procedure's last three deliveries, pause it. Not
-   missed after a month? Delete it and strike the entry. No guilt.
-3. Update every "Last checked" date.
+Do it in the same sitting as the spring-clean from Chapter 9. Walk the
+register in both directions:
+
+1. **Downwards:** everything on the app's **Scheduled** page must have a
+   block in `procedures.md`. Anything unexplained gets one question,
+   "what are you and why do you run?", and either earns a block on the
+   spot or is deleted on the spot.
+2. **Upwards:** every block must still earn its slot. The firing rule:
+   **if you ignored a procedure's last three deliveries, pause it.** If a
+   month passes and you never miss it, delete it and strike the block.
+   No guilt. An ex-procedure that taught you what you do not need was
+   worth building.
+3. Update every *Last checked* date. That quietly turns the register into
+   a record of your own diligence.
 
 ## Practice the off-switch once
 
-Pause any task, look at it sitting there marked Paused, resume it.
-Thirty seconds. Stopping should be a reflex, not a research project.
+On a task's own page there is a switch next to the name. Flip it: the
+**Active** pill becomes **Paused**, the next-run line disappears, and the
+task drops out of the sidebar. Flip it back and the countdown returns.
+
+Thirty seconds, today, while nothing is wrong. Stopping should be a
+reflex, not a research project.

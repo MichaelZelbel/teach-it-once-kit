@@ -1,41 +1,70 @@
-# Weekly Review Setup (Chapter 18)
+# Weekly Review Setup (Chapter 20)
 
-One paste into the **Scheduled** page's **Schedule a task** box creates a
-Monday procedure that checks your week against your priorities and keeps
-your whole system fresh.
+The procedure that keeps the rest of the system true. It reads your
+context files and your `inbox/`, tells you what changed, asks you the one
+question only you can answer, and hands you your weekly admin as a list
+with the file names already filled in.
 
-## The task text
+## Half one: the recipe
+
+In a session with your folder attached:
 
 ```
-Every Monday at 7:00, run my weekly review. You know my priorities and
-projects. Write me a short review with exactly four parts:
-1) What you noticed changing in my work and projects last week, from
-   what you know. Where you know nothing, say so plainly.
-2) One question: what actually happened last week that mattered?
-3) A reminder to save the two or three facts from last week that must
-   not be lost, and to update my priorities if they shifted.
-4) The one thing my priorities say I should protect this week.
-Keep it under 200 words. Plain words, no pep talk.
+Build me a weekly review. Write it as a skill file in
+skills/weekly-review.md. When it runs it should read my context files
+and everything in inbox/, then write the review as a new file in
+reviews/, named with the date, in four parts:
+1) what changed in my projects and people since last week, taken only
+   from the files, and where it knows nothing it says so plainly;
+2) the one question only I can answer, asked plainly: what actually
+   happened last week that mattered;
+3) the two or three things in inbox/ that belong in my context files,
+   each named with the file it should go to;
+4) the one thing my priorities say I should protect this week.
+Under 250 words, no pep talk. Then run it once so I can see this
+week's review.
 ```
 
-Change "Monday at 7:00" to whatever moment you already plan your week
-(Sunday evening works just as well). Keep part 1's "say so plainly"
-rule; it is what keeps the review honest instead of invented.
+What each part carries:
 
-## The other half of the ritual
+1. The clause "where it knows nothing it says so plainly" is the most
+   important line in the recipe. A review that quietly invents your week
+   is worse than no review.
+2. The question only you can answer. The assistant was not in the room.
+3. Chapter 9's promotion ritual, arriving by itself, with source file and
+   destination file named so there is no thinking left in it.
+4. Your priorities from Chapter 6, cashed in as a decision about the
+   coming week rather than a list.
 
-The Monday message is half the review. Your reply is the other half:
+## Half two: the clock
 
-1. Answer the "what actually happened" question in the same thread, in
-   plain sentences. That reply is itself a capture (Chapter 9); the
-   facts land where your assistant learns.
-2. Promote the keepers: the two or three facts that must never be lost
-   go onto your about-you page (Chapter 5), one squeezed line each.
-3. If a priority shifted, change the three lines on your about-you page
-   the same morning (Chapter 7).
+Same path as the brief: **Scheduled**, **New task**, **Set up manually**,
+prompt `Run my weekly review skill.`, your folder attached,
+**Automatically approve**, **Frequency: Weekly**, pick the day and time,
+**Save**. Sunday evening works as well as Monday morning. Pick the moment
+you already plan your week.
 
-## Tuning
+You do not need a disposable test copy, because you already ran the
+recipe by hand. If you want to watch the clock itself work, press
+**Run now** on the task's page.
 
-Tune by replying, not by settings: "shorter", "move this to Sunday
-20:00", "add a look at my calendar week". Pause or delete any time from
-the task's row on the **Scheduled** page.
+## The other half is you
+
+The review lands. It costs you ten minutes, and the ten minutes are the
+point.
+
+1. Answer the question in a new file in `inbox/`, in plain sentences:
+   what actually happened, what changed, what broke. That answer is a
+   capture (Chapter 8), and next week's review will read it.
+2. Do the three lines under "Move to context". They are already written
+   for you: source file on the left, destination file on the right.
+3. If a priority shifted, edit `context/projects.md` while the coffee is
+   still warm.
+
+Your context feeds your procedures, and now a procedure feeds your
+context. That loop, running by itself, is the closest thing this book has
+to a perpetual motion machine.
+
+## Then the paperwork
+
+One block in `procedures.md`. Nothing runs unlisted.

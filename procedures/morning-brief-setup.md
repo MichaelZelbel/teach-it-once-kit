@@ -1,53 +1,73 @@
-# Morning Brief Setup Card (Chapter 17)
+# Morning Brief Setup (Chapter 19)
 
-Two minutes, in ChatGPT (paid tier).
+A briefing about your own week, built from your own files, waiting for
+you before you start work. Two halves: write the recipe, then hang a
+clock on it.
 
-## Build
+## Half one: the recipe (do this first, always)
 
-1. Sidebar → **Scheduled**.
-2. Look at the suggested tasks. If a daily-brief suggestion is offered (it
-   will be personalized from your context), click it. Otherwise type into
-   **"Schedule a task"**:
-
-   ```
-   Send me a daily briefing every morning about the topics I care about
-   most.
-   ```
-
-3. Answer the three question cards (checkboxes, generated from your life):
-   - which topics to prioritize
-   - what kind of stories matter (practical tools, business trends, deep
-     technical, breaking news)
-   - how broad the sources should be (global, your home region, niche
-     expert sources)
-4. Confirmation reads like: "Done. Your briefing will arrive daily in the
-   morning, starting tomorrow." Check **Scheduled**: your task shows as
-   **Daily** with a next-run countdown.
-
-## Tune it by talking (first week)
-
-Reply to any morning's briefing in plain words; the next morning obeys:
+In a session with your folder attached, paste this:
 
 ```
-Fewer stories, more depth on each.
+Build me a morning brief. Write it as a skill file in skills/, called
+morning-brief.md. When it runs, it should read my context files, work
+out what today actually needs from my projects, deadlines and people,
+and write the brief as a new file in brief/, named with today's date.
+Under 200 words, plain words, no pep talk, no invented facts. Where
+you do not know something, say so plainly. Then run it once so I can
+see today's brief.
 ```
 
-```
-Skip funding announcements. Add [your topic].
-```
+You get two things: `skills/morning-brief.md` (the recipe) and
+`brief/YYYY-MM-DD.md` (today's brief, for real).
 
-```
-Shorter. Lead with the single most important item.
-```
+Run it by hand for two or three mornings and fix the shape by editing the
+skill file. Chapter 18's rule: no clock for a recipe you have not
+watched run.
+
+## Half two: the clock
+
+1. Sidebar, **Scheduled**. The page reads *Run tasks on a schedule or
+   whenever you need them.*
+2. Top right, **New task**. Choose **Set up manually** to see every
+   control at once (**Create with Claude** interviews you instead).
+3. The box is titled **Create scheduled task**. Fill in:
+   - **Name**: Morning brief.
+   - The prompt: `Run my morning brief skill.`
+   - **Work in a project or folder**: your folder, if you want the brief
+     that knows your life. Read `where-it-runs.md` before you decide.
+   - Approval mode: **Automatically approve**. Not **Manually approve**,
+     which stalls waiting for you, and not **Skip all approvals**, which
+     switches off the safety checks.
+   - **Model**: leave on **Default model**.
+   - **Frequency**: **Daily**, then pick your time.
+4. **Save**. The task gets its own page: an **Active** pill, a pill
+   saying where it runs, and **Next run**.
+
+## Check it without waiting for tomorrow
+
+The task's page has a **Run now** button. Press it, watch one real run,
+then leave the schedule alone.
 
 ## The off-switch
 
-**Scheduled** lists every task, its rhythm, and its next run. A task's own
-menu lets you edit, pause, or delete it. Two clicks to silence, always.
-Rule from Chapter 20: never run a procedure you cannot see and stop.
+The switch next to the task's name. **Active** becomes **Paused**, the
+next-run line disappears, the task leaves the sidebar list. Flip it back
+and the countdown returns. Do it once today, so stopping is a reflex.
+
+## Then the paperwork
+
+Fill in the block in `procedures.md`: the rhythm, where it lives, and the
+off-switch. If you installed the house rules from Chapter 15, your
+assistant may have done it already.
 
 ## Honesty notes
 
-- Paid tiers only; the number of active tasks depends on your tier.
-- Allow ChatGPT notifications on your phone, or the brief arrives silently.
-- The brief is AI-researched: confident is not the same as true (Ch 22).
+- Scheduled tasks need a paid plan. The same one this book has needed
+  since Chapter 3.
+- A schedule fires at most once an hour, and runs are staggered by a few
+  minutes, so 07:00 can arrive at 07:04.
+- A task tied to a folder will not run against a folder it has not been
+  trusted with. Same trust gate you clicked in Chapter 3.
+- The brief is written by an AI. Chapter 22's habit applies to it like
+  everything else.

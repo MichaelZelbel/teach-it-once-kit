@@ -41,11 +41,19 @@ writing. If in doubt, ask the first question.)
 Not on every message. The trigger is action: before you spend money,
 send a message, book something, change a treatment, or quote a number
 to another human, the answer pays the toll. Same trigger as your red
-lines (Chapter 21).
+lines (Chapter 15).
+
+## The half-right trap
+
+An answer is not simply checked or remembered end to end. It can be
+both, in the same paragraph, in the same voice. In the run printed in
+Chapter 22, two prices from memory were right, two were wrong, and one
+whole product tier was missing, with no seam anywhere in the wording.
+That is why the fix is a question and not a feeling.
 
 ## For procedures
 
 Bake the receipt rule into anything that reports on a schedule (the
-Chapter 19 watchdog line): "tell me where you read it, with a link."
+Chapter 21 watchdog line): "tell me where you read it, with a link."
 Scheduled reports owe receipts by default; the two questions are the
 handheld version for everything else.
