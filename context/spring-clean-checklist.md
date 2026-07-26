@@ -1,37 +1,60 @@
-# Memory Spring-Clean Checklist (Chapter 10)
+# Spring-Clean Checklist (Chapter 9)
 
 Fifteen minutes, quarterly (monthly if your work moves fast). Run it sooner
 whenever answers start feeling slightly off-target.
 
+The problem is not that your assistant forgets. It is that a picture of your
+life which never updates is a picture of a life you used to have.
+
 ## 1. The mirror test
 
-Fresh chat, ask:
+In Cowork, folder attached:
 
 ```
-Based on everything you know and remember about me, describe my current
-life and work: who I am, who matters to me, what I am working on, and
-what my priorities are. Be specific. I want to check what you have right.
+Read every file in context/. Describe my current life and work back to
+me from those files only: who I am, who matters, what I am working on,
+what my priorities are, and how I want to be spoken to. Then list
+anything in those files that is out of date, contradicts something
+else, or is too vague to act on. Do not look outside context/ and do
+not change anything yet.
 ```
 
-Read the portrait. The wrong spots are your to-do list.
+Two halves. The **portrait** you read like a new colleague's summary of your
+life: mostly right, weirdly off in a couple of places. The **list** is the one
+that earns the fifteen minutes, because it comes from something that has just
+read all four files side by side, which you have not done since you wrote them.
 
-## 2. The laundry (in ChatGPT: Settings → Personalization → Memory section: Memory summary + Manage)
+Note the last line of the prompt. You want the list before the surgery.
 
-- [ ] **Delete the dead**: finished projects, ended situations, tools and
-      people no longer in your life
-- [ ] **Correct the changed**: edit wrong entries, or delete and re-teach
-      the new truth in one fresh sentence
-- [ ] **Merge the mumbles**: several half-notes about the same thing become
-      one sharp line
-- [ ] **Re-read the standing pages**: your about-you text and your three
-      priorities (Custom Instructions): still true word for word? Update.
+## 2. The four moves
+
+Work the list, in the files.
+
+- [ ] **Delete the dead.** Finished projects, people who are gone, situations
+      that resolved. Delete the lines; do not archive them into a corner of
+      the same file.
+- [ ] **Correct the changed.** New job, new rate, moved deadline. A wrong fact
+      is worse than no fact, because you will act on it.
+- [ ] **Squeeze the mumbles.** Three vague lines about the same client, grown
+      over three months of captures, become one line that earns its space.
+- [ ] **Re-read the standing ones.** `about-me.md` and your three priorities
+      drift too, just slower. If your priorities are word for word what they
+      were three months ago, be honest about why.
 
 ## 3. Re-run the mirror test
 
-The portrait should now read true. Done.
+The portrait should now read true, and the list should be short. Done.
 
 ## Rhythm
 
-- Quarterly: enough for most lives
-- Monthly: fast-moving work
-- Mirror test alone: any time answers drift off-target
+- **Quarterly:** enough for most lives
+- **Monthly:** fast-moving work
+- **Mirror test alone:** any time answers drift off-target, the way a radio
+  drifts off station
+
+## Why this is the ownership move
+
+You just read everything your assistant believes about you, corrected what was
+wrong, and deleted what you did not want it to know. No request form, no
+support ticket, nobody's permission. Try that with the advertising profile
+some platform keeps on you.

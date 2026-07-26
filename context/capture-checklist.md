@@ -1,7 +1,23 @@
-# Capture Checklist (Chapter 9)
+# Capture Checklist (Chapter 8)
 
-The ten-second habit: when something worth keeping happens, tell your AI one
-sentence starting with *remember*. Phone-first, voice-first.
+Pocket card. The ten-second habit that feeds `inbox/` while you live your
+life.
+
+## The one rule: say where it goes
+
+"Remember this" is not enough. A real run answered a bare *Remember:* with a
+confident **"Saved."** and wrote nothing to the folder: the fact went into the
+app's own memory, which is the box Chapter 1 got you out of.
+
+So name the destination, every time:
+
+```
+Capture this in my inbox: [who] [what happened or was said]. [Why it
+matters, if not obvious.]
+```
+
+One capture, one dated file in `inbox/`. That folder is a landing strip, not
+an archive.
 
 ## The five triggers
 
@@ -11,45 +27,52 @@ sentence starting with *remember*. Phone-first, voice-first.
 4. **Something worked, or kept not working**
 5. **A number you will need again** (rates, budgets, deadlines, dimensions)
 
-## The phrasing
-
-```
-Remember: [who] [what happened / what was said]. [Why it matters, if not
-obvious.]
-```
-
-Examples:
-
-```
-Remember: Nadia said the book budget for next year doubled. Could mean a
-second illustrated title for me.
-```
-
-```
-Remember: I promised Dana the rate-increase draft by Friday.
-```
-
-```
-Remember: sending Nadia three options instead of one cut the revision
-rounds in half.
-```
+None of these happen at your desk. That is why the habit is phone-first and
+voice-first.
 
 ## Three quality rules
 
-- Say **who and what**, not just what.
+- Say **who and what**, not just what. "Budget doubled" will confuse you both
+  in a month.
 - Add **why it matters** when it is not obvious.
 - **Private line:** other people's secrets and anything you would not want
-  stored stay out (full rules: Chapter 23).
+  stored stay out (full rules: Chapter 17).
+
+## From your pocket: Dispatch
+
+Set up once, then capture from anywhere and the file appears in your folder
+at home.
+
+1. Download or update **Claude Desktop**
+2. Download or update **Claude** for iOS or Android
+3. Open **Cowork** on either device
+4. Click **Dispatch** in the left side panel
+5. Click **Get started**
+6. Toggle on file access and computer wake options
+7. Click **Finish setup**
+
+Two honest limits, both from Anthropic's own help page: your computer must be
+**awake with the app open** while Claude works, and Dispatch is **one single
+conversation** with no way to start a second thread.
+
+**Fallback:** capture into whatever you have to hand, then at your desk say
+*"take everything I sent you today and put it in my inbox."*
+
+## Friday: empty the inbox
+
+Two minutes, once a week:
+
+```
+Go through everything in inbox/ except the writing-samples folder. For
+each capture decide: does it belong in a context file, or is it noise?
+Put the keepers in the right file in context/ in my own words, tell me
+what you moved and where, and delete the capture files you have filed.
+Ask me before deleting anything you are unsure about.
+```
+
+Part V hands this to a procedure that runs whether you remember or not.
 
 ## Calibration
 
 A few captures per week, not dozens per day. Forty sharp facts beat four
 hundred mumbles. Test: would future-you thank present-you for this one?
-
-## Review
-
-See what stuck under **Settings → Personalization → Memory → Memory
-summary**; stored entries are deletable under **Manage**. The automatic
-memory decides what it keeps, so once a week promote the two or three
-must-keep facts to your about-you page (More about you). Cleanup routine:
-Chapter 10.

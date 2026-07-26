@@ -2,13 +2,27 @@
 
 One row per chapter that uses the kit. Status: **ready** = verified and final for the current draft; **building** = the chapter is in production and the asset lands with it.
 
+> **Renumbering in progress (2026-07-26).** The book was restructured files-first. Parts I and II
+> below carry their new chapter numbers and are final. Rows from "From Prompt to Skill" down still
+> carry the **old** numbering and get renumbered as each restructure batch lands (R4 Part III next,
+> then R5 to R8). The asset paths are stable; only the numbers move.
+
+## Part I and Part II (restructured, final)
+
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 5. The One Page About You | `context/about-you-template.md` | ready |
-| 6. Teach It Your People | `context/people-brief-template.md` | ready |
-| 8. Your Voice | `context/voice-extraction-prompt.md` | ready |
-| 9. Capture as You Live | `context/capture-checklist.md` | ready |
-| 10. The Memory Spring-Clean | `context/spring-clean-checklist.md` | ready |
+| 1. What Your AI Already Knows About You | `context/about-you-template.md` (fallback only) | ready |
+| 4. The Folder Is the System | `starter-hub/` | ready |
+| 5. The People Who Matter | `context/people-interview.md` | ready |
+| 6. Projects and Priorities | `context/projects-interview.md` | ready |
+| 7. Your Voice | `context/voice-extraction-prompt.md` | ready |
+| 8. Capture as You Live | `context/capture-checklist.md` | ready |
+| 9. Keeping It True | `context/mirror-test.md`, `context/spring-clean-checklist.md` | ready |
+
+## Not yet renumbered (old scheme)
+
+| Chapter | Kit asset | Status |
+|---|---|---|
 | 11. From Prompt to Skill | `skills/practice-texts.md` | ready |
 | 12. Your First Five Skills | `skills/first-five-skills.md` | ready |
 | 13. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
@@ -21,7 +35,6 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 22. Trust, but Verify | `living/two-questions-card.md` | ready |
 | 23. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 24. The One-Month Plan | `living/one-month-plan.md` | ready |
-| 26. The System Is a Folder | `starter-hub/` | ready |
 | 27. A Home for Your Memory (Menerio) | `menerio/` | building |
 | 28. Plug the Memory Into Everything (MCP) | `menerio/mcp-connection.md` | building |
 | 29. Hire an Agent That Lives in Your Folder | `starter-hub/AGENTS.md` | building |
@@ -30,4 +43,4 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 32. The Always-On Server | `server/` | building |
 | 33. The Swap Test (OpenCode + Kimi K3) | `swap/` | ready |
 
-Chapters not listed (1-4, 7, 15, 16, 25, 34) teach with no kit asset.
+Removed 2026-07-26: `context/people-brief-template.md`, superseded by `context/people-interview.md`.

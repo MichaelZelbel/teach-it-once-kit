@@ -1,50 +1,69 @@
-# Voice Extraction Prompt (Chapter 8)
+# Voice Extraction (Chapter 7)
 
-A one-time, ten-minute job: teach your AI to write like you by showing it
-real samples, not by describing yourself.
+A one-time job that fills `context/voice.md`. You do not describe your voice.
+You show it, and let your assistant do the describing, because it can count
+habits you have never noticed about yourself.
 
-## Step 1: collect
+## Step 1: collect five real things you wrote
 
-Three to five real things you wrote. Normal writing, not best writing:
-emails you sent, a message where you explained something, one where you
-said no.
+Make a folder `inbox/writing-samples/` and put a plain text file in it with
+three to five things you actually wrote.
 
-## Step 2: extract
+Not your best writing. Your **normal** writing:
 
-Paste them into a chat with this prompt:
+- an email you sent this week
+- a message where you explained something to a friend
+- one where you said no to someone
+- one where you delivered slightly bad news
 
-```
-Here are five real messages I wrote. Study how I write, then describe my
-voice as a set of concrete, mechanical rules another writer could follow:
-typical sentence length, how I open and close messages, how direct I am,
-how I soften bad news, words and phrases I actually use, and words I
-would clearly never use. Do not flatter me. Be specific.
-```
+Include the bad-news one if you can. Anyone sounds like themselves when
+things are going well.
 
-Read the mirror it hands back. Correct anything wrong. Then:
+## Step 2: run the extraction
 
-```
-Boil that down to a compact block of style rules, under 1,200 characters,
-that I can paste into my assistant's settings. Include a "Never use" list
-of my banned words and phrases.
-```
-
-## Step 3: install
-
-Paste the block into ChatGPT under **Settings → Personalization → Custom
-Instructions**, second box ("How would you like ChatGPT to respond?").
-
-## Filled example (Sam)
+In Cowork, with your folder attached:
 
 ```
-Write like me: short sentences, plain words, calm and warm. Open with the
-point, not a greeting ritual. One idea per paragraph. Soften bad news by
-being early and factual, never by groveling. Sign off simply ("Best,
-Sam"). Never use: exclamation marks, "I hope this finds you well",
-"absolutely!", "I'd be happy to", corporate filler ("touch base",
-"circle back"), or emojis in client messages. Humor is allowed, dry and
-brief.
+Read every file in inbox/writing-samples/. Study how I actually write,
+then write context/voice.md as a set of concrete, mechanical rules
+another writer could follow: typical sentence length, how I open and
+close a message, how direct I am, how I deliver bad news, words and
+phrases I really use, and the words I would clearly never use. Do not
+flatter me. Where a rule comes from a real line of mine, quote the
+line. Finish with a never list.
 ```
 
-Tip: the **never list** is the strongest part. Positive style rules bend;
-banned phrases hold.
+## Step 3: cut it down
+
+It will hand you more rules than you have. A real run on five ordinary
+messages came back with over a hundred lines.
+
+Go through once and delete anything you do not recognise. You want a page you
+could hand to a human ghostwriter, not a style manual nobody finishes. Short
+rules get followed; long ones get skimmed, by both of you.
+
+**Keep the never list whole.** It is the load-bearing part. Positive rules
+bend under pressure, because "be warm" can mean anything. "Never write
+`circle back`" has exactly one meaning.
+
+## What good output looks like
+
+Mechanical, countable, checkable. Real lines from a real run:
+
+- Numbers are always digits, including small ones.
+- British spelling: `colour`, `palette`, `apologise`, `organise`.
+- `genuinely` as the only intensifier.
+- Never apologise more than once, and never in the opening line.
+
+Nobody knows that about themselves. That is the point.
+
+## Register, in one line
+
+Your voice changes with the room, and one line in the file covers it: more
+formal for your manager, fully casual for your partner. The rules are a
+floor, not a cage.
+
+## The boundary
+
+It drafts, you send. The better it sounds, the more carefully you read it
+before it leaves the house (Chapter 22).
