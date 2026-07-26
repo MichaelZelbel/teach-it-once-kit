@@ -51,9 +51,12 @@ at home.
 6. Toggle on file access and computer wake options
 7. Click **Finish setup**
 
-Two honest limits, both from Anthropic's own help page: your computer must be
-**awake with the app open** while Claude works, and Dispatch is **one single
-conversation** with no way to start a second thread.
+Three things to know. Dispatch is **one single conversation**, which means
+everything you send is on both screens: dictate it in the car park, pick it up
+at your desk. Your computer must be **awake with the app open** while Claude
+works, so your phone is the microphone and the computer is still the hands.
+And the feature is **labelled beta**, so if a button has moved, look for its
+new name rather than assuming you did something wrong.
 
 **Fallback:** capture into whatever you have to hand, then at your desk say
 *"take everything I sent you today and put it in my inbox."*
