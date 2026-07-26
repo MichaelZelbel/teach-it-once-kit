@@ -51,14 +51,22 @@ Say yes. What you get is one small `.zip` next to your folder.
 
 ## Install it
 
-Two visits, once each.
+Both stops are inside **Settings**, working down the left column.
 
-1. **Settings > Capabilities**, and make sure **Code execution and file
-   creation** is on. Skills ride on it. On a Team or Enterprise account
-   an owner has to enable it for the organisation first.
-2. **Customize > Skills**, click **+**, choose **+ Create skill**, then
-   **Upload a skill**, and pick the zip. The skill appears in the list
-   with a switch. Leave it on.
+1. **Capabilities**: make sure **Code execution and file creation** is
+   on. Skills ride on it. On a work account an administrator may have to
+   enable it for the organisation first.
+2. Under the **Customize** heading, choose **Skills**. Top right of the
+   panel: **Browse** and **Add**. Click **Add**, choose **Upload a
+   skill**, pick your zip.
+
+Your skill then sits in the list under **You**, next to the ones marked
+**Anthropic**.
+
+The **Add** menu also offers **Create with Claude** and **Write skill
+instructions**. Both are other ways in. Uploading is the one that puts
+the exact file from your folder into the app, which is what keeps the
+folder the master copy.
 
 ## The rule to keep afterwards
 
