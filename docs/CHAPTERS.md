@@ -2,9 +2,8 @@
 
 One row per chapter that uses the kit. Status: **ready** = verified and final for the current draft; **building** = the chapter is in production and the asset lands with it.
 
-> **Renumbering (2026-07-26).** The book was restructured files-first. Parts I to VI below carry
-> their new chapter numbers and are final. One row still carries the **old** numbering: the
-> one-month plan, which becomes Appendix C in batch R8.
+> **Renumbering (2026-07-26).** The book was restructured files-first. Every row below carries the
+> new chapter numbers, and the old numbering is gone from this file.
 
 ## Parts I to V (restructured, final)
 
@@ -43,11 +42,16 @@ All optional. The book works without every row below.
 | 26. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
 | 27. A Tour of My Hub, and the Road On | none (prose) | ready |
 
-## Not yet renumbered (old scheme)
+## Back matter
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 24 (old). The One-Month Plan, becomes Appendix C in R8 | `living/one-month-plan.md` | ready |
+| Appendix C. What You Get, In Order | `living/build-order-card.md` | ready |
+
+Removed 2026-07-26 (R8): `living/one-month-plan.md`. Founder decision D-047 cut the one-month plan
+from the book: nothing in the reader's text states a total duration for building the system. The
+replacement card carries the same build order measured in sittings and in what the reader has at
+the end of each one, with no days, weeks or months anywhere on it.
 
 Removed 2026-07-26: `context/people-brief-template.md`, superseded by `context/people-interview.md`.
 Removed 2026-07-26 (R4b): `skills/skill-library-template.md`. The folder is the library now, so a
