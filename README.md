@@ -20,7 +20,7 @@ git clone https://github.com/MichaelZelbel/an-ai-of-your-own-kit.git
 - `context/`: Part II assets. The about-you template, the people and projects interviews, the voice extraction prompt, the capture and spring-clean checklists.
 - `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, the packaging and upload guide, practice texts.
 - `procedures/`: Part V assets. Morning brief, weekly review, watchdog, the procedure register, the red lines.
-- `living/`: the two-questions card, the privacy audit checklist, the printable build-order card.
+- `living/`: the two-questions card, the privacy audit checklist, the carried-prompt card, the printable build-order card.
 - `menerio/`: Part VI, optional. Prompts and guides for moving your context into Menerio (memory transport, the interview method, GitHub sync, MCP connection).
 - `server/`: Part VI, optional. Scripts and guides for giving your system an always-on home.
 - `swap/`: Part VI. Config examples for running the same system on a different company's tool and model.
