@@ -1,7 +1,9 @@
 # About me
 
-<!-- Move your ChatGPT "More about you" box here (Chapter 5), then keep
-     this file current instead of the box. Five short blocks, same recipe. -->
+<!-- You wrote your real version of this file in Chapter 1, by asking your
+     AI what it already knows about you and correcting it in Chapter 2. Keep
+     that one; this template is only here in case you are starting from a
+     blank page. Five short blocks, and every line should be true today. -->
 
 ## Who I am and what I do
 
