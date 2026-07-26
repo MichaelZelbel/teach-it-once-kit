@@ -23,6 +23,9 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 12. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
 | 13. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
 | 14. Skills Your App Knows About | `skills/package-a-skill.md` | ready |
+| 15. The Red Lines | `procedures/red-lines-template.md` | ready |
+| 16. The Safety Net | `procedures/safety-net-setup.md` | ready |
+| 17. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 
 ## Not yet renumbered (old scheme)
 
@@ -32,14 +35,12 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 18. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md` | ready |
 | 19. Watchdogs | `procedures/watchdog-setup.md` | ready |
 | 20. The Register | `procedures/procedure-register.md` | ready |
-| 21. The Red Lines | `procedures/red-lines-template.md` | ready |
 | 22. Trust, but Verify | `living/two-questions-card.md` | ready |
-| 23. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 24. The One-Month Plan | `living/one-month-plan.md` | ready |
 | 27. A Home for Your Memory (Menerio) | `menerio/` | building |
 | 28. Plug the Memory Into Everything (MCP) | `menerio/mcp-connection.md` | building |
 | 29. Hire an Agent That Lives in Your Folder | `starter-hub/AGENTS.md` | building |
-| 30. The Safety Net (git, GitHub, Obsidian) | `menerio/github-sync.md` | building |
+| 30 (old). Menerio's own GitHub sync | `menerio/github-sync.md` | building |
 | 31. Procedures With Real Hands | `procedures/` (file versions) | building |
 | 32. The Always-On Server | `server/` | building |
 | 33. The Swap Test (OpenCode + Kimi K3) | `swap/` | ready |
@@ -48,3 +49,7 @@ Removed 2026-07-26: `context/people-brief-template.md`, superseded by `context/p
 Removed 2026-07-26 (R4b): `skills/skill-library-template.md`. The folder is the library now, so a
 separate master-copy document has nothing left to do. What survived of it (naming rules, the
 master-copy habit) moved into Chapters 10 and 14.
+
+Rewritten 2026-07-26 (R5): `procedures/red-lines-template.md` (now eight rules, and the install
+step that was missing), `living/privacy-audit-checklist.md` (folder drawer added, Claude's real
+screens), `starter-hub/AGENTS.md` (honesty rules 6 to 8). New: `procedures/safety-net-setup.md`.
