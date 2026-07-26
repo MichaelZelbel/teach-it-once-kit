@@ -5,7 +5,8 @@ only when reality changed. You stop checking. It starts.
 
 This is the one procedure that genuinely belongs in the cloud: it reads
 the public web, it needs nothing from your folder, so it can run while
-your laptop is shut. Leave **Work in a project or folder** empty.
+your laptop is shut. Attach no folder, and switch **Run on your
+computer** off.
 
 ## The five parts
 
@@ -43,10 +44,11 @@ seven.
 
 ## Where to put it
 
-**Scheduled**, **New task**, **Set up manually**. Name it, paste the
-prompt, leave the folder empty, set **Automatically approve**, set
+**Scheduled**, **New task**, **Set up manually**. Name it, add the
+one-line description, paste the prompt, leave the folder empty, switch
+**Run on your computer** off, set **Automatically approve**, set
 **Frequency: Weekly** (or Daily), pick a day and time, **Save**. The
-task page should show a pill saying it runs in the cloud.
+task page should show a pill reading **Runs in cloud**.
 
 Do not wait for Friday to see it work: press **Run now**.
 

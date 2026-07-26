@@ -23,14 +23,21 @@ your machine. When your machine is off, nothing can read it.
 
 ## How to tell which one you got
 
-Do not guess, and do not trust this page a year from now: look at the
-screen. A saved task has its own page, and under the name sits a small
-pill saying where it will run. Mine, with no folder attached, read
-**Runs in cloud**. Attach a folder and the app says so instead, in a line
-about running on this computer because it uses local folders.
+Do not guess, and do not trust this page a year from now. The app tells
+you, twice.
 
-That pill is the whole answer, and it will still be the answer after the
-menus get renamed.
+**Before you save.** At the bottom of the **Create scheduled task** box
+there is a switch called **Run on your computer**, and the line printed
+under it says:
+
+> Only runs while your computer is on. Use this if the task needs access
+> to local files or desktop extensions.
+
+**After you save.** The task's own page carries a small pill under the
+name. With the switch off it reads **Runs in cloud**.
+
+Those two are the whole answer, and they will still be the answer after
+the menus get renamed.
 
 ## Living with the local ceiling
 

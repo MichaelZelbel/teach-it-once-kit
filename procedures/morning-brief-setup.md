@@ -32,15 +32,19 @@ watched run.
 2. Top right, **New task**. Choose **Set up manually** to see every
    control at once (**Create with Claude** interviews you instead).
 3. The box is titled **Create scheduled task**. Fill in:
-   - **Name**: Morning brief.
+   - **Name**: Morning brief. **Description**: one line, both required.
    - The prompt: `Run my morning brief skill.`
-   - **Work in a project or folder**: your folder, if you want the brief
-     that knows your life. Read `where-it-runs.md` before you decide.
+   - The folder button: pick your folder, if you want the brief that
+     knows your life. Read `where-it-runs.md` before you decide.
    - Approval mode: **Automatically approve**. Not **Manually approve**,
      which stalls waiting for you, and not **Skip all approvals**, which
      switches off the safety checks.
    - **Model**: leave on **Default model**.
    - **Frequency**: **Daily**, then pick your time.
+   - **Run on your computer**: on for the folder brief. The line under
+     the switch is the whole trade: "Only runs while your computer is on.
+     Use this if the task needs access to local files or desktop
+     extensions."
 4. **Save**. The task gets its own page: an **Active** pill, a pill
    saying where it runs, and **Next run**.
 
