@@ -2,10 +2,9 @@
 
 One row per chapter that uses the kit. Status: **ready** = verified and final for the current draft; **building** = the chapter is in production and the asset lands with it.
 
-> **Renumbering in progress (2026-07-26).** The book was restructured files-first. Parts I to V
-> below carry their new chapter numbers and are final. The remaining rows still carry the **old**
-> numbering and get renumbered as each restructure batch lands (R7, then R8). The asset paths are
-> stable; only the numbers move.
+> **Renumbering (2026-07-26).** The book was restructured files-first. Parts I to VI below carry
+> their new chapter numbers and are final. One row still carries the **old** numbering: the
+> one-month plan, which becomes Appendix C in batch R8.
 
 ## Parts I to V (restructured, final)
 
@@ -32,18 +31,23 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 21. Watchdogs | `procedures/watchdog-setup.md` | ready |
 | 22. Trust, but Verify | `living/two-questions-card.md` | ready |
 
+## Part VI (restructured, final)
+
+All optional. The book works without every row below.
+
+| Chapter | Kit asset | Status |
+|---|---|---|
+| 23. When the Folder Outgrows Itself | `menerio/folder-to-memory.md` | ready |
+| 24. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
+| 25. The Always-On Server | `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
+| 26. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
+| 27. A Tour of My Hub, and the Road On | none (prose) | ready |
+
 ## Not yet renumbered (old scheme)
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 24. The One-Month Plan | `living/one-month-plan.md` | ready |
-| 27. A Home for Your Memory (Menerio) | `menerio/` | building |
-| 28. Plug the Memory Into Everything (MCP) | `menerio/mcp-connection.md` | building |
-| 29. Hire an Agent That Lives in Your Folder | `starter-hub/AGENTS.md` | building |
-| 30 (old). Menerio's own GitHub sync | `menerio/github-sync.md` | building |
-| 31. Procedures With Real Hands | `procedures/` (file versions) | building |
-| 32. The Always-On Server | `server/` | building |
-| 33. The Swap Test (OpenCode + Kimi K3) | `swap/` | ready |
+| 24 (old). The One-Month Plan, becomes Appendix C in R8 | `living/one-month-plan.md` | ready |
 
 Removed 2026-07-26: `context/people-brief-template.md`, superseded by `context/people-interview.md`.
 Removed 2026-07-26 (R4b): `skills/skill-library-template.md`. The folder is the library now, so a
@@ -62,3 +66,13 @@ in the reader's own folder, not a document kept somewhere), `procedures/morning-
 mistaken for a real procedure), `living/two-questions-card.md` (the half-right trap).
 New: `procedures/where-it-runs.md`, the local-versus-cloud rule that decides what any procedure can
 touch.
+
+Rewritten 2026-07-26 (R7): `menerio/README.md` and `menerio/mcp-connection.md` (the connector
+panel moved to **Customize**, and the app's dialog has no header field, so the token goes in the
+URL), `server/README.md`, `swap/README.md`, `swap/openrouter-notes.md` (prices re-read live; the
+unit is tokens, not words, and the budget sibling is about a quarter of the price, not a third).
+New: `menerio/folder-to-memory.md` (the folder is the import source, not the chat history),
+`server/setup.md`, `server/brief.sh`, `server/three-traps.md`, `swap/opencode.json`,
+`swap/three-questions.md`.
+Removed: `swap/opencode-config.example.jsonc`, replaced by a real `swap/opencode.json` that can be
+copied straight into a folder.

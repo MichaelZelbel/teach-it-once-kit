@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openrouter/moonshotai/kimi-k3",
+  "permission": {
+    "edit": "ask",
+    "bash": "ask",
+    "webfetch": "ask"
+  },
+  "mcp": {
+    "memory": {
+      "type": "remote",
+      "enabled": true,
+      "url": "https://mcp.menerio.com",
+      "headers": {
+        "Authorization": "Bearer {env:MENERIO_MCP_TOKEN}"
+      }
+    }
+  }
+}
