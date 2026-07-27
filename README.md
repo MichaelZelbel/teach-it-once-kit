@@ -1,6 +1,6 @@
-# An AI of Your Own: Companion Kit
+# Teach It Once: Companion Kit
 
-The reader kit for the book **An AI of Your Own: Build a personal AI that knows you, works your way, and runs without you** by Michael Zelbel.
+The reader kit for the book **Teach It Once: Set up a personal AI that knows you and works on its own** by Michael Zelbel.
 
 Everything the book asks you to copy, paste, fill in, or print lives here. You never have to type a template from a page.
 
@@ -11,7 +11,7 @@ No terminal needed: click the green **Code** button on GitHub and choose **Downl
 Later in the book, once your assistant is looking after the folder for you, it can keep this up to date with git instead:
 
 ```
-git clone https://github.com/MichaelZelbel/an-ai-of-your-own-kit.git
+git clone https://github.com/MichaelZelbel/teach-it-once-kit.git
 ```
 
 ## What is where
