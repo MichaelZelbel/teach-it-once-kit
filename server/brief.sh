@@ -4,13 +4,13 @@
 # Install: save as ~/brief.sh, then `chmod +x ~/brief.sh`
 # Schedule: `crontab -e`, then one line:   0 6 * * * /home/ai/brief.sh
 #
-# Secrets live OUTSIDE the folder, in ~/.my-hub-env, holding:
+# Secrets live OUTSIDE the folder, in ~/.hub-env, holding:
 #   TELEGRAM_BOT_TOKEN=...
 #   TELEGRAM_CHAT_ID=...
 # Keeping them out of the folder is what stops `git add -A` committing them.
 
-cd "$HOME/my-hub" || exit 1
-set -a; . "$HOME/.my-hub-env"; set +a
+cd "$HOME/hub" || exit 1
+set -a; . "$HOME/.hub-env"; set +a
 
 TODAY=$(date +%F)
 LOG="$HOME/brief.log"

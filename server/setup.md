@@ -62,13 +62,13 @@ half, tick **Allow write access**. A deploy key opens exactly one repository and
 which is why it beats putting an account password on a server.
 
 ```
-git clone git@github.com:YOUR-NAME/YOUR-REPO.git my-hub
+git clone git@github.com:YOUR-NAME/YOUR-REPO.git hub
 ```
 
 ## 6. Put the keys where the folder is not
 
 ```
-nano ~/.my-hub-env
+nano ~/.hub-env
 ```
 
 ```

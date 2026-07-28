@@ -1,9 +1,10 @@
 # Starter hub
 
-This folder is your personal AI system. Copy the whole `starter-hub`
-folder somewhere permanent (Documents is fine), rename it if you like
-(`my-hub` is a good name), and point your assistant at it. Chapter 4 of
-the book walks through the layout; Parts II and III fill it up.
+This folder is your personal AI system. Copy everything inside
+`starter-hub` into the `hub` folder you made in Chapter 1 (when your
+computer asks about replacing `context/about-me.md`, keep your own),
+and point your assistant at it. Chapter 4 of the book walks through
+the layout; Parts II and III fill it up.
 
 What is here:
 

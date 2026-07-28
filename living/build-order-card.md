@@ -16,12 +16,12 @@ cannot name what you got, the rung is not finished.
 
 ## Take it out
 
-- [ ] 1. Extraction prompt, saved as `context/about-me.md` in `my-ai`
+- [ ] 1. Extraction prompt, saved as `context/about-me.md` in `hub`
       (Ch 1). **You have:** what your AI already knew about you, in a
       file you own.
 - [ ] 2. The three cuts: wrong, private, padding (Ch 2). **You have:** a
       page about you that is true.
-- [ ] 3. Install the app, sign in, attach `my-ai`, first job (Ch 3).
+- [ ] 3. Install the app, sign in, attach `hub`, first job (Ch 3).
       **You have:** an assistant with hands on your folder.
 - [ ] 4. Copy `starter-hub` into your folder (Ch 4). **You have:** the
       six names that are the whole system.
