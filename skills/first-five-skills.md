@@ -19,7 +19,7 @@ you. The second time you make the same correction, it belongs in the file.
 
 **To run one, say its name.** A file in `skills/` does not fire on its
 own. "Answer email my way" runs the recipe; "write a reply to this" does
-not. Chapter 14 removes that requirement by installing the same recipe as
+not. Chapter 11 removes that requirement by installing the same recipe as
 a real Skill in the app.
 
 ## 1. summarize-for-me.md
@@ -38,7 +38,7 @@ this skill, summarize it exactly like this:
 Keep the whole thing under 150 words. Plain words, no hype, no emojis.
 ```
 
-Chapter 10 builds this one from scratch by letting the assistant
+Chapter 11 builds this one from scratch by letting the assistant
 interview you, which produces a better recipe than this default. Use this
 version if you want the shortcut, and replace it later.
 
@@ -113,5 +113,5 @@ decoration. A recipe that says "write in my voice" is asking the
 assistant to guess; a recipe that says `context/voice.md` is pointing at
 something it can read. The difference shows up the first time you run a
 recipe somewhere cold: the one that names its files says what is missing,
-and the one that does not invents something plausible. Chapter 13 tests
+and the one that does not invents something plausible. Chapter 14 tests
 exactly that.

@@ -35,9 +35,6 @@ These rules override everything else, in every task:
 5. When in doubt, treat it as a red line. Asking me is always allowed.
    Crossing a line to be helpful is not.
 
-If I ask for something that touches a red line, say which line it
-touches, then do the safe part (for example: prepare the draft) and ask.
-
 ## How you stay honest
 
 These are not about damage. They are about not being lied to politely.
@@ -47,25 +44,30 @@ These are not about damage. They are about not being lied to politely.
    better than a smooth one.
 7. Anything you are unsure about goes in `inbox/` for me to decide.
    Do not guess and file it.
-8. Write about other people only what I would be comfortable with them
-   reading over my shoulder. Their private life is not mine to store.
+8. Other people's secrets are not mine to store: what someone told me
+   in confidence (their health, their relationships, their trouble)
+   stays out of my files. Facts I need to work and live with them, how
+   they decide, what they care about, what we agreed, are fine, as
+   long as I write them in words I could defend to their face.
+
+If I ask for something that touches a red line, say which line it
+touches, then do the safe part (for example: prepare the draft) and ask.
 ```
 
 Each of the first five bans an **outcome**, not a tool, so they cover apps
-you have not connected yet.
+you have not connected yet. Rule 8 is a dial, not a law: tighten it to
+"nothing they could not read over my shoulder" or keep it as printed,
+whichever you can stand behind. The interview in
+`procedures/red-lines-interview.md` helps you set it.
 
-## Install them: three doors
+## Install them: two steps
 
-**Door one, every session everywhere.** In Claude: **Settings**, then
+**Step one, every session everywhere.** In Claude: **Settings**, then
 **Cowork** in the left column, then the **Global instructions** panel
 ("Instructions here apply to all Cowork sessions"). Click **Edit**, paste
 the block, click **Save**. This is the one to do first if you only do one.
 
-**Door two, this folder only.** Rules that belong to one part of your life
-go in the **Instructions** of the Cowork project holding that folder. They
-stack on top of the global ones rather than replacing them.
-
-**Door three, the one-line signpost.** For tools that read a rules file
+**Step two, the one-line signpost.** For tools that read a rules file
 from the folder itself, point them at your master copy instead of keeping
 a second one. Ask your assistant, in a folder-attached session:
 
@@ -76,6 +78,11 @@ should be one line: @AGENTS.md . That is the whole file.
 
 Ask for exactly that. Vague requests ("make sure you read my house rules")
 produce clever machinery you did not ask for.
+
+Optional extra: rules that belong to only one part of your life can go in
+the **Instructions** of the Cowork project holding that folder. They stack
+on top of the global ones rather than replacing them. Skip it until you
+feel the need.
 
 ## Test with live ammunition before you trust it
 

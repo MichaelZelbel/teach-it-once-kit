@@ -15,8 +15,8 @@ What is here:
 - `context/`: who you are, your people, your projects, your voice. The
   Part II files.
 - `skills/`: one file per skill, the five starters pre-loaded. Say a
-  skill's name to run it (Chapter 10), or install it into the app so it
-  fires on its own (Chapter 14).
+  skill's name to run it, or install it into the app so it fires on its
+  own (Chapters 10 and 11).
 - `procedures.md`: the register. Everything that runs without you.
 - `decisions.md`: append-only log of real decisions.
 - `inbox/`: where loose captures land between weekly reviews.

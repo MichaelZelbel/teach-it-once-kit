@@ -81,7 +81,7 @@ Under them is a table of what it has actually kept, grouped into **You**,
 it the way the person you live with would read it. Correct what is wrong,
 remove what should not be there.
 
-## Drawer four: standing access
+## Drawer four: connected apps
 
 **Settings**, then **Connectors**. One question per row: does this
 connection still earn its access? Disconnect what you stopped using.
@@ -95,8 +95,9 @@ everything, including other people's letters to you.
 - Patterns (in): who matters, projects, preferences, plans, voice.
 - Keys (never): passwords, PINs, full card numbers, recovery codes,
   anything that IS access rather than information.
-- Other people's secrets: the over-the-shoulder test. Only what you would
-  say with that person reading over your shoulder.
+- Other people's secrets (never): what they told you in confidence stays
+  out. Working facts about them are fine, in words you could defend to
+  their face. Rule 8 in your house rules is where you set this dial.
 
 ## What "private" honestly means
 

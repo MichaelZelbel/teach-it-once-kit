@@ -41,9 +41,9 @@ Cost: 20 of 500 free credits. Nothing failed.
 
 ## Step 3: check the privacy line first, not after
 
-Chapter 17's four drawers still apply. Only the "may travel" drawer goes here. Not bank details,
-not something told to you in confidence. If you are unsure, it stays in the folder, and the
-folder still works.
+Chapter 17's rule still applies: patterns, not keys, and anything that leaves the folder leaves
+on purpose. Only what may travel goes here. Not bank details, not something told to you in
+confidence. If you are unsure, it stays in the folder, and the folder still works.
 
 ## Three things it does not do
 

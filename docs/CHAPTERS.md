@@ -5,6 +5,12 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > **Renumbering (2026-07-26).** The book was restructured files-first. Every row below carries the
 > new chapter numbers, and the old numbering is gone from this file.
 
+> **Part III flip (2026-07-30).** Part III now runs app-first: Chapter 10 has the reader build a
+> Skill with the app's own form and take it apart; Chapter 11 moves the master copy into the
+> reader's folder (interview, naming, packaging, upload); the old Chapter 14 is gone, absorbed
+> into Chapters 10 and 11. Chapters 12 to 14 are the old 11 to 13, one number up. The two
+> "building" rows wait on the real runs marked [REAL RUN NEEDED] in the manuscript.
+
 ## Parts I to V (restructured, final)
 
 | Chapter | Kit asset | Status |
@@ -16,12 +22,12 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 7. Your Voice | `context/voice-extraction-prompt.md` | ready |
 | 8. Capture as You Live | `context/capture-checklist.md` | ready |
 | 9. Keeping It True | `context/mirror-test.md`, `context/spring-clean-checklist.md` | ready |
-| 10. From Prompt to Skill File | `skills/skill-interview.md`, `skills/practice-texts.md` | ready |
-| 11. Your First Five Skills | `skills/first-five-skills.md`, `starter-hub/skills/` | ready |
-| 12. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
-| 13. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
-| 14. Skills Your App Knows About | `skills/package-a-skill.md` | ready |
-| 15. The Red Lines | `procedures/red-lines-template.md` | ready |
+| 10. Your App Builds the First One | `skills/practice-texts.md` | building |
+| 11. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
+| 12. Your First Five Skills | `skills/first-five-skills.md`, `starter-hub/skills/` | ready |
+| 13. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
+| 14. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
+| 15. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md` | ready |
 | 16. The Safety Net | `procedures/safety-net-setup.md` | ready |
 | 17. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 18. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
@@ -40,7 +46,8 @@ All optional. The book works without every row below.
 | 24. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
 | 25. The Always-On Server | `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
 | 26. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
-| 27. A Tour of My Hub, and the Road On | none (prose) | ready |
+| 27. The Prompts You Carry | `living/carried-prompt-card.md` | ready |
+| 28. A Tour of My Hub, and the Road On | none (prose) | ready |
 
 ## Back matter
 
