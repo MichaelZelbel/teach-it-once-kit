@@ -54,12 +54,14 @@ not find it.
 claude auth login
 ```
 
-> **Not `claude setup-token`.** Earlier versions of this page said to use that,
-> and it does not sign the machine in. It mints a token, prints it on the screen,
-> and stores nothing: afterwards `claude auth status` still says you are signed
-> out. It also leaves a credential that is valid for a year sitting in the
-> scrollback of a machine you just rented. `auth login` does the same thing
-> without a browser and actually keeps the result.
+> **Why this and not `claude setup-token`.** Both work, and they do different
+> jobs. `setup-token` gives you a long-lived token and prints it, for you to save
+> yourself as `CLAUDE_CODE_OAUTH_TOKEN` in `~/.hub-env`; the morning job picks it
+> up from there. That works, and it is what this page used to say. Two things
+> make `auth login` the better first choice: it saves the sign-in itself, so
+> there is nothing for you to copy and store, and it never puts a year-long
+> credential on your screen. If you use `setup-token`, remember that on its own
+> it does not sign the machine in, and save the token or nothing will run.
 
 It tries to open a browser, fails, because there is not one, and then tells you
 what to do:
