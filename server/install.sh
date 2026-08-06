@@ -145,7 +145,7 @@ mkdir -p "$HUB"
 PROMPT="Set up this always-on server for me, following Chapters 25 and 26 of the book Teach It Once. \
 Read and follow $KIT_DIR/server/steps/build-the-server.md from the top. It tells you which question \
 sheets to use and in what order; the shared ones are in $BOOTSTRAP_DIR/steps/. \
-My folder should end up at $HUB, my settings file at \$HOME/.hub-env, and the kit you can copy files \
+My folder should end up at $HUB, my settings file at $HOME/.hub-env, and the kit you can copy files \
 from is at $KIT_DIR. Claude Code and the GitHub tool are both already signed in on this machine, so \
 never ask me for a GitHub token or an SSH key. Ask me one question at a time and stop the turn after \
 each one so I know it is my turn. When everything is done, do not tell me it is working until a test \
