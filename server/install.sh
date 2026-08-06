@@ -144,6 +144,11 @@ fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR"
 # refusal, so the safety is the account, not the asking.
 KB_PERMISSION_PROFILE="$BOOTSTRAP_DIR/settings/server-profile.json"
 
+# The instructions it has to read live outside the folder it works in, and the
+# profile's Read(**) only covers the working folder. Without these it asks
+# permission for every step sheet it opens.
+KB_EXTRA_DIRS="$KIT_DIR $BOOTSTRAP_DIR"
+
 # --- Hand over ---------------------------------------------------------------
 mkdir -p "$HUB"
 
