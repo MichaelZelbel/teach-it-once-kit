@@ -64,9 +64,9 @@ claude auth login
 It tries to open a browser, fails, because there is not one, and then tells you
 what to do:
 
-> Browser didn't open? Use the url below to sign in (c to copy)
+> Opening browser to sign in…
 >
-> https://claude.com/cai/oauth/authorize?...
+> If the browser didn't open, visit: https://claude.com/cai/oauth/authorize?...
 >
 > Paste code here if prompted >
 
