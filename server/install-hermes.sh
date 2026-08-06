@@ -7,6 +7,16 @@
 # already uses and answers you on Telegram, so you can hand it a job while you
 # are standing at a bus stop.
 #
+# YOU PROBABLY DO NOT NEED TO RUN THIS ON ITS OWN. The one-line installer in
+# this folder covers Chapters 25 and 26 together, and does everything below as
+# part of it:
+#
+#     curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh | bash
+#
+# This script stays for two cases: you already built the server by hand and only
+# want the Hermes half, or something broke and you want to run just this part
+# again. It is the same steps, in the same order.
+#
 # Run it as the `ai` user you made in Chapter 25, never as root:
 #
 #     bash install-hermes.sh
