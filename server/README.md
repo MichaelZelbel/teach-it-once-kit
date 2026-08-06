@@ -1,6 +1,6 @@
 # server
 
-Optional. Chapter 25 only. This solves one specific problem and nothing else.
+Optional. Chapters 25 and 26. This solves one specific problem and nothing else.
 
 **The problem.** A task that touches a folder on your computer runs on your computer, and a task
 that runs while your computer is off cannot touch your folder. So a brief that reads your real
@@ -10,11 +10,30 @@ you never need this folder.
 **The answer.** A small rented Linux machine, around five euros a month, holding its own clone of
 your folder, kept in step through the private repository you set up in Chapter 16.
 
+## Start here
+
+Log in to the machine you rented and paste this one line:
+
+```
+curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh | bash
+```
+
+It asks you three things and nothing else: which repository holds your folder, which AI should
+answer your messages, and whether to connect Telegram. It never asks for a GitHub token, an SSH
+key, or your Telegram chat id, because it does not need to.
+
 | File | What it is for |
 |---|---|
-| `setup.md` | The build, from a blank Ubuntu machine to a brief on your phone. |
+| `install.sh` | The one line above. Covers both chapters. |
+| `steps/build-the-server.md` | What the installer works through once it starts asking. Read it to see what it will do. |
+| `setup.md` | The same build by hand, for when you want to know what it did, or something broke. |
 | `brief.sh` | The runner: pull, run the recipe, send it, push the result, shout if it failed. |
+| `install-hermes.sh` | The Chapter 26 half on its own, if you built the server by hand. |
 | `three-traps.md` | The three things that went wrong building this for real, and the fixes. |
+
+The installer stands on `kit-bootstrap`, a small public repository that holds the install steps
+shared with the other kits, so the same code is not maintained in two places:
+<https://github.com/MichaelZelbel/kit-bootstrap>
 
 ## Read this before you build anything
 

@@ -44,10 +44,11 @@ All optional. The book works without every row below.
 |---|---|---|
 | 23. When the Folder Outgrows Itself | `menerio/folder-to-memory.md` | ready |
 | 24. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
-| 25. The Always-On Server | `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
-| 26. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
-| 27. The Prompts You Carry | `living/carried-prompt-card.md` | ready |
-| 28. A Tour of My Hub, and the Road On | none (prose) | ready |
+| 25. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
+| 26. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
+| 27. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
+| 28. The Prompts You Carry | `living/carried-prompt-card.md` | ready |
+| 29. A Tour of My Hub, and the Road On | none (prose) | ready |
 
 ## Back matter
 

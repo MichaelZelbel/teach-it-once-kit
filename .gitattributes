@@ -1,0 +1,8 @@
+# This repo now serves server/install.sh straight from raw.githubusercontent.com
+# into `bash` on a Linux server. Windows line endings there would break in a way
+# that is hard to read: bash treats the carriage return as part of the command
+# and reports "command not found: git\r". Force LF so an edit made on Windows
+# can never ship that.
+* text=auto eol=lf
+*.sh text eol=lf
+*.md text eol=lf
