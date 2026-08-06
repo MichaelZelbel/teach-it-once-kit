@@ -139,6 +139,11 @@ fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR"
 [ -f "$KIT_DIR/server/brief.sh" ] || die "The kit downloaded but server/brief.sh is missing from it."
 [ -f "$BOOTSTRAP_DIR/steps/telegram.md" ] || die "The question sheets downloaded but steps/telegram.md is missing."
 
+# Let the assistant work without asking permission for every single step. This is
+# the chapter's own lesson applied to the install: on a server a question is a
+# refusal, so the safety is the account, not the asking.
+KB_PERMISSION_PROFILE="$BOOTSTRAP_DIR/settings/server-profile.json"
+
 # --- Hand over ---------------------------------------------------------------
 mkdir -p "$HUB"
 
