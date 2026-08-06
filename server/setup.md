@@ -51,8 +51,15 @@ not find it.
 ## 4. Sign in with no browser on the machine
 
 ```
-claude setup-token
+claude auth login
 ```
+
+> **Not `claude setup-token`.** Earlier versions of this page said to use that,
+> and it does not sign the machine in. It mints a token, prints it on the screen,
+> and stores nothing: afterwards `claude auth status` still says you are signed
+> out. It also leaves a credential that is valid for a year sitting in the
+> scrollback of a machine you just rented. `auth login` does the same thing
+> without a browser and actually keeps the result.
 
 It tries to open a browser, fails, because there is not one, and then tells you
 what to do:
