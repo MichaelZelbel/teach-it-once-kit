@@ -4,7 +4,15 @@ The reader kit for the book **Teach It Once: Set up a personal AI that knows you
 
 Everything the book asks you to copy, paste, fill in, or print lives here. You never have to type a template from a page.
 
-## How to get it
+## On Windows: the installer does it for you
+
+**[Download HubSetup.exe](https://github.com/MichaelZelbel/teach-it-once-kit/releases/latest/download/HubSetup.exe)** and double-click it. Nothing to type, no terminal.
+
+It sets up your hub with the starter folder below already in place, installs the few things it needs underneath (Git, Node.js and Claude Code), and makes one memory that every machine you own shares. If you already have a hub on the PC, it updates that one instead. Run it as often as you like; it never deletes anything you have written.
+
+**Windows will warn you the first time.** You will see a blue box saying "Windows protected your PC", and at first the only button is *Don't run*. Click **More info**, then **Run anyway**. Windows shows this for any program whose publisher it has not seen enough copies of yet. It is not a virus warning and says nothing about whether the program is safe.
+
+## How to get it by hand
 
 No terminal needed: click the green **Code** button on GitHub and choose **Download ZIP**, then unpack it anywhere.
 
