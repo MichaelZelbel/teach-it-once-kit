@@ -22,14 +22,28 @@ there is nothing for a program to harvest. If that is your only tool, this drawe
 stays empty and nothing is broken. Use `prompts/library/` next door instead, and
 save the prompts you care about as you go.
 
+## One file per machine, and why that matters
+
+A month file is named after the machine that wrote it, like
+`laptop-2026-08.jsonl`. That is not decoration. Each machine can only read its own
+conversation logs, so each machine fills its own file, and two machines can never
+overwrite each other's.
+
+It also means a machine you did not switch on this month added nothing this month.
+That is correct, and worth knowing before you go hunting for something you typed
+on the other computer.
+
 ## What a month file looks like
 
 One line per prompt, in the order you typed them, in a format made for machines
 to search rather than for you to read:
 
 ```
-{"ts": "2026-08-09T14:02:11", "machine": "laptop", "text": "the prompt you typed"}
+{"at": "2026-08-09T14:02:11", "machine": "laptop", "tool": "claude-code", "text": "the prompt you typed"}
 ```
+
+`tool` says how you reached the AI, so a line marked `telegram` is one you typed
+on your phone and the computer named in `machine` is only where the record was kept.
 
 ## How to look something up
 

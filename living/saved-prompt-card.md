@@ -8,18 +8,29 @@ it where the work happens.
 
 Those are the saved prompts. This card is how to keep them.
 
-## Rule 1: the file is still the original
+## Rule 1: it goes in `prompts/library/`, not in `skills/`
 
-A saved prompt lives in `skills/` like every other skill, with the same
-kind of name: start with the verb, say whose way it is.
+One question tells the two apart: does your assistant run this itself,
+here, or do you paste it somewhere else? If your assistant runs it, it is
+a skill and it goes in `skills/`. If you paste it somewhere else, it is a
+saved prompt and it goes in `prompts/library/`.
+
+Your assistant cannot draw a book cover, so a cover prompt is always the
+second kind. Name it exactly like a skill: start with the verb, say whose
+way it is.
 
 ```
-skills/cover-art-my-way.md
-skills/thumbnail-my-way.md
-skills/diagram-my-way.md
+prompts/library/cover-art-my-way.md
+prompts/library/thumbnail-my-way.md
+prompts/library/diagram-my-way.md
 ```
 
 Not `image-prompts.md`. One file, one job, or you will never find it.
+
+Getting the drawer wrong is quiet both ways. A saved prompt filed in
+`skills/` never fires, because there is no job in your folder for it to
+do. A skill filed in `prompts/library/` can never be found, because
+nothing reads that folder on its own.
 
 ## Rule 2: write down the decisions, not just the request
 
@@ -53,15 +64,15 @@ prompts back out as files.
 ## Rule 4: bring the improvement home
 
 When you improve a prompt on the shelf, download it again and put it back
-over the file in `skills/`. Two copies that disagree is worse than one
-copy that is slightly old.
+over the file in `prompts/library/`. Two copies that disagree is worse
+than one copy that is slightly old.
 
 A one-line habit that keeps it true:
 
 ```
-Which files in skills/ have I not opened in six months? For each one,
-tell me the job it does in one line, and ask me whether it is still
-how I want that job done.
+Which files in prompts/library/ and skills/ have I not opened in six
+months? For each one, tell me the job it does in one line, and ask me
+whether it is still how I want that job done.
 ```
 
 ## The order that saves you a puzzle

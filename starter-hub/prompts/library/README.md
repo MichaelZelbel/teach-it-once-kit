@@ -7,10 +7,20 @@ is where the good ones live, so you never have to write one twice or hunt for it
 in an old chat.
 
 **This is not the same thing as `skills/`, and mixing them up causes real
-trouble.** A skill is a recipe your assistant reads and follows by itself. It has
-a short header at the top saying what it is for, which is how the assistant can
-pick the right one without opening all of them. A prompt has no such header, so
-your assistant cannot browse this drawer and choose. It is yours to reach for.
+trouble.** One question tells them apart:
+
+> Does my assistant run this itself, here, or do I paste it somewhere else?
+
+If your assistant runs it, it is a skill: a recipe it reads and follows by itself,
+with a short header at the top saying what it is for, which is how it picks the
+right one without opening all of them. If you paste it somewhere else, it is a
+saved prompt and it lives here. A prompt has no such header, and nothing reads
+this folder on its own, so your assistant can never browse this drawer and
+choose. It is yours to reach for.
+
+Getting it wrong is quiet in both directions. A saved prompt filed in `skills/`
+never fires, because there is no job in your folder for it to do. A skill filed
+here can never be found at all.
 
 The plain version of the difference:
 
