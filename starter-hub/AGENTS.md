@@ -24,6 +24,13 @@ purpose. If it contradicts something you believe about me, the file wins.
 - **Loose captures land in `inbox/`.** One file per capture. When we do the
   weekly review, help me promote the keepers into context files and empty
   the inbox.
+- **What you learn goes in `memory/`, and you read the index first.** One file
+  per fact, listed one line each in `memory/MEMORY.md`. Read that index at the
+  start of a session and open a memory file only when its subject comes up; do
+  not read the whole folder, that is what the index is for. When you learn
+  something worth keeping, write the file and add its line to the index in the
+  same session. This folder is the memory every one of my assistants shares, on
+  every machine, which is why it lives here instead of inside one AI tool.
 
 ## My red lines
 

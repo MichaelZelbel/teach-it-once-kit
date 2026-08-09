@@ -51,6 +51,41 @@ cp -R "$HOME/teach-it-once-kit/starter-hub/." "$HOME/hub/"
 cd "$HOME/hub" && git add -A && git commit -m "My folder" && git push
 ```
 
+## 1b — One memory, shared by every machine
+
+Do this straight after the folder arrives, before anything else writes to it.
+
+Every AI assistant keeps its notes about the reader in a folder belonging to the
+tool, on one machine. Left alone, that means the server's assistant and the
+laptop's assistant each learn things the other never sees. One command points the
+tool's folder at `memory/` inside their hub, so there is one memory and git
+carries it:
+
+```bash
+. "$HOME/.kit-bootstrap/lib.sh" && kb_link_ai_memory "$HOME/hub"
+```
+
+It is safe to run again, it never deletes a note, and if the reader already had
+notes in the old place it copies them into the hub first and keeps the old folder
+with a date on it.
+
+Then commit what it created:
+
+```bash
+cd "$HOME/hub" && git add memory && git commit -m "One memory, shared" && git push
+```
+
+**Say this to the reader, in your own words, and do not skip it.** They are about
+to have a memory they did not ask for, so tell them it exists, that it is plain
+files in their own folder that they can read and delete, and that it is theirs
+rather than the AI company's. If they do not want it, `rm -rf` on that folder and
+the link is the whole undo, and nothing else in the setup breaks.
+
+**On their other machines** (a laptop, a desktop), the same one command joins
+them to the same memory. That is `join.sh` on macOS and Linux, `join.ps1` on
+Windows, both in `$HOME/.kit-bootstrap`. Mention it only if they say they work on
+more than one machine.
+
 ## 2 — The keys go where the folder is not
 
 Do this **before** anything writes a secret, not after. This is the mistake the
