@@ -15,7 +15,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 1. What Your AI Already Knows About You | `context/about-you-template.md` (fallback only) | ready |
+| 1. What Your AI Already Knows About You | `context/bring-your-context-with-you.md` (the export prompt), `context/about-you-template.md` (fallback only) | ready |
 | 4. The Folder Is the System | `starter-hub/` | ready |
 | 5. The People Who Matter | `context/people-interview.md` | ready |
 | 6. Projects and Priorities | `context/projects-interview.md` | ready |
@@ -39,6 +39,13 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 ## Part VI (restructured, final)
 
 All optional. The book works without every row below.
+
+> **`menerio/ai-memory-transport.md` and `menerio/interview-transfer.md` have no chapter row on
+> purpose.** They are the Menerio-specific versions of the same move. The general one, which works
+> with no extra product at all, is Chapter 1's `context/bring-your-context-with-you.md`. Restored
+> 2026-08-09: the 2026-07-26 files-first renumbering left Chapter 1 holding only the FALLBACK
+> template, so the kit taught the reader to fill a folder by hand while the prompt that empties
+> their old AI into it sat in a folder nothing pointed at.
 
 | Chapter | Kit asset | Status |
 |---|---|---|
