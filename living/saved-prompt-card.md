@@ -1,4 +1,4 @@
-# The Carried Prompt Card (Chapters 10 and 27)
+# The Saved Prompt Card (Chapters 11 and 28)
 
 Most of your skills are read by your assistant, out of your `skills/`
 folder, without you doing anything. A few are not. The prompt that makes
@@ -6,11 +6,11 @@ your book cover, your thumbnail, your diagram: those go into tools that
 will never see your disk. You open the file, you copy the text, you paste
 it where the work happens.
 
-Those are the carried prompts. This card is how to keep them.
+Those are the saved prompts. This card is how to keep them.
 
 ## Rule 1: the file is still the original
 
-A carried prompt lives in `skills/` like every other skill, with the same
+A saved prompt lives in `skills/` like every other skill, with the same
 kind of name: start with the verb, say whose way it is.
 
 ```
@@ -23,7 +23,7 @@ Not `image-prompts.md`. One file, one job, or you will never find it.
 
 ## Rule 2: write down the decisions, not just the request
 
-A carried prompt is worth keeping only if it holds the arguing you did
+A saved prompt is worth keeping only if it holds the arguing you did
 once. Put four things in it:
 
 - **The job** in one line.
@@ -38,7 +38,7 @@ prompt enough. Come back after it disappoints you twice.
 ## Rule 3: put a copy where you can reach it
 
 The file is on the computer you are not standing at. That is the whole
-problem in Chapter 27. Put a copy on a prompt shelf, so that:
+problem in Chapter 28. Put a copy on a prompt shelf, so that:
 
 - you can open it on a phone,
 - you can see what changed between versions,
@@ -66,7 +66,7 @@ how I want that job done.
 
 ## The order that saves you a puzzle
 
-Save the prompt first, improve it second. The version you carried in is
+Save the prompt first, improve it second. The version you brought in is
 the one worth keeping as v1, and on a brand new account the improving
 tools may report that you are out of credits until something has been
 saved.
