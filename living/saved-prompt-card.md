@@ -49,7 +49,8 @@ prompt enough. Come back after it disappoints you twice.
 ## Rule 3: put a copy where you can reach it
 
 The file is on the computer you are not standing at. That is the whole
-problem in Chapter 28. Put a copy on a prompt shelf, so that:
+problem in Chapter 28. Put a copy in a prompt manager, which is a website
+that keeps your prompts for you, so that:
 
 - you can open it on a phone,
 - you can see what changed between versions,
@@ -58,12 +59,12 @@ problem in Chapter 28. Put a copy on a prompt shelf, so that:
 The book uses **querino.ai** for this, which is the author's own tool,
 free to open an account, code public under the AGPL licence. Any prompt
 manager that can export your prompts again works the same way. The test
-for whether a shelf is safe to use is one button: can you get your
+for whether one is safe to use is one button: can you get your
 prompts back out as files.
 
 ## Rule 4: bring the improvement home
 
-When you improve a prompt on the shelf, download it again and put it back
+When you improve the online copy, download it again and put it back
 over the file in `prompts/library/`. Two copies that disagree is worse
 than one copy that is slightly old.
 

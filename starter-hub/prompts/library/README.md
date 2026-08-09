@@ -31,8 +31,9 @@ The plain version of the difference:
 | How it is found | the assistant reads the header and picks | you search for it, or ask your assistant to |
 
 The clearest example is a prompt for making a book cover. The tool that makes the
-picture cannot see this folder and never will. So the prompt is not a skill. It is
-a thing you carry, and this is where you keep it.
+picture cannot see this folder and never will, and your assistant cannot draw a
+picture either. So nobody here can run it. It is a saved prompt, and this drawer
+is where saved prompts live.
 
 ## How a saved prompt is written
 
