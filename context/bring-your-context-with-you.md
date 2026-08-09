@@ -17,61 +17,69 @@ If it is Claude on the web, open the project you have been working in, because i
 per project.
 
 ````markdown
-I am moving to a new assistant that keeps its memory as plain files I own. Export
-everything you know about me so nothing is lost.
+I am moving to a new assistant that keeps its memory as plain files I
+own. Export everything you know about me so nothing is lost.
 
-Use your memory of me, your saved instructions about me, and our past conversations.
-Do not invent anything. If you are unsure whether something is true, leave it out.
+Use your memory of me, your saved instructions about me, and our past
+conversations. Do not invent anything. If you are unsure whether
+something is true, leave it out.
 
-Give me the result as a markdown file I can download. If you cannot make a file, put
-the whole thing in one code block instead.
+Give me the result as a markdown file I can download. If you cannot
+make a file, put the whole thing in one code block instead.
 
-Never include a password, a PIN, a card number, a key or a recovery code. If a fact
-only makes sense with one of those in it, leave the whole fact out.
+Never include a password, a PIN, a card number, a key or a recovery
+code. If a fact only makes sense with one of those in it, leave the
+whole fact out.
 
-Output ONLY the document below, using exactly these headings, in this order. Under each
-heading, put ONE item per line, starting with "- ". Each line must make sense on its own
-to someone who has never met me, so no "he" or "that project", and no reference to this
-chat. If a heading has nothing, write "- none".
+Output ONLY the document below, using exactly these headings, in this
+order. Under each heading, put ONE item per line, starting with "- ".
+Each line must make sense on its own to someone who has never met me,
+so no "he" or "that project", and no reference to this chat. If a
+heading has nothing, write "- none".
 
-If you run out of room before the end, stop at the end of a section, say which section
-you stopped at, and wait. I will ask you to continue.
+If you run out of room before the end, stop at the end of a section,
+say which section you stopped at, and wait. I will ask you to continue.
 
 ## WHO I AM
-My work, my role, my situation, where I live, my languages. Facts about me as a person.
+My work, my role, my situation, where I live, my languages. Facts
+about me as a person.
 
 ## PEOPLE
-One line per person who matters to my work or life: who they are to me, and the one
-thing worth remembering about working with them. Use first names only.
+One line per person who matters to my work or life: who they are to
+me, and the one thing worth remembering about working with them.
+First names only.
 
 ## PROJECTS
-One line per project or ongoing piece of work: what it is, where it stands, what it is
-for. Include ones that are paused or finished, and say so.
+One line per project or ongoing piece of work: what it is, where it
+stands, what it is for. Include ones that are paused or finished, and
+say so.
 
 ## PREFERENCES AND RULES
-One line per instruction I have given you about HOW to work with me. Include everything
-I have corrected you on more than once, everything I told you never to do, and how I like
-answers shaped. This is the most valuable section, so be thorough.
+One line per instruction I have given you about HOW to work with me.
+Include everything I have corrected you on more than once, everything
+I told you never to do, and how I like answers shaped. This is the
+most valuable section, so be thorough.
 
 ## DECISIONS
-One line per real decision I made and stuck with, with roughly when, and why I made it.
+One line per real decision I made and stuck with, with roughly when,
+and why I made it.
 
 ## REUSABLE PROMPTS
-Think of the jobs you do for me again and again. For each one, write the prompt that
-does that job best. Mark each prompt "recalled" if it is close to something I actually
-sent you, or "reconstructed" if you are writing it fresh from what the job needs. For
-each one use exactly this shape, and put the prompt text itself in a fenced code block:
+Think of the jobs you do for me again and again. For each one, write
+the prompt that does that job best. Mark it "recalled" if it is close
+to something I actually sent you, or "reconstructed" if you are
+writing it fresh from what the job needs. Use exactly this shape:
 
 ### <short name for the prompt>
 what it is for: <one line>
 recalled or reconstructed: <one word>
-```
+--- prompt begins ---
 <the full prompt text, exactly as it works best>
-```
+--- prompt ends ---
 
 ## THINGS I SHOULD CHECK
-Anything you are including that might be out of date or that you are unsure about, one
-per line, so I can verify it rather than trust it.
+Anything you are including that might be out of date or that you are
+unsure about, one per line, so I can verify it rather than trust it.
 ````
 
 Four things in that prompt are there for a reason, and taking any of them out costs you.
@@ -86,8 +94,8 @@ stops mid-sentence and says nothing, and you never find out what is missing.
 be counted by a model, so it under-delivers. Asking for the prompt behind each repeated job
 gets you the real list, and the recalled-or-reconstructed mark tells you which ones to trust.
 
-**It bans keys.** Your old AI will hand over whatever it has, and the hub has no scrubber
-standing between it and your disk. The prompt is the guard, and Step 2 is the second one.
+**It bans keys.** Your old AI will hand over whatever it has, and nothing sits between it and
+your disk except this instruction. The prompt is the first guard, and Step 3 is the second.
 
 ## Step 2: save the whole answer, unedited
 
