@@ -40,8 +40,11 @@ is different. It can sit here until the subject comes up.
 
 ## The list
 
-One line per memory, like this:
+One line per memory. The shape is in the comment below, kept out of the list
+itself so an example can never be mistaken for something you actually know.
 
+<!-- Copy this shape for each new memory, one line, directly under this comment:
 - [What it is](some-fact.md) - the short version, so a session can tell whether to open it
+-->
 
 Nothing here yet.

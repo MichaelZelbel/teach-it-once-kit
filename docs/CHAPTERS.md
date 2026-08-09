@@ -16,11 +16,11 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | Chapter | Kit asset | Status |
 |---|---|---|
 | 1. What Your AI Already Knows About You | `context/bring-your-context-with-you.md` (the export prompt), `context/about-you-template.md` (fallback only) | ready |
-| 4. The Folder Is the System | `starter-hub/` | ready |
+| 4. The Folder Is the System | `starter-hub/` (eight names, including `starter-hub/memory/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
 | 5. The People Who Matter | `context/people-interview.md` | ready |
 | 6. Projects and Priorities | `context/projects-interview.md` | ready |
 | 7. Your Voice | `context/voice-extraction-prompt.md` | ready |
-| 8. Capture as You Live | `context/capture-checklist.md` | ready |
+| 8. Capture as You Live | `context/capture-checklist.md`, `starter-hub/memory/MEMORY.md` (the notebook the assistant keeps) | ready |
 | 9. Keeping It True | `context/mirror-test.md`, `context/spring-clean-checklist.md` | ready |
 | 10. Your App Builds the First One | `skills/practice-texts.md` | building |
 | 11. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
@@ -32,7 +32,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 17. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 18. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
 | 19. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
-| 20. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md` | ready |
+| 20. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch) | ready |
 | 21. Watchdogs | `procedures/watchdog-setup.md` | ready |
 | 22. Trust, but Verify | `living/two-questions-card.md` | ready |
 
@@ -85,6 +85,18 @@ in the reader's own folder, not a document kept somewhere), `procedures/morning-
 mistaken for a real procedure), `living/two-questions-card.md` (the half-right trap).
 New: `procedures/where-it-runs.md`, the local-versus-cloud rule that decides what any procedure can
 touch.
+
+New and rewritten 2026-08-09 (batch T, "the folder that does not start empty"):
+`starter-hub/prompts/library/README.md` and `starter-hub/prompts/archive/README.md` (the two
+drawers, seeded and self-explaining; the library is not `skills/`, and the archive carries the
+honest limit that Claude Desktop keeps no local conversation store to harvest),
+`starter-hub/AGENTS.md` (the never-load-`prompts/` rule),
+`context/bring-your-context-with-you.md` (the four wording fixes: ask for a file, say what to do
+when it runs long, ask for prompts by job rather than by count, and ban keys outright; plus filing
+into `prompts/library/` rather than `skills/`), `procedures/outside-ai-check.md` (new, the monthly
+question carried inside Chapter 20's weekly review), `starter-hub/memory/MEMORY.md` (the example
+row moved inside a comment after a cold run left it sitting in the list like a real memory, the
+same defect R6 fixed in `procedures.md`).
 
 Rewritten 2026-07-26 (R7): `menerio/README.md` and `menerio/mcp-connection.md` (the connector
 panel moved to **Customize**, and the app's dialog has no header field, so the token goes in the
