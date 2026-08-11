@@ -67,6 +67,54 @@ def home_dir():
     return os.environ.get("HUB_HOME") or os.path.expanduser("~")
 
 
+# The sources this collector can read. The installer shows this same list to the
+# person as checkboxes; a new reader here must also be added to the installer's
+# roster (kit-bootstrap: kb_ai_tool_info / Get-KitAiToolInfo), or nobody can
+# switch it off.
+SUPPORTED_SOURCES = ("claude", "codex", "hermes")
+
+
+def device_env_value(name):
+    """One value from ~/.hub/device.env. Read here as well as by the launcher,
+    because this program is also run directly (`hub prompts archive`), where
+    nothing has loaded that file into the environment first."""
+    p = os.path.join(home_dir(), ".hub", "device.env")
+    if not os.path.isfile(p):
+        return None
+    try:
+        for raw in io.open(p, encoding="utf-8", errors="replace"):
+            line = re.sub(r"^\s*export\s+", "", raw)
+            if line.lstrip().startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            if k.strip() == name:
+                return v.strip().strip('"').strip("'")
+    except (IOError, OSError):
+        pass
+    return None
+
+
+def enabled_sources():
+    """Which AI tools this machine's owner said may be read.
+
+    The installer records the choice as HUB_PROMPT_SOURCES in ~/.hub/device.env
+    (the environment wins, so a test or a one-off run can override it). No line
+    at all means every supported source, which is what every machine did before
+    there was a choice. An EMPTY line means none: a person who unticked every
+    box made a decision, not a mistake.
+    """
+    v = os.environ.get("HUB_PROMPT_SOURCES")
+    if v is None:
+        v = device_env_value("HUB_PROMPT_SOURCES")
+    if v is None:
+        return set(SUPPORTED_SOURCES)
+    if v.strip() == "-":
+        # "-" is NONE spelled so it survives a Windows environment variable,
+        # which cannot hold an empty string.
+        return set()
+    return {s.strip().lower() for s in v.split(",") if s.strip()}
+
+
 def hub_root(argv_hub=None):
     if argv_hub:
         return os.path.abspath(argv_hub)
@@ -325,18 +373,25 @@ def human_turns_hermes_store(hermes):
 
 
 def harvest(hub):
+    """Every source the person has switched ON. A source that is off is not read at
+    all, rather than read-and-discarded: the promise to the person is that this
+    program does not open that tool's files, not that it forgets what it saw."""
     home = home_dir()
-    yield from human_turns_claude(glob.glob(os.path.join(home, ".claude", "projects", "*", "*.jsonl")))
-    codex = os.path.join(home, ".codex", "sessions")
-    yield from human_turns_codex([os.path.join(r, f) for r, _d, fs in os.walk(codex)
-                                  for f in fs if f.endswith(".jsonl")])
-    # Overridable so a test can point it at a fixture. A path compiled into the code is a
-    # path no test can reach, which is exactly how the "dir" bug above survived.
-    yield from human_turns_hermes(os.environ.get("HUB_TELEGRAM_TRANSCRIPT") or TELEGRAM_TRANSCRIPT)
-    # Kept alongside the line above rather than replacing it: that file carries chat from
-    # before the current store existed, and the two overlap harmlessly because a prompt is
-    # recognised by its text, so whichever reader reaches it first is the only one that counts.
-    yield from human_turns_hermes_store(hermes_home())
+    on = enabled_sources()
+    if "claude" in on:
+        yield from human_turns_claude(glob.glob(os.path.join(home, ".claude", "projects", "*", "*.jsonl")))
+    if "codex" in on:
+        codex = os.path.join(home, ".codex", "sessions")
+        yield from human_turns_codex([os.path.join(r, f) for r, _d, fs in os.walk(codex)
+                                      for f in fs if f.endswith(".jsonl")])
+    if "hermes" in on:
+        # Overridable so a test can point it at a fixture. A path compiled into the code is a
+        # path no test can reach, which is exactly how the "dir" bug above survived.
+        yield from human_turns_hermes(os.environ.get("HUB_TELEGRAM_TRANSCRIPT") or TELEGRAM_TRANSCRIPT)
+        # Kept alongside the line above rather than replacing it: that file carries chat from
+        # before the current store existed, and the two overlap harmlessly because a prompt is
+        # recognised by its text, so whichever reader reaches it first is the only one that counts.
+        yield from human_turns_hermes_store(hermes_home())
 
 
 # --------------------------------------------------------------------- storage
@@ -456,6 +511,9 @@ def _harvest_locked(hub, dry, since, machine):
     for month, rows in sorted(buckets.items()):
         print("  %s-%s.jsonl  +%d" % (machine, month, len(rows)))
     print("  %d skipped: already archived, or the same thing typed twice" % dupes)
+    off = sorted(set(SUPPORTED_SOURCES) - enabled_sources())
+    if off:
+        print("  not read, by your choice: %s" % ", ".join(off))
     if dropped:
         print("  %d dropped: still looked like a credential after scrubbing" % dropped)
     if not terms:
@@ -542,11 +600,20 @@ def cmd_sources(hub, machine):
         if at > newest.get(key, ""):
             newest[key] = at
 
+    # A source switched off is silent in the numbers above because it was never read.
+    # Said out loud here so its silence reads as the person's choice, not as a leak:
+    # the selftest that runs this command must not alarm on a decision.
+    off = sorted(set(SUPPORTED_SOURCES) - enabled_sources())
+
     if not total:
-        print("this machine has no AI session logs at all, so there is nothing here to archive.")
+        if off:
+            print("switched off by your choice, so not read at all: %s" % ", ".join(off))
+        print("this machine has no readable AI session logs, so there is nothing here to archive.")
         return 0
 
     print("what this machine (%s) can see, and whether the archive has it:" % machine)
+    if off:
+        print("  (switched off by your choice, so not read at all: %s)" % ", ".join(off))
     leaks = []
     for key in sorted(total, key=lambda k: -total[k]):
         name = key[0] + ("/" + key[1] if key[1] else "")

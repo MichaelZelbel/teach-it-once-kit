@@ -214,6 +214,48 @@ SRC_RC=$?
   && ok "28 sources fails and names the bot whose prompts reach none of the archive" \
   || bad "28 an entirely unarchived source was reported as healthy" "rc=$SRC_RC $(cat "$W/src.out")"
 
+# --- 29 to 31: the person's choice of sources is OBEYED ---------------------------------
+#
+# WHY THESE EXIST. Until 2026-08-11 this collector read every source it knew, on every
+# machine, with nothing anywhere asking the person. The installer now shows what it found
+# and records the choice as HUB_PROMPT_SOURCES (environment, or ~/.hub/device.env for a
+# scheduled run that has no environment). A source switched off must not be READ at all,
+# and its silence must read as the person's choice, never as a leak.
+
+# 29. Codex logs exist on the machine, but only claude is enabled.
+mkdir -p "$W/home/.codex/sessions"
+printf '{"timestamp":"2026-08-02T10:00:00Z","payload":{"role":"user","content":"a codex prompt that must stay out"}}\n' \
+  > "$W/home/.codex/sessions/s.jsonl"
+rm -f "$W/prompts/archive/"*.jsonl
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/pick.out" 2>&1
+P="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
+echo "$P" | grep -q "stay out" && bad "29 a switched-off source was read anyway" \
+  || ok "29 a source switched off is not read at all"
+echo "$P" | grep -q "less salesy" && ok "29b the source that stayed on is still read" \
+  || bad "29b switching one source off silenced another" "$(cat "$W/pick.out")"
+grep -q "not read, by your choice: codex, hermes" "$W/pick.out" \
+  && ok "29c the harvest says out loud what it left alone" \
+  || bad "29c the restriction happened in silence" "$(cat "$W/pick.out")"
+
+# 30. `sources` treats off as a decision: exit 0, and the off list is printed so the
+#     morning selftest reads silence as a choice instead of alarming on it.
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  "$PY" "$ARC" --hub "$W" sources ) >"$W/pick2.out" 2>&1
+PICK_RC=$?
+[ "$PICK_RC" -eq 0 ] && grep -q "switched off by your choice" "$W/pick2.out" \
+  && ok "30 sources calls an off source a choice, not a leak" \
+  || bad "30 an off source alarmed or went unmentioned" "rc=$PICK_RC $(cat "$W/pick2.out")"
+
+# 31. The choice also arrives from ~/.hub/device.env, because the scheduled run that
+#     does most harvesting starts with almost no environment.
+printf 'HUB_PROMPT_SOURCES=claude\n' >> "$W/home/.hub/device.env"
+( export HOME="$W/home" HUB_HOME="$W/home"
+  cd "$W" && "$PY" "$ARC" --hub "$W" --dry-run archive ) >"$W/pick3.out" 2>&1
+grep -q "not read, by your choice: codex, hermes" "$W/pick3.out" \
+  && ok "31 the choice recorded on the device is obeyed with no environment" \
+  || bad "31 device.env was ignored" "$(cat "$W/pick3.out")"
+
 echo
 echo "  $PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ] || exit 1

@@ -32,6 +32,14 @@ Search my prompt log for the one about the invoice reminder.
 If you want to prove they work rather than wait a day, run `hub-prompt-harvest`
 once from a terminal and read what it says.
 
+## You choose which tools are read
+
+The installer shows you which AI tools it found on your computer and lets you
+untick any of them. Your choice is kept on that machine, in `~/.hub/device.env`
+on a line like `HUB_PROMPT_SOURCES=claude,codex`. A tool not on the list is not
+read at all. To change your mind later, edit that line or run the installer
+again. An empty value (or `-`) means nothing is read on that machine.
+
 ## The honest limit
 
 They can only harvest from an AI tool that keeps your conversations as files on
