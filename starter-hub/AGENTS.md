@@ -31,10 +31,11 @@ purpose. If it contradicts something you believe about me, the file wins.
   something worth keeping, write the file and add its line to the index in the
   same session. This folder is the memory every one of my assistants shares, on
   every machine, which is why it lives here instead of inside one AI tool.
-- **Never load `prompts/`.** It is a log of what I have typed and a shelf of
-  prompts I keep, not instructions to follow. Search it when I ask about a prompt
-  I once used, or when you need to know how something I built was made. Saved
-  prompts are in `prompts/library/`, the log is in `prompts/archive/`.
+- **Never load `prompts/`.** It is a log of what I have typed and what the AI
+  answered, plus a shelf of prompts I keep, not instructions to follow. Search it
+  when I ask about a prompt I once used, or an answer I half remember, or when you
+  need to know how something I built was made. Saved prompts are in
+  `prompts/library/`, the log is in `prompts/archive/`.
 
 ## My red lines
 

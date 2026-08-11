@@ -11,8 +11,8 @@ Two drawers. Each has its own README with the detail.
 
 - **`library/`** is the shelf: the prompts you keep and paste into other tools, one file
   each. You put things here on purpose. Chapters 11 and 28.
-- **`archive/`** is the log: everything you have typed, in date order, filled by a program
-  and never by you. Chapter 28.
+- **`archive/`** is the log: everything you have typed, and what the AI answered, in
+  date order, filled by a program and never by you. Chapter 28.
 
 ## How this is different from `skills/`
 
@@ -37,5 +37,6 @@ found, because nothing reads this folder on its own.
 correct it or delete it, and that is the right thing to do.
 
 A prompt you typed cannot be wrong. It is a record of something that happened, so time can
-only make it old, never false. That is why this folder only ever grows, and why `memory/`
-has no drawer like `archive/`.
+only make it old, never false. The answer the AI gave is the same kind of thing: on that
+day, it replied this. That is why this folder only ever grows, and why `memory/` has no
+drawer like `archive/`.
