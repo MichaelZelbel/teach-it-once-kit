@@ -44,6 +44,6 @@ Three findings from building it on a blank machine on 2026-07-26. Each cost time
    question, so it has to be the walls: give the assistant its own user account that can reach
    almost nothing, and grant permission in advance.
 2. **`git add -A` will commit your keys.** Keep the key file OUTSIDE the folder, in the home
-   directory, and put `.env*` in `.gitignore` as a second net.
+   directory, and put `.env*` and `.hub-env` in `.gitignore` as a second net.
 3. **A silent failure looks exactly like a quiet morning.** The runner must message you when it
    produced nothing. Build that on day one, not after the first outage.
