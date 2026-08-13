@@ -1,4 +1,4 @@
-# Move your ChatGPT memory into Menerio (Chapter 27, route one)
+# Move your old AI's memory into Menerio (optional route one)
 
 The fast route. Ten minutes, three steps, no typing.
 
@@ -20,5 +20,8 @@ Honest notes:
 - The AI can only dump what its memory holds. It cannot read your whole
   chat history across conversations, and it will tell you so.
 - Importing uses AI credits (each note gets processed and indexed).
-- Statements land as notes; people mentioned in them get linked to your
-  People section as Menerio processes them.
+- Statements land as notes, and people named in them get person records
+  created and linked (verified 2026-08-13: a two-statement import
+  reported "Created 2 people, linked 1 existing person to notes").
+  Facts the machine derives from your notes wait in the Review Queue
+  for your Keep.

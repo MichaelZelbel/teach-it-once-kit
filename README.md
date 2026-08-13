@@ -37,7 +37,7 @@ git clone https://github.com/MichaelZelbel/teach-it-once-kit.git
 - `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, the packaging and upload guide, practice texts.
 - `procedures/`: Part V assets. Morning brief, weekly review, watchdog, the procedure register, the red lines.
 - `living/`: the two-questions card, the privacy audit checklist, the saved-prompt card, the printable build-order card.
-- `menerio/`: Part VI, optional. Prompts and guides for moving your context into Menerio (memory transport, the interview method, GitHub sync, MCP connection).
+- `menerio/`: Part VI, optional. The notebook chapters: what goes in it and what stays out, the MCP connection, and two optional routes for pulling an old AI's memory in.
 - `server/`: Part VI, optional. Scripts and guides for giving your system an always-on home.
 - `swap/`: Part VI. Config examples for running the same system on a different company's tool and model.
 

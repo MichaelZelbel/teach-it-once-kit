@@ -40,6 +40,11 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 
 All optional. The book works without every row below.
 
+> **Chapter 23 rewritten (2026-08-13).** Menerio is taught as the notebook notes are born in,
+> never as a copy of the context folder. `menerio/folder-to-memory.md` (the import prompt, the
+> "change it in the folder first" rule and the quarterly re-import) is removed, replaced by
+> `menerio/the-notebook.md`. Chapter 24's stranger test now runs on captured notes.
+
 > **`menerio/ai-memory-transport.md` and `menerio/interview-transfer.md` have no chapter row on
 > purpose.** They are the Menerio-specific versions of the same move. The general one, which works
 > with no extra product at all, is Chapter 1's `context/bring-your-context-with-you.md`. Restored
@@ -49,7 +54,7 @@ All optional. The book works without every row below.
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 23. When the Folder Outgrows Itself | `menerio/folder-to-memory.md` | ready |
+| 23. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
 | 24. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
 | 25. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
 | 26. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
