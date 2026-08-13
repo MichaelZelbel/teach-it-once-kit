@@ -27,6 +27,20 @@ the shape is what you are training, and the loop works best while the
 last run is still fresh in your head. Chapter 18's rule: no clock for a
 recipe you have not watched run.
 
+## One line worth stealing
+
+Tony Stubblebine, the CEO of Medium, ends his own AI morning briefing
+with every file he touched in the past 24 hours. The morning starts
+with yesterday's thread back in your hand. Steal it: add one line to
+`skills/morning-brief.md`:
+
+```
+End with one short line naming which files in this folder changed in
+the last day. If none did, say nothing.
+```
+
+Run the brief again and check the new closing line.
+
 ## Half two: the clock
 
 1. Sidebar, **Scheduled**. The page reads *Run tasks on a schedule or
