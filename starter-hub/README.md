@@ -6,7 +6,7 @@ computer asks about replacing `context/about-me.md`, keep your own),
 and point your assistant at it. Chapter 4 of the book walks through
 the layout; Parts II and III fill it up.
 
-What is here. Eight names, and they are the whole system:
+What is here. Nine names, and they are the whole system:
 
 - `AGENTS.md`: your AI's operating manual. How to work in this folder,
   plus your red lines. Different tools look for house rules under
@@ -30,6 +30,10 @@ What is here. Eight names, and they are the whole system:
   `prompts/library/` holds the prompts you keep and paste into other
   tools, and `prompts/archive/` is the log of everything you have typed.
   Chapters 11 and 28.
+- `world/`: your life as data. The people, dated things and facts your
+  notebook knows, copied down as small files so they survive without it.
+  **It starts empty and stays empty until you connect a notebook**, and an
+  empty one costs you nothing. Chapters 23 and 24, and its own README.
 
 Nothing here needs a terminal. It is a folder of text files, and that is
 the point.

@@ -1,7 +1,7 @@
 # tools
 
-Two small programs. The installer puts them on your computer and sets them to run
-once a day. **They are not part of your hub folder, and that is deliberate.**
+Four small programs. The installer puts them on your computer. **They are not part
+of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
 terminal. That stays true. These are software, like your assistant is software, so
@@ -20,10 +20,38 @@ the outside.
 Together they are the program Chapter 4 and Chapter 28 mean when they say
 *"a program fills it"*.
 
+The other two are the two arrows in Chapter 23's diagram. **Neither runs unless you
+connect a notebook**, and a reader who never connects one can ignore both.
+
+- **`notebook-sync.py`** sends copies of your hub files up to your notebook so you
+  can search them by meaning instead of by exact word (Chapter 24). It sends
+  `memory/`, `skills/` and each decision in `decisions.md` separately. It does not
+  send `context/` or `AGENTS.md`, because your assistant reads those at the start of
+  every session anyway, and a search result that repeats what it is already reading
+  is noise. Your files are never changed; the copies are.
+- **`world-pull.py`** brings the other direction down: the people, dated things and
+  facts your notebook knows, written into `world/` as small files so they survive
+  without the notebook. It rewrites only the files marked `origin: menerio` and
+  never touches one you wrote.
+
+```
+python3 tools/notebook-sync.py              # dry run, shows what it would send
+python3 tools/notebook-sync.py --apply
+
+python3 tools/world-pull.py                 # dry run, shows what it would write
+python3 tools/world-pull.py --apply
+```
+
+Both need one thing in your environment first, the key you made in Chapter 24:
+
+```
+export MENERIO_HUB_API_KEY=your-key-here
+```
+
 ## What you do with them
 
-Nothing. The installer schedules them and they run on their own. Everything you
-ever do with the result is to ask your assistant, in words:
+For the two prompt programs, nothing. The installer schedules them and they run on
+their own. Everything you ever do with the result is to ask your assistant, in words:
 
 ```
 Search my prompt log for the one about the invoice reminder.

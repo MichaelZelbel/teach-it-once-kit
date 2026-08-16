@@ -1,0 +1,392 @@
+#!/usr/bin/env python3
+"""Push hub text files into Menerio as notes, so they can be searched by meaning.
+
+One way only. The files on disk stay the source of truth. Menerio holds a copy it
+indexes for search and must never read facts out of, because the hub's
+observations are machine-written guesses and a system that mines its own guesses
+ends up citing them back as things you said. The guard that enforces that
+lives in Menerio, in supabase/functions/_shared/hub-source.ts.
+
+Usage:
+    python3 scripts/sync_menerio.py              show what would be sent
+    python3 scripts/sync_menerio.py --apply      send it
+
+Needs MENERIO_HUB_API_KEY in the environment. Load it with
+scripts/secrets.ps1 -Persist (Windows) or . scripts/secrets.sh (Linux).
+
+The module name uses an underscore, unlike the hyphenated scripts beside it,
+because the test has to import it.
+"""
+import argparse
+import dataclasses
+import hashlib
+import json
+import os
+import pathlib
+import re
+import sys
+import urllib.error
+import urllib.request
+
+# Which folders are copied, and who wrote what is in them.
+#
+# Sync what gets looked up. Skip what is already loaded: profile/ and rules/ are
+# read in full every session, so putting them in a search index means every
+# search returns what the agent is already reading. world/ is skipped because it
+# flows the other way. prompts/archive/ is 7.2 MB of past conversation and would
+# crowd out everything else, so it gets its own phase later.
+SYNC_SOURCES = [
+    # Sync what gets looked UP. Skip what is already loaded: AGENTS.md and
+    # context/ are read at the start of every session, so a search result
+    # repeating them is noise.
+    {"folder": "memory", "author": "machine"},
+    {"folder": "skills", "author": "mixed"},
+]
+
+DECISION_LOG = "decisions.md"
+
+AUTHOR_LINES = {
+    "machine": "This is a file from your hub at {path}. It is text a machine "
+               "wrote, which makes it a guess and not something you said.",
+    "mixed": "This is a file from your hub at {path}. It was mostly written by a "
+             "machine and kept because you found it useful.",
+    "owner": "This is a file from your hub at {path}. You wrote or decided this.",
+}
+
+DECISION_HEADING = re.compile(r"^## (\d{4}-\d{2}-\d{2})[ \t]*(.*)$")
+
+# The real decision log separates the date from the title with an em dash.
+# Those characters are banned in anything a human reads, and a note title is
+# read, so they are stripped rather than carried through.
+TITLE_SEPARATORS = re.compile(r"^[—–―\-:]+\s*")
+
+DEFAULT_BASE_URL = "https://tjeapelvjlmbxafsmjef.supabase.co/functions/v1"
+
+
+@dataclasses.dataclass
+class Document:
+    doc_id: str
+    title: str
+    body: str
+    source_path: str
+
+
+def split_decision_log(text: str, source_path: str) -> list:
+    """One decision becomes one document.
+
+    The file on disk is never touched, so every existing citation to it, like
+    "decisions.md, the June pricing call", still resolves. Uploaded whole it would be a
+    single 588 KB search result pointing at a file too big to read.
+    """
+    docs = []
+    date = None
+    title = ""
+    lines = []
+    used = set()
+
+    def flush():
+        if date is None:
+            return
+        # The id carries the subject, not a position, so appending to the log
+        # never renames an existing note. 25 dates in the real log hold more
+        # than one decision, and keying on the date alone collapsed 94 of them
+        # onto one id each, which Menerio rejects outright.
+        slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:48].strip("-")
+        base = "{}#{}".format(source_path, date)
+        if slug:
+            base = "{}-{}".format(base, slug)
+        doc_id, n = base, 2
+        while doc_id in used:
+            doc_id = "{}-{}".format(base, n)
+            n += 1
+        used.add(doc_id)
+        docs.append(
+            Document(
+                doc_id=doc_id,
+                title="{} {}".format(date, title).strip(),
+                body="\n".join(lines).strip(),
+                source_path=source_path,
+            )
+        )
+
+    for line in text.splitlines():
+        match = DECISION_HEADING.match(line)
+        if match:
+            flush()
+            date = match.group(1)
+            title = TITLE_SEPARATORS.sub("", match.group(2).strip())
+            lines = []
+            continue
+        if date is not None:
+            lines.append(line)
+    flush()
+    return docs
+
+
+def collect_documents(repo_root: pathlib.Path) -> list:
+    docs = []
+    for source in SYNC_SOURCES:
+        folder = repo_root / source["folder"]
+        if not folder.is_dir():
+            continue
+        for path in sorted(folder.rglob("*.md")):
+            rel = path.relative_to(repo_root).as_posix()
+            docs.append(
+                Document(
+                    doc_id=rel,
+                    title=rel,
+                    body=path.read_text(encoding="utf-8"),
+                    source_path=rel,
+                )
+            )
+
+    log = repo_root / DECISION_LOG
+    if log.is_file():
+        docs.extend(split_decision_log(log.read_text(encoding="utf-8"), DECISION_LOG))
+    return docs
+
+
+def author_for(source_path: str) -> str:
+    for source in SYNC_SOURCES:
+        if source_path.startswith(source["folder"] + "/"):
+            return source["author"]
+    if source_path.startswith(DECISION_LOG):
+        return "owner"
+    # An unmapped path defaults to machine, because claiming you said
+    # something you did not is the expensive mistake in both directions.
+    return "machine"
+
+
+def build_note_body(doc: Document) -> str:
+    """Put the author inside the note, not only in a database column.
+
+    The search result is what an agent actually reads. Without this line, a
+    machine's own guess comes back months later wearing the authority of
+    something you said.
+    """
+    line = AUTHOR_LINES[author_for(doc.source_path)].format(path=doc.source_path)
+    return "{}\n\n---\n\n{}".format(line, doc.body)
+
+
+def content_hash(body: str) -> str:
+    return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+def plan_actions(docs: list, state: dict) -> dict:
+    create, update = [], []
+    seen = set()
+    for doc in docs:
+        seen.add(doc.doc_id)
+        digest = content_hash(build_note_body(doc))
+        known = state.get(doc.doc_id)
+        if known is None:
+            create.append(doc)
+        elif known.get("hash") != digest:
+            update.append((doc, known["note_id"]))
+    trash = [entry["note_id"] for doc_id, entry in state.items() if doc_id not in seen]
+    return {"create": create, "update": update, "trash": trash}
+
+
+def load_state(path: pathlib.Path) -> dict:
+    if not path.is_file():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def save_state(path: pathlib.Path, state: dict) -> None:
+    path.write_text(json.dumps(state, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+
+
+class MenerioClient:
+    def __init__(self, base_url: str, api_key: str):
+        self.base_url = base_url.rstrip("/")
+        self.api_key = api_key
+
+    def _call(self, method: str, path: str, payload=None):
+        data = json.dumps(payload).encode("utf-8") if payload is not None else None
+        request = urllib.request.Request(
+            "{}/hub-api-notes{}".format(self.base_url, path),
+            data=data,
+            method=method,
+            headers={
+                "Authorization": "Bearer {}".format(self.api_key),
+                "Content-Type": "application/json",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=60) as response:
+            raw = response.read().decode("utf-8")
+        return json.loads(raw) if raw else {}
+
+    def create_note(self, title: str, body: str, source_id: str) -> str:
+        result = self._call("POST", "", {
+            "title": title,
+            "content": body,
+            "source_app": "hub",
+            "source_id": source_id,
+        })
+        return result["data"]["id"]
+
+    def update_note(self, note_id: str, title: str, body: str) -> None:
+        self._call("PUT", "/{}".format(note_id), {"title": title, "content": body})
+
+    def trash_note(self, note_id: str) -> None:
+        self._call("DELETE", "/{}".format(note_id))
+
+    def list_hub_notes(self) -> list:
+        """Every note Menerio holds that this sync created, across all pages."""
+        notes, offset = [], 0
+        while True:
+            page = self._call("GET", "?limit=100&offset={}".format(offset)).get("data", [])
+            if not page:
+                break
+            notes += [n for n in page if n.get("source_app") == "hub"]
+            offset += len(page)
+            if len(page) < 100:
+                break
+        return notes
+
+
+def reconcile_state(docs: list, remote_notes: list) -> dict:
+    """Rebuild the state file from what is already in Menerio.
+
+    Needed after a run dies partway: notes exist there that the state file never
+    recorded, and a plain rerun would create a second copy of every one. The
+    title is the join key, because it is unique per document and is the one
+    field the list endpoint returns.
+    """
+    by_title = {doc.title: doc for doc in docs}
+    state = {}
+    for note in remote_notes:
+        doc = by_title.get(note.get("title"))
+        if doc is None:
+            continue
+        state[doc.doc_id] = {
+            "note_id": note["id"],
+            "hash": content_hash(build_note_body(doc)),
+        }
+    return state
+
+
+def run_sync(docs: list, state: dict, client, apply: bool,
+             on_progress=None, failures=None) -> dict:
+    """Send the plan, and never lose finished work to one bad document.
+
+    A single HTTP 500 used to raise straight out of here, so the caller never
+    reached save_state and 102 successful uploads were forgotten. Now each
+    document is its own transaction: a failure is recorded and the run
+    continues, and `on_progress` hands the caller the state after every change
+    so it can be written to disk as it goes.
+    """
+    if failures is None:
+        failures = []
+    plan = plan_actions(docs, state)
+    print("create {}  update {}  trash {}".format(
+        len(plan["create"]), len(plan["update"]), len(plan["trash"])))
+    if not apply:
+        for doc in plan["create"]:
+            print("  would create {}".format(doc.doc_id))
+        for doc, _ in plan["update"]:
+            print("  would update {}".format(doc.doc_id))
+        for note_id in plan["trash"]:
+            print("  would trash note {}".format(note_id))
+        return state
+
+    new_state = dict(state)
+
+    def record(doc_id, note_id, body):
+        new_state[doc_id] = {"note_id": note_id, "hash": content_hash(body)}
+        if on_progress:
+            on_progress(new_state)
+
+    for doc in plan["create"]:
+        body = build_note_body(doc)
+        try:
+            record(doc.doc_id, client.create_note(doc.title, body, doc.doc_id), body)
+        except Exception as err:
+            failures.append((doc.doc_id, str(err)))
+
+    for doc, note_id in plan["update"]:
+        body = build_note_body(doc)
+        try:
+            client.update_note(note_id, doc.title, body)
+            record(doc.doc_id, note_id, body)
+        except Exception as err:
+            failures.append((doc.doc_id, str(err)))
+
+    seen = {doc.doc_id for doc in docs}
+    for doc_id in [k for k in new_state if k not in seen]:
+        try:
+            client.trash_note(new_state[doc_id]["note_id"])
+            del new_state[doc_id]
+            if on_progress:
+                on_progress(new_state)
+        except Exception as err:
+            failures.append((doc_id, str(err)))
+
+    if failures:
+        print("\n{} document(s) failed:".format(len(failures)))
+        for doc_id, err in failures[:10]:
+            print("  {}  {}".format(doc_id, err))
+        if len(failures) > 10:
+            print("  ... and {} more".format(len(failures) - 10))
+    return new_state
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="Push your hub files into your notebook for search.")
+    parser.add_argument("--apply", action="store_true",
+                        help="actually send. Without it, print what would happen.")
+    parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--limit", type=int, default=0,
+                        help="send at most N documents. Use 1 for a first check.")
+    parser.add_argument("--reconcile", action="store_true",
+                        help="rebuild the state file from what Menerio already "
+                             "holds, before syncing. Use after a run died partway.")
+    args = parser.parse_args(argv)
+
+    api_key = os.environ.get("MENERIO_HUB_API_KEY")
+    if args.apply and not api_key:
+        print("MENERIO_HUB_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
+              "(Windows) or . scripts/secrets.sh (Linux) first.", file=sys.stderr)
+        return 2
+
+    root = pathlib.Path(args.repo_root).resolve()
+    state_path = root / "world" / ".sync-state.json"
+    docs = collect_documents(root)
+    state = load_state(state_path)
+
+    client = MenerioClient(os.environ.get("MENERIO_BASE_URL", DEFAULT_BASE_URL),
+                           api_key or "")
+
+    if args.reconcile:
+        if not api_key:
+            print("--reconcile needs MENERIO_HUB_API_KEY", file=sys.stderr)
+            return 2
+        remote = client.list_hub_notes()
+        state = reconcile_state(docs, remote)
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        save_state(state_path, state)
+        print("reconciled: {} note(s) in Menerio, {} matched to a file in your hub".format(
+            len(remote), len(state)))
+
+    if args.limit:
+        # Only trim work that is still outstanding, so --limit 1 sends one new
+        # note rather than re-checking one already-synced file forever.
+        pending = [d for d in docs if d.doc_id not in state]
+        docs = [d for d in docs if d.doc_id in state] + pending[:args.limit]
+    failures = []
+    if args.apply:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+    # Write the state after every single document. A run that dies halfway then
+    # costs nothing: the next one picks up exactly where it stopped, instead of
+    # re-sending everything and creating a second copy of each note.
+    on_progress = (lambda s: save_state(state_path, s)) if args.apply else None
+    new_state = run_sync(docs, state, client, apply=args.apply,
+                         on_progress=on_progress, failures=failures)
+    if args.apply:
+        save_state(state_path, new_state)
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
