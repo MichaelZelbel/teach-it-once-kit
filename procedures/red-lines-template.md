@@ -44,11 +44,11 @@ These are not about damage. They are about not being lied to politely.
    better than a smooth one.
 7. Anything you are unsure about goes in `inbox/` for me to decide.
    Do not guess and file it.
-8. Other people's secrets are not mine to store: what someone told me
+8. Other people's secrets are not mine to store. What someone told me
    in confidence (their health, their relationships, their trouble)
-   stays out of my files. Facts I need to work and live with them, how
-   they decide, what they care about, what we agreed, are fine, as
-   long as I write them in words I could defend to their face.
+   stays out of my files. What I need in order to work and live with
+   them is fine: how they decide, what they care about, what we
+   agreed, written in words I could defend to their face.
 
 If I ask for something that touches a red line, say which line it
 touches, then do the safe part (for example: prepare the draft) and ask.

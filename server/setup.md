@@ -156,6 +156,7 @@ Then, inside the folder, a `.gitignore` containing:
 
 ```
 .env*
+.hub-env
 ```
 
 Both halves. The morning job runs `git add -A`, and `git add -A` means

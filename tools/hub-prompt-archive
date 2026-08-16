@@ -12,7 +12,14 @@ that cannot live in a git repo. Measured properly, only 565 of the 25,488 "user"
 things a human typed; the other 24,590 are tool results the harness files under the same
 label. The real text is 1.4 MB. So it goes in the repo, plainly, exactly as he said it
 should, and every machine gets it through the sync that already exists. Harvest the human
-turns, never the transcript.
+turns and what the AI showed back for them, never the raw transcript.
+
+THE ANSWER RIDES WITH THE PROMPT. Since 2026-08-11 each archived row also carries the AI's
+reply, in an "answer" field, because half the time what a person half-remembers is not what
+they typed but what came back. Only text the person actually SAW is kept: internal thinking,
+tool calls and tool output are machinery, never answer. An answer longer than the cap is cut
+after scrubbing, with a marker saying so. Rows written before this existed simply lack the
+field; `backfill` fills it in from transcripts that still exist.
 
 WHAT IS REMOVED BEFORE ANYTHING IS WRITTEN. A session transcript is the one place secrets
 show up by accident: a key pasted while debugging, an employer or client name that this hub
@@ -24,8 +31,10 @@ is not allowed to hold. So every line passes a scrubber first:
     never store is itself a file you must never store. Put one name per line in
     ~/.hub/redact.txt, or set HUB_REDACT_TERMS.
 
-A line that still looks risky after scrubbing is dropped whole rather than half-cleaned.
-Refusing to store a prompt costs one prompt; storing a key costs a key.
+A PROMPT that still looks risky after scrubbing is dropped whole rather than half-cleaned:
+refusing to store a prompt costs one prompt; storing a key costs a key. An ANSWER loses only
+the offending line, because replies legitimately carry commit hashes and encoded data, and
+dropping a whole reply for one such line would empty the drawer of exactly what it is for.
 
 Usage:
   hub-prompt-archive                       harvest this machine, write into prompts/archive/
@@ -36,6 +45,8 @@ Usage:
                                            archive has it. Exit 1 if a source reaches none of it.
   hub-prompt-archive rescrub               re-run the scrubber over what is already stored,
                                            for the day a name is added to the list too late
+  hub-prompt-archive backfill              attach answers to rows archived before answers
+                                           existed, from transcripts still on this machine
 Options:
   --hub DIR · --since YYYY-MM-DD · --limit N (search results, default 12)
 """
@@ -65,6 +76,54 @@ def home_dir():
     server this runs from cron, where HOME is whatever systemd decided.
     """
     return os.environ.get("HUB_HOME") or os.path.expanduser("~")
+
+
+# The sources this collector can read. The installer shows this same list to the
+# person as checkboxes; a new reader here must also be added to the installer's
+# roster (kit-bootstrap: kb_ai_tool_info / Get-KitAiToolInfo), or nobody can
+# switch it off.
+SUPPORTED_SOURCES = ("claude", "codex", "hermes")
+
+
+def device_env_value(name):
+    """One value from ~/.hub/device.env. Read here as well as by the launcher,
+    because this program is also run directly (`hub prompts archive`), where
+    nothing has loaded that file into the environment first."""
+    p = os.path.join(home_dir(), ".hub", "device.env")
+    if not os.path.isfile(p):
+        return None
+    try:
+        for raw in io.open(p, encoding="utf-8", errors="replace"):
+            line = re.sub(r"^\s*export\s+", "", raw)
+            if line.lstrip().startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            if k.strip() == name:
+                return v.strip().strip('"').strip("'")
+    except (IOError, OSError):
+        pass
+    return None
+
+
+def enabled_sources():
+    """Which AI tools this machine's owner said may be read.
+
+    The installer records the choice as HUB_PROMPT_SOURCES in ~/.hub/device.env
+    (the environment wins, so a test or a one-off run can override it). No line
+    at all means every supported source, which is what every machine did before
+    there was a choice. An EMPTY line means none: a person who unticked every
+    box made a decision, not a mistake.
+    """
+    v = os.environ.get("HUB_PROMPT_SOURCES")
+    if v is None:
+        v = device_env_value("HUB_PROMPT_SOURCES")
+    if v is None:
+        return set(SUPPORTED_SOURCES)
+    if v.strip() == "-":
+        # "-" is NONE spelled so it survives a Windows environment variable,
+        # which cannot hold an empty string.
+        return set()
+    return {s.strip().lower() for s in v.split(",") if s.strip()}
 
 
 def hub_root(argv_hub=None):
@@ -123,6 +182,17 @@ def redact_terms():
     return [t for t in out if len(t) >= 3]
 
 
+def _looks_credential(text):
+    """A long run of mixed case and digits is a credential; a long path or a long word
+    is not. Requiring all three classes is what stops it eating ordinary prose."""
+    for m in STILL_RISKY.finditer(text):
+        chunk = m.group(0)
+        if (any(c.isdigit() for c in chunk) and any(c.islower() for c in chunk)
+                and any(c.isupper() for c in chunk)):
+            return True
+    return False
+
+
 def scrub(text, terms):
     """Returns (clean_text, dropped_reason_or_None)."""
     t = text
@@ -130,71 +200,210 @@ def scrub(text, terms):
         t = rx.sub(rep, t)
     for term in terms:
         t = re.sub(re.escape(term), "[name removed]", t, flags=re.I)
-    for m in STILL_RISKY.finditer(t):
-        chunk = m.group(0)
-        # A long run of mixed case and digits is a credential; a long path or a long word
-        # is not. Requiring all three classes is what stops it eating ordinary prose.
-        if (any(c.isdigit() for c in chunk) and any(c.islower() for c in chunk)
-                and any(c.isupper() for c in chunk)):
-            return None, "contains something that still looks like a credential"
+    if _looks_credential(t):
+        return None, "contains something that still looks like a credential"
     return t, None
+
+
+# --------------------------------------------------------------- the answers
+
+# What the AI showed back, kept beside what the person typed. "all" keeps every piece
+# of text the AI displayed during a turn, because findings often appear between work
+# steps, not only in the closing message; "final" would keep only the last one.
+# Internal thinking and tool machinery are never kept under either scope.
+ANSWER_SCOPE = "all"
+
+# A reply is worth keeping whole; a reply that pasted a whole file is not. The cap is
+# applied AFTER scrubbing, so the scrubber always sees the full text and no secret can
+# sit astride the cut.
+ANSWER_CAP = 20000
+
+
+def join_answer(msgs):
+    if not msgs:
+        return ""
+    if ANSWER_SCOPE == "final":
+        return msgs[-1]
+    return "\n\n".join(msgs)
+
+
+def scrub_answer(text, terms):
+    """Same redaction as scrub(), except that a line still looking like a credential is
+    removed ALONE, never the whole answer. A prompt is short, so dropping it whole costs
+    one prompt; an answer legitimately carries commit hashes and encoded data, and the
+    whole-drop rule would gut the drawer of exactly the replies worth finding again."""
+    t = text
+    for rx, rep in SECRET_PATTERNS:
+        t = rx.sub(rep, t)
+    for term in terms:
+        t = re.sub(re.escape(term), "[name removed]", t, flags=re.I)
+    kept = []
+    for line in t.split("\n"):
+        kept.append("[line removed: still looked like a credential]"
+                    if _looks_credential(line) else line)
+    return "\n".join(kept).strip()
+
+
+def prepare_answer(raw, terms):
+    """Scrub, then cap. Returns "" when nothing worth storing is left."""
+    t = scrub_answer(raw, terms)
+    if len(t) > ANSWER_CAP:
+        t = (t[:ANSWER_CAP]
+             + "\n[answer truncated by hub-prompt-archive: kept %d of %d characters]"
+             % (ANSWER_CAP, len(t)))
+    return t
 
 
 # ------------------------------------------------------------------ harvesting
 
 def human_turns_claude(paths):
+    """Human turns, each carrying the texts the AI showed back during that turn.
+
+    The transcript writes every content block as its own line: a "user" line is either
+    the human typing or a tool result filed under the same label, and an "assistant"
+    line carries one block - internal thinking, a tool call, or a piece of text the
+    person actually saw. Only the text blocks become the answer. Each assistant line
+    names its parent entry, and following that chain upward ends at the human turn it
+    belongs to; when a hop leaves the file (a resumed or compacted session), the
+    nearest preceding turn in file order is the same answer measured the cheap way,
+    verified equivalent on real transcripts. A turn we skip as a prompt (a meta block,
+    an interrupted request) still owns its replies: they are discarded with it, never
+    glued onto the previous real turn.
+    """
     for f in paths:
         proj = os.path.basename(os.path.dirname(f))
+        entries, byid = [], {}
         try:
-            for line in io.open(f, encoding="utf-8", errors="replace"):
-                if '"type":"user"' not in line and '"type": "user"' not in line:
+            src = io.open(f, encoding="utf-8", errors="replace")
+        except (IOError, OSError):
+            continue
+        with src:
+            for line in src:
+                is_user = '"type":"user"' in line or '"type": "user"' in line
+                is_asst = '"type":"assistant"' in line or '"type": "assistant"' in line
+                if not is_user and not is_asst:
                     continue
                 try:
                     d = json.loads(line)
                 except Exception:
                     continue
+                typ = d.get("type")
+                if typ not in ("user", "assistant"):
+                    continue
+                e = {"uuid": d.get("uuid"), "parent": d.get("parentUuid"),
+                     "kind": None, "turn": None, "texts": None, "prev_turn": None}
                 c = d.get("message", {}).get("content")
-                if isinstance(c, str):
-                    txt = c
-                elif isinstance(c, list):
-                    # A tool result is filed as a "user" entry too. That is the 24,590.
-                    if any(isinstance(b, dict) and b.get("type") == "tool_result" for b in c):
+                if typ == "user":
+                    if isinstance(c, str):
+                        txt = c
+                    elif isinstance(c, list):
+                        # A tool result is filed as a "user" entry too. That is the 24,590.
+                        if any(isinstance(b, dict) and b.get("type") == "tool_result" for b in c):
+                            e["kind"] = "tool"
+                            entries.append(e)
+                            if e["uuid"]:
+                                byid[e["uuid"]] = e
+                            continue
+                        txt = " ".join(b.get("text", "") for b in c
+                                       if isinstance(b, dict) and b.get("type") == "text")
+                    else:
                         continue
-                    txt = " ".join(b.get("text", "") for b in c
-                                   if isinstance(b, dict) and b.get("type") == "text")
+                    txt = (txt or "").strip()
+                    if not txt or txt.startswith("<") or txt.startswith("[Request interrupted"):
+                        e["kind"] = "skipped-turn"
+                    else:
+                        e["kind"] = "turn"
+                        e["turn"] = {"tool": "claude-code", "project": proj,
+                                     "at": d.get("timestamp", ""), "text": txt,
+                                     "answers": []}
                 else:
-                    continue
-                txt = (txt or "").strip()
-                if not txt or txt.startswith("<") or txt.startswith("[Request interrupted"):
-                    continue
-                yield {"tool": "claude-code", "project": proj,
-                       "at": d.get("timestamp", ""), "text": txt}
-        except (IOError, OSError):
-            continue
+                    texts = []
+                    if isinstance(c, list):
+                        texts = [(b.get("text") or "").strip() for b in c
+                                 if isinstance(b, dict) and b.get("type") == "text"]
+                        texts = [t for t in texts if t]
+                    e["kind"] = "assistant-text" if texts else "assistant-quiet"
+                    e["texts"] = texts
+                entries.append(e)
+                if e["uuid"]:
+                    byid[e["uuid"]] = e
+
+        # File order gives the fallback: the nearest turn before this entry.
+        prev = None
+        for e in entries:
+            e["prev_turn"] = prev
+            if e["kind"] in ("turn", "skipped-turn"):
+                prev = e
+        for e in entries:
+            if e["kind"] != "assistant-text":
+                continue
+            cur, hops = byid.get(e["parent"]), 0
+            while cur is not None and cur["kind"] not in ("turn", "skipped-turn") and hops < 500:
+                cur = byid.get(cur["parent"])
+                hops += 1
+            if cur is None or cur["kind"] not in ("turn", "skipped-turn"):
+                cur = e["prev_turn"]
+            if cur is not None and cur["kind"] == "turn":
+                cur["turn"]["answers"].extend(e["texts"])
+        for e in entries:
+            if e["kind"] == "turn":
+                yield e["turn"]
 
 
 def human_turns_codex(paths):
+    """One turn per user message, in file order, carrying the assistant texts that
+    followed it. Two shapes to know: the same user message can arrive twice (once as
+    the response record, once as an event copy), which must stay one turn, not two;
+    and the assistant's tool traffic arrives as messages whose text opens with
+    "[external_agent_tool_call" / "[external_agent_tool_result" - machinery, never
+    answer, and without this filter every agentic turn would embed its whole tool
+    transcript."""
     for f in paths:
+        cur = None
         try:
-            for line in io.open(f, encoding="utf-8", errors="replace"):
-                if '"user"' not in line:
+            src = io.open(f, encoding="utf-8", errors="replace")
+        except (IOError, OSError):
+            continue
+        with src:
+            for line in src:
+                if '"user"' not in line and '"assistant"' not in line:
                     continue
                 try:
                     d = json.loads(line)
                 except Exception:
                     continue
                 pay = d.get("payload", d)
-                if pay.get("role") != "user" and pay.get("type") not in ("user_message",):
-                    continue
-                c = pay.get("content", pay.get("message", ""))
-                if isinstance(c, list):
-                    c = " ".join(b.get("text", "") for b in c if isinstance(b, dict))
-                c = (c or "").strip() if isinstance(c, str) else ""
-                if not c or c.startswith("<"):
-                    continue
-                yield {"tool": "codex", "project": "", "at": d.get("timestamp", ""), "text": c}
-        except (IOError, OSError):
-            continue
+                role = pay.get("role")
+                if role == "user" or pay.get("type") in ("user_message",):
+                    c = pay.get("content", pay.get("message", ""))
+                    if isinstance(c, list):
+                        c = " ".join(b.get("text", "") for b in c if isinstance(b, dict))
+                    c = (c or "").strip() if isinstance(c, str) else ""
+                    if not c or c.startswith("<"):
+                        # Not a prompt, but still where a turn ends.
+                        if cur:
+                            yield cur
+                        cur = None
+                        continue
+                    if cur and cur["text"] == c:
+                        continue
+                    if cur:
+                        yield cur
+                    cur = {"tool": "codex", "project": "", "at": d.get("timestamp", ""),
+                           "text": c, "answers": []}
+                elif role == "assistant" and cur is not None:
+                    if pay.get("type") not in ("message",):
+                        continue
+                    c = pay.get("content", "")
+                    if isinstance(c, list):
+                        c = " ".join(b.get("text", "") for b in c if isinstance(b, dict))
+                    c = (c or "").strip() if isinstance(c, str) else ""
+                    if (not c or c.startswith("[external_agent_tool_call")
+                            or c.startswith("[external_agent_tool_result")):
+                        continue
+                    cur["answers"].append(c)
+        if cur:
+            yield cur
 
 
 def human_turns_hermes(path):
@@ -207,9 +416,14 @@ def human_turns_hermes(path):
     every line, for as long as it existed. Nothing failed and nothing was logged; the drawer
     was simply empty of everything typed from a phone. Both shapes are read now, and the test
     suite holds the "dir" one shut.
+
+    The bot's side ("out", or an assistant role) is never a prompt of its own - a drawer of
+    our own words would make every search return the answer instead of the question - but it
+    IS the answer of the turn above it, so it rides along in that turn's "answers".
     """
     if not os.path.isfile(path):
         return
+    cur = None
     try:
         for line in io.open(path, encoding="utf-8", errors="replace"):
             try:
@@ -218,18 +432,26 @@ def human_turns_hermes(path):
                 continue
             who = (d.get("role") or d.get("from") or "").lower()
             direction = (d.get("dir") or d.get("direction") or "").lower()
-            if direction:
-                # "out" is the bot talking. Archiving it would fill the drawer with our own
-                # words and make every search return the answer instead of the question.
-                if direction not in ("in", "inbound"):
-                    continue
-            elif who not in ("user", "michael", "human"):
-                continue
             txt = (d.get("text") or d.get("content") or "").strip()
-            if txt:
-                yield {"tool": "telegram", "project": "", "at": d.get("ts", d.get("at", "")), "text": txt}
+            if not txt:
+                continue
+            if direction:
+                is_user = direction in ("in", "inbound")
+                is_bot = not is_user
+            else:
+                is_user = who in ("user", "michael", "human")
+                is_bot = who in ("assistant", "bot")
+            if is_user:
+                if cur:
+                    yield cur
+                cur = {"tool": "telegram", "project": "",
+                       "at": d.get("ts", d.get("at", "")), "text": txt, "answers": []}
+            elif is_bot and cur is not None:
+                cur["answers"].append(txt)
     except (IOError, OSError):
-        return
+        pass
+    if cur:
+        yield cur
 
 
 TELEGRAM_TRANSCRIPT = "/var/lib/hub-telegram/transcript.jsonl"
@@ -289,6 +511,12 @@ def human_turns_hermes_store(hermes):
     Only conversations whose source is 'telegram' are read, because those are the ones a
     person had. The other sources in that same database (api_server, cron, cli, webhook) are
     programs giving the bot work, and their "user" turns are prompts a program wrote.
+
+    The bot's replies ride along as the answer of the turn they follow. Rows are ordered by
+    session, then timestamp, then insertion order, because a busy bot writes several messages
+    within the same second and the insertion-order tiebreak is what keeps a reply attached to
+    its own question. A machine-banner turn still swallows the replies that follow it: they
+    answer the machinery, not the person, so they must never leak backward onto a real turn.
     """
     import sqlite3  # only needed here, and only on a machine that runs bots
     if not hermes:
@@ -299,10 +527,10 @@ def human_turns_hermes_store(hermes):
             # Read-only, so a live bot writing to the same database is never disturbed.
             con = sqlite3.connect("file:" + db.replace("?", "%3f") + "?mode=ro", uri=True)
             rows = con.execute(
-                "SELECT m.timestamp, m.content FROM messages m "
+                "SELECT m.session_id, m.timestamp, m.role, m.content FROM messages m "
                 "JOIN sessions s ON s.id = m.session_id "
-                "WHERE s.source = 'telegram' AND m.role = 'user' "
-                "ORDER BY m.timestamp").fetchall()
+                "WHERE s.source = 'telegram' AND m.role IN ('user', 'assistant') "
+                "ORDER BY m.session_id, m.timestamp, m.rowid").fetchall()
             con.close()
         except Exception as e:
             # Loud on purpose. A bot we cannot read is a bot whose prompts are being lost,
@@ -310,33 +538,54 @@ def human_turns_hermes_store(hermes):
             print("  NOTE: could not read the store of the '%s' bot (%s), so what you typed "
                   "to it is NOT being archived." % (bot, e))
             continue
-        for ts, txt in rows:
+        cur, cur_sid = None, None
+        for sid, ts, role, txt in rows:
+            if sid != cur_sid:
+                if cur:
+                    yield cur
+                cur, cur_sid = None, sid
             txt = (txt or "").strip()
-            if not txt or MACHINE_BANNER.match(txt):
-                continue
-            txt = SPEAKER_LABEL.sub("", txt).strip()
-            if not txt:
-                continue
-            try:
-                at = datetime.fromtimestamp(float(ts), timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
-            except Exception:
-                at = ""
-            yield {"tool": "telegram", "project": bot, "at": at, "text": txt}
+            if role == "user":
+                if cur:
+                    yield cur
+                cur = None
+                if not txt or MACHINE_BANNER.match(txt):
+                    continue
+                txt = SPEAKER_LABEL.sub("", txt).strip()
+                if not txt:
+                    continue
+                try:
+                    at = datetime.fromtimestamp(float(ts), timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+                except Exception:
+                    at = ""
+                cur = {"tool": "telegram", "project": bot, "at": at, "text": txt,
+                       "answers": []}
+            elif cur is not None and txt:
+                cur["answers"].append(txt)
+        if cur:
+            yield cur
 
 
 def harvest(hub):
+    """Every source the person has switched ON. A source that is off is not read at
+    all, rather than read-and-discarded: the promise to the person is that this
+    program does not open that tool's files, not that it forgets what it saw."""
     home = home_dir()
-    yield from human_turns_claude(glob.glob(os.path.join(home, ".claude", "projects", "*", "*.jsonl")))
-    codex = os.path.join(home, ".codex", "sessions")
-    yield from human_turns_codex([os.path.join(r, f) for r, _d, fs in os.walk(codex)
-                                  for f in fs if f.endswith(".jsonl")])
-    # Overridable so a test can point it at a fixture. A path compiled into the code is a
-    # path no test can reach, which is exactly how the "dir" bug above survived.
-    yield from human_turns_hermes(os.environ.get("HUB_TELEGRAM_TRANSCRIPT") or TELEGRAM_TRANSCRIPT)
-    # Kept alongside the line above rather than replacing it: that file carries chat from
-    # before the current store existed, and the two overlap harmlessly because a prompt is
-    # recognised by its text, so whichever reader reaches it first is the only one that counts.
-    yield from human_turns_hermes_store(hermes_home())
+    on = enabled_sources()
+    if "claude" in on:
+        yield from human_turns_claude(glob.glob(os.path.join(home, ".claude", "projects", "*", "*.jsonl")))
+    if "codex" in on:
+        codex = os.path.join(home, ".codex", "sessions")
+        yield from human_turns_codex([os.path.join(r, f) for r, _d, fs in os.walk(codex)
+                                      for f in fs if f.endswith(".jsonl")])
+    if "hermes" in on:
+        # Overridable so a test can point it at a fixture. A path compiled into the code is a
+        # path no test can reach, which is exactly how the "dir" bug above survived.
+        yield from human_turns_hermes(os.environ.get("HUB_TELEGRAM_TRANSCRIPT") or TELEGRAM_TRANSCRIPT)
+        # Kept alongside the line above rather than replacing it: that file carries chat from
+        # before the current store existed, and the two overlap harmlessly because a prompt is
+        # recognised by its text, so whichever reader reaches it first is the only one that counts.
+        yield from human_turns_hermes_store(hermes_home())
 
 
 # --------------------------------------------------------------------- storage
@@ -426,12 +675,20 @@ def _harvest_locked(hub, dry, since, machine):
     terms = redact_terms()
     seen = load_seen(hub)
     buckets, added, dropped, dupes = {}, 0, 0, 0
+    patch = {}
     for rec in harvest(hub):
         if since and (rec["at"] or "")[:10] < since:
             continue
         rid = hashlib.sha256(("%s|%s" % (rec["tool"], rec["text"])).encode("utf-8")).hexdigest()[:16]
+        ans = join_answer(rec.get("answers") or [])
         if rid in seen:
             dupes += 1
+            # A prompt harvested before its reply finished sits in the archive without an
+            # answer, and this dedup would keep it that way for ever. So a duplicate that
+            # NOW carries an answer is remembered, and the stored row is patched after the
+            # write. Yesterday's last prompt gets its answer on today's run, by itself.
+            if ans and len(ans) > len(patch.get(rid, "")):
+                patch[rid] = ans
             continue
         clean, why = scrub(rec["text"], terms)
         if clean is None:
@@ -440,9 +697,14 @@ def _harvest_locked(hub, dry, since, machine):
         seen.add(rid)
         row = {"id": rid, "at": rec["at"][:19], "machine": machine, "tool": rec["tool"],
                "project": rec["project"], "text": clean}
+        if ans:
+            pa = prepare_answer(ans, terms)
+            if pa:
+                row["answer"] = pa
         buckets.setdefault(month_of(rec["at"]), []).append(row)
         added += 1
 
+    healed = 0
     if not dry:
         os.makedirs(archive_dir(hub), exist_ok=True)
         for month, rows in sorted(buckets.items()):
@@ -450,12 +712,20 @@ def _harvest_locked(hub, dry, since, machine):
             with io.open(p, "a", encoding="utf-8", newline="\n") as fh:
                 for r in sorted(rows, key=lambda r: r["at"]):
                     fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+        if patch:
+            healed = attach_answers(hub, patch, terms, False)
 
     print("%s %d prompt%s from this machine (%s)"
           % ("would archive" if dry else "archived", added, "" if added == 1 else "s", machine))
     for month, rows in sorted(buckets.items()):
         print("  %s-%s.jsonl  +%d" % (machine, month, len(rows)))
     print("  %d skipped: already archived, or the same thing typed twice" % dupes)
+    if healed:
+        print("  %d earlier prompt%s got %s answer attached"
+              % (healed, "" if healed == 1 else "s", "its" if healed == 1 else "their"))
+    off = sorted(set(SUPPORTED_SOURCES) - enabled_sources())
+    if off:
+        print("  not read, by your choice: %s" % ", ".join(off))
     if dropped:
         print("  %d dropped: still looked like a credential after scrubbing" % dropped)
     if not terms:
@@ -463,6 +733,95 @@ def _harvest_locked(hub, dry, since, machine):
         print("  To also strip employer or client names: put one per line in ~/.hub/redact.txt")
         print("  (that file is never committed), or set HUB_REDACT_TERMS in the secrets store.")
     return 0
+
+
+def attach_answers(hub, answer_map, terms, dry):
+    """Write answers onto rows that are already archived and have none.
+
+    ANY machine's monthly file may hold the row: prompts are deduplicated across the
+    fleet, so a prompt first archived from one machine can have its transcript here.
+    The rewrite goes through a temporary file and an atomic replace, because these
+    files are appended to by harvests and synced by git, and a half-written monthly
+    file would be seen by both."""
+    updated = 0
+    for f in sorted(glob.glob(os.path.join(archive_dir(hub), "*.jsonl"))):
+        out, file_changed = [], False
+        try:
+            src = io.open(f, encoding="utf-8", errors="replace")
+        except (IOError, OSError):
+            continue
+        with src:
+            for line in src:
+                line = line.rstrip("\n")
+                if not line.strip():
+                    continue
+                try:
+                    r = json.loads(line)
+                except Exception:
+                    out.append(line)
+                    continue
+                if r.get("id") in answer_map and not r.get("answer"):
+                    pa = prepare_answer(answer_map[r["id"]], terms)
+                    if pa:
+                        r["answer"] = pa
+                        line = json.dumps(r, ensure_ascii=False)
+                        file_changed = True
+                        updated += 1
+                out.append(line)
+        if file_changed and not dry:
+            tmp = f + ".tmp"
+            with io.open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("\n".join(out) + "\n")
+            os.replace(tmp, f)
+    return updated
+
+
+def cmd_backfill(hub, dry):
+    """Attach answers to prompts archived before answers existed.
+
+    The harvest has kept each prompt's answer only since the feature shipped; every
+    row from before is answer-less, while the transcript holding its answer is still
+    on the machine that made it - until the tool prunes it, which every tool does.
+    So this walks this machine's transcripts once, finds the turns whose prompts are
+    archived without an answer, and writes the answers in. Running it twice changes
+    nothing: a row that has its answer is never a candidate again."""
+    lock = None
+    if not dry:
+        lock = lock_or_exit(hub)
+        if lock is None:
+            print("another harvest is already running on this machine, so this one did nothing")
+            return 0
+    try:
+        terms = redact_terms()
+        wanted, total = set(), 0
+        for r in all_rows(hub):
+            total += 1
+            if not r.get("answer"):
+                wanted.add(r.get("id"))
+        answers = {}
+        for rec in harvest(hub):
+            rid = hashlib.sha256(("%s|%s" % (rec["tool"], rec["text"])).encode("utf-8")).hexdigest()[:16]
+            if rid not in wanted:
+                continue
+            ans = join_answer(rec.get("answers") or [])
+            if ans and len(ans) > len(answers.get(rid, "")):
+                answers[rid] = ans
+        updated = attach_answers(hub, answers, terms, dry)
+        print("%s answers onto %d of %d answer-less archived prompts (%d archived in all)"
+              % ("would write" if dry else "wrote", updated, len(wanted), total))
+        left = len(wanted) - updated
+        if left:
+            print("  %d still have no answer here: the transcript is gone, or lives on "
+                  "another machine - run `hub prompts backfill` there too" % left)
+        if updated and not dry:
+            print("Commit prompts/archive/ so every machine gets the answers.")
+        return 0
+    finally:
+        if lock:
+            try:
+                os.remove(lock)
+            except OSError:
+                pass
 
 
 def cmd_rescrub(hub, dry):
@@ -503,6 +862,18 @@ def cmd_rescrub(hub, dry):
                 r["text"] = clean
                 changed += 1
                 file_changed = True
+            # The answer is rescrubbed with the answer rule (lose the line, keep the
+            # reply), or the redact list would clean the prompts and leave the same
+            # name sitting in every answer beside them.
+            if r.get("answer"):
+                na = scrub_answer(r["answer"], terms)
+                if na != r["answer"]:
+                    if na:
+                        r["answer"] = na
+                    else:
+                        del r["answer"]
+                    changed += 1
+                    file_changed = True
             out.append(json.dumps(r, ensure_ascii=False))
         if file_changed and not dry:
             with io.open(f, "w", encoding="utf-8", newline="\n") as fh:
@@ -542,11 +913,20 @@ def cmd_sources(hub, machine):
         if at > newest.get(key, ""):
             newest[key] = at
 
+    # A source switched off is silent in the numbers above because it was never read.
+    # Said out loud here so its silence reads as the person's choice, not as a leak:
+    # the selftest that runs this command must not alarm on a decision.
+    off = sorted(set(SUPPORTED_SOURCES) - enabled_sources())
+
     if not total:
-        print("this machine has no AI session logs at all, so there is nothing here to archive.")
+        if off:
+            print("switched off by your choice, so not read at all: %s" % ", ".join(off))
+        print("this machine has no readable AI session logs, so there is nothing here to archive.")
         return 0
 
     print("what this machine (%s) can see, and whether the archive has it:" % machine)
+    if off:
+        print("  (switched off by your choice, so not read at all: %s)" % ", ".join(off))
     leaks = []
     for key in sorted(total, key=lambda k: -total[k]):
         name = key[0] + ("/" + key[1] if key[1] else "")
@@ -580,12 +960,13 @@ def cmd_search(hub, terms, limit):
     if not terms:
         sys.stderr.write("usage: hub prompts search <term> [<term>...]\n"); return 1
     low = [t.lower() for t in terms]
-    hits = []
+    hits, total = [], 0
     for r in all_rows(hub):
-        t = r.get("text", "").lower()
-        n = sum(1 for x in low if x in t)
+        total += 1
+        hay = (r.get("text", "") + "\n" + r.get("answer", "")).lower()
+        n = sum(1 for x in low if x in hay)
         if n:
-            hits.append((n, t.count(low[0]), r))
+            hits.append((n, hay.count(low[0]), r))
 
     lib = []
     for f in library_files(hub):
@@ -609,7 +990,7 @@ def cmd_search(hub, terms, limit):
 
     hits.sort(key=lambda h: (-h[0], -h[1], h[2].get("at", "")))
     print("THINGS YOU TYPED (%d of %d match, showing %d):"
-          % (len(hits), sum(1 for _ in all_rows(hub)), min(limit, len(hits))))
+          % (len(hits), total, min(limit, len(hits))))
     for _n, _c, r in hits[:limit]:
         when = (r.get("at") or "")[:10] or "undated"
         where = "%s/%s" % (r.get("machine", "?"), r.get("tool", "?"))
@@ -617,7 +998,18 @@ def cmd_search(hub, terms, limit):
         if len(txt) > 240:
             txt = txt[:237] + "..."
         print("\n  %s  %s%s" % (when, where, "  [%s]" % r["project"] if r.get("project") else ""))
-        print("  %s" % txt)
+        print("  Q: %s" % txt)
+        # When the hit is in what the AI SAID, show that piece too, marked A:, or the
+        # result would show a prompt with no visible reason it matched.
+        ans = r.get("answer", "")
+        ansl = ans.lower()
+        hit_term = next((x for x in low if x in ansl), None)
+        if hit_term:
+            i = ansl.find(hit_term)
+            start, end = max(0, i - 120), min(len(ans), i + len(hit_term) + 120)
+            snip = " ".join(ans[start:end].split())
+            print("  A: %s%s%s" % ("..." if start > 0 else "", snip,
+                                   "..." if end < len(ans) else ""))
     if len(hits) > limit:
         print("\n(%d more; add --limit N)" % (len(hits) - limit))
     return 0
@@ -659,7 +1051,10 @@ def cmd_stats(hub):
         if at > last.get(k, ""):
             last[k] = at
     chars = sum(len(r.get("text", "")) for r in rows)
+    withans = [r for r in rows if r.get("answer")]
+    achars = sum(len(r["answer"]) for r in withans)
     print("archived prompts   %d  (%.1f MB of text)" % (len(rows), chars / 1e6))
+    print("  with answers     %d  (%.1f MB of answers)" % (len(withans), achars / 1e6))
     print("  %-14s %-12s %8s  %s" % ("machine", "tool", "prompts", "newest"))
     for k, n in sorted(by.items(), key=lambda kv: -kv[1]):
         print("  %-14s %-12s %8d  %s" % (k[0], k[1], n, last.get(k) or "undated"))
@@ -706,7 +1101,9 @@ def main(argv):
         return cmd_sources(hub, machine)
     if cmd == "rescrub":
         return cmd_rescrub(hub, dry)
-    sys.stderr.write("usage: hub prompts archive | search <term> | get <name> | stats | sources | rescrub\n")
+    if cmd == "backfill":
+        return cmd_backfill(hub, dry)
+    sys.stderr.write("usage: hub prompts archive | search <term> | get <name> | stats | sources | rescrub | backfill\n")
     return 1
 
 

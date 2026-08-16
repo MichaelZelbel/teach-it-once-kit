@@ -111,10 +111,14 @@ T="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
 echo "$T" | grep -q "book the dentist" && ok "19 a Telegram line marked dir:in is archived" \
   || bad "19 the Telegram transcript was skipped again" "$(cat "$W/tg.out")"
 
-# 20. His side only. Archiving the bot's replies would fill the drawer with our own words, so
-#     every search would return the answer instead of the question he asked.
-echo "$T" | grep -q "the bot answering him" && bad "20 the bot's own reply was archived as a prompt" \
-  || ok "20 the bot's side of the chat is not archived"
+# 20. His side only AS PROMPTS. Since 2026-08-11 the bot's reply is kept, but only in the
+#     "answer" field of the turn it followed - a drawer whose PROMPTS were our own words
+#     would make every search return the answer instead of the question he asked.
+echo "$T" | grep -q '"text": "the bot answering him' && bad "20 the bot's own reply was archived as a prompt" \
+  || ok "20 the bot's side of the chat is never a prompt"
+echo "$T" | grep '"text": "remind me to book the dentist' | grep -q '"answer": "the bot answering him' \
+  && ok "20b the bot's reply rides as the answer of the turn it followed" \
+  || bad "20b the reply was not kept as the turn's answer" "$T"
 
 # 21. The other shape still works, so a future transcript format cannot silently drop his words.
 echo "$T" | grep -q "add milk" && ok "21 a line marked role:user is still archived" \
@@ -199,10 +203,16 @@ echo "$B" | grep -q '"project": *"claire"' \
 echo "$B" | grep -q "WORK ORDER" && bad "26 a work order from our own machinery was archived as his prompt" \
   || ok "26 a message our machinery injected is not archived"
 
-# 27. The bot's own side, and the sessions where the hub gives the bot work, stay out too.
-echo "$B" | grep -qE "Claire replying|You are board desk" \
-  && bad "27 the bot's replies or its work sessions were archived as prompts" \
-  || ok "27 only his side of a real chat is archived"
+# 27. The bot's reply is never a PROMPT, and the sessions where the hub gives the bot work
+#     stay out entirely - their "user" turns are a program talking, and so are their replies.
+if echo "$B" | grep -q '"text": "Claire replying' || echo "$B" | grep -q "You are board desk"; then
+  bad "27 the bot's replies or its work sessions were archived as prompts"
+else
+  ok "27 only his side of a real chat becomes a prompt"
+fi
+echo "$B" | grep '"text": "what is the board deciding' | grep -q "Claire replying about the video script" \
+  && ok "27b the bot's reply is kept as the answer of his question" \
+  || bad "27b the reply was not attached as the answer"
 
 # 28. The guard that would have caught all of this: a source with prompts in it and none of
 #     them archived must FAIL, by name. Counting machines could never see this.
@@ -213,6 +223,266 @@ SRC_RC=$?
 [ "$SRC_RC" -ne 0 ] && grep -q "telegram/claire" "$W/src.out" \
   && ok "28 sources fails and names the bot whose prompts reach none of the archive" \
   || bad "28 an entirely unarchived source was reported as healthy" "rc=$SRC_RC $(cat "$W/src.out")"
+
+# --- 29 to 31: the person's choice of sources is OBEYED ---------------------------------
+#
+# WHY THESE EXIST. Until 2026-08-11 this collector read every source it knew, on every
+# machine, with nothing anywhere asking the person. The installer now shows what it found
+# and records the choice as HUB_PROMPT_SOURCES (environment, or ~/.hub/device.env for a
+# scheduled run that has no environment). A source switched off must not be READ at all,
+# and its silence must read as the person's choice, never as a leak.
+
+# 29. Codex logs exist on the machine, but only claude is enabled.
+mkdir -p "$W/home/.codex/sessions"
+printf '{"timestamp":"2026-08-02T10:00:00Z","payload":{"role":"user","content":"a codex prompt that must stay out"}}\n' \
+  > "$W/home/.codex/sessions/s.jsonl"
+rm -f "$W/prompts/archive/"*.jsonl
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/pick.out" 2>&1
+P="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
+echo "$P" | grep -q "stay out" && bad "29 a switched-off source was read anyway" \
+  || ok "29 a source switched off is not read at all"
+echo "$P" | grep -q "less salesy" && ok "29b the source that stayed on is still read" \
+  || bad "29b switching one source off silenced another" "$(cat "$W/pick.out")"
+grep -q "not read, by your choice: codex, hermes" "$W/pick.out" \
+  && ok "29c the harvest says out loud what it left alone" \
+  || bad "29c the restriction happened in silence" "$(cat "$W/pick.out")"
+
+# 30. `sources` treats off as a decision: exit 0, and the off list is printed so the
+#     morning selftest reads silence as a choice instead of alarming on it.
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  "$PY" "$ARC" --hub "$W" sources ) >"$W/pick2.out" 2>&1
+PICK_RC=$?
+[ "$PICK_RC" -eq 0 ] && grep -q "switched off by your choice" "$W/pick2.out" \
+  && ok "30 sources calls an off source a choice, not a leak" \
+  || bad "30 an off source alarmed or went unmentioned" "rc=$PICK_RC $(cat "$W/pick2.out")"
+
+# 31. The choice also arrives from ~/.hub/device.env, because the scheduled run that
+#     does most harvesting starts with almost no environment.
+printf 'HUB_PROMPT_SOURCES=claude\n' >> "$W/home/.hub/device.env"
+( export HOME="$W/home" HUB_HOME="$W/home"
+  cd "$W" && "$PY" "$ARC" --hub "$W" --dry-run archive ) >"$W/pick3.out" 2>&1
+grep -q "not read, by your choice: codex, hermes" "$W/pick3.out" \
+  && ok "31 the choice recorded on the device is obeyed with no environment" \
+  || bad "31 device.env was ignored" "$(cat "$W/pick3.out")"
+
+# --- 32 to 41: the ANSWER rides with the prompt -----------------------------------------
+#
+# WHY THESE EXIST. Since 2026-08-11 each row also keeps what the AI showed back, in an
+# "answer" field, because half the time what a person half-remembers is the reply, not the
+# prompt. The dangers are exact mirrors of the prompt-side ones: machinery (thinking, tool
+# calls, tool output) leaking in as if the person saw it; a reply attached to the wrong
+# question; a whole reply lost for one credential-shaped line; and a reply that arrived
+# after the harvest staying lost for ever. Note: check 31 wrote HUB_PROMPT_SOURCES=claude
+# into the fixture device.env, so every run below says its sources out loud.
+
+mkdir -p "$W/home/.claude/projects/pairproj"
+J2="$W/home/.claude/projects/pairproj/s.jsonl"
+w2() { printf '%s\n' "$1" >> "$J2"; }
+w2 '{"type":"user","uuid":"u1","timestamp":"2026-07-02T10:00:00Z","message":{"content":"pair test question about the moon"}}'
+w2 '{"type":"assistant","uuid":"a1","parentUuid":"u1","message":{"content":[{"type":"thinking","thinking":"hidden reasoning about a moonbase"}]}}'
+w2 '{"type":"assistant","uuid":"a2","parentUuid":"a1","message":{"content":[{"type":"text","text":"first visible note about the moon"}]}}'
+w2 '{"type":"assistant","uuid":"a3","parentUuid":"a2","message":{"content":[{"type":"tool_use","name":"Bash","input":{"command":"echo mooncmd"}}]}}'
+w2 '{"type":"user","uuid":"t1","parentUuid":"a3","message":{"content":[{"type":"tool_result","content":"mooncmd output line"}]}}'
+w2 '{"type":"assistant","uuid":"a4","parentUuid":"t1","message":{"content":[{"type":"text","text":"final answer: the moon is threehundredthousand km away"}]}}'
+w2 '{"type":"user","uuid":"u2","timestamp":"2026-07-02T10:05:00Z","message":{"content":"second question about tides"}}'
+w2 '{"type":"assistant","uuid":"a5","parentUuid":"u2","message":{"content":[{"type":"text","text":"tides reply text"}]}}'
+w2 '{"type":"user","uuid":"u3","timestamp":"2026-07-02T10:10:00Z","message":{"content":"third question about keys"}}'
+w2 '{"type":"assistant","uuid":"a6","parentUuid":"u3","message":{"content":[{"type":"text","text":"here is your key sk-abcdefghijklmnop1234567890 keep it\nrisky line Xq7ZmP2vLd8RtY4wNb1CfH6jGk3sVe9AuQ5oIrTzB0xM sits here\nbut the prose survives"}]}}'
+"$PY" - "$W/home/.claude/projects/capproj" <<'PYEOF'
+import json, os, sys
+d = sys.argv[1]; os.makedirs(d, exist_ok=True)
+big = "many words of a very long reply " * 1000  # ~32,000 chars, over the cap
+with open(os.path.join(d, "s.jsonl"), "w") as fh:
+    fh.write(json.dumps({"type": "user", "uuid": "cu1", "timestamp": "2026-07-03T09:00:00Z",
+                         "message": {"content": "cap test question"}}) + "\n")
+    fh.write(json.dumps({"type": "assistant", "uuid": "ca1", "parentUuid": "cu1",
+                         "message": {"content": [{"type": "text", "text": big}]}}) + "\n")
+PYEOF
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/ans.out" 2>&1
+AN="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
+
+# 32. The answer holds every piece of text the person SAW during the turn, and nothing of
+#     the machinery: no internal thinking, no tool call, no tool output.
+ROW1="$(echo "$AN" | grep '"text": "pair test question')"
+if echo "$ROW1" | grep -q "first visible note" && echo "$ROW1" | grep -q "threehundredthousand" \
+   && ! echo "$AN" | grep -qE "hidden reasoning|mooncmd"; then
+  ok "32 an answer keeps the visible text and none of the machinery"
+else
+  bad "32 the answer lost visible text or leaked machinery" "$ROW1"
+fi
+
+# 32b. Attribution: a reply belongs to ITS question. A reply glued onto the wrong prompt is
+#      worse than a lost one, because search would present it as fact.
+if echo "$ROW1" | grep -q "tides reply text"; then
+  bad "32b the second turn's reply leaked into the first turn"
+else
+  echo "$AN" | grep '"text": "second question about tides' | grep -q "tides reply text" \
+    && ok "32b each reply is attached to its own question" \
+    || bad "32b the second turn's reply was not attached to it"
+fi
+
+# 33. A key inside an answer is redacted in place; the reply itself survives.
+ROW3="$(echo "$AN" | grep '"text": "third question about keys')"
+if echo "$ROW3" | grep -q "sk-abcdefghijklmnop"; then
+  bad "33 A SECRET REACHED THE REPOSITORY inside an answer"
+elif echo "$ROW3" | grep -q "key removed"; then
+  ok "33 a key inside an answer is redacted, and the answer is kept"
+else
+  bad "33 the answer with the key vanished instead of being cleaned" "$ROW3"
+fi
+
+# 34. The last-resort guard drops only the credential-shaped LINE of an answer, never the
+#     whole reply - while check 13 above proves a PROMPT is still dropped whole. Both rules,
+#     side by side.
+if echo "$ROW3" | grep -q "Xq7ZmP2vLd8RtY4wNb1C"; then
+  bad "34 a credential-shaped line survived inside an answer"
+elif echo "$ROW3" | grep -q "line removed: still looked like a credential" \
+     && echo "$ROW3" | grep -q "but the prose survives"; then
+  ok "34 a risky line is cut out alone and the rest of the answer stays"
+else
+  bad "34 the whole answer was lost for one risky line" "$ROW3"
+fi
+
+# 35. A reply longer than the cap is cut, and says so. An archive is for finding things
+#     again, not for storing every file a reply ever pasted.
+echo "$AN" | grep '"text": "cap test question' | grep -q "answer truncated by hub-prompt-archive" \
+  && ok "35 an oversized answer is capped with a marker saying so" \
+  || bad "35 an oversized answer was stored whole or lost"
+
+# 36. Search finds a thing said only in an ANSWER, and marks which side matched, because
+#     "what was that answer again" is the question this whole field exists for.
+SRCH="$(export HOME="$W/home" HUB_HOME="$W/home"; "$PY" "$ARC" --hub "$W" search threehundredthousand 2>&1)"
+if echo "$SRCH" | grep -q "Q: pair test question" && echo "$SRCH" | grep -q "A: .*threehundredthousand"; then
+  ok "36 search finds text that only ever appeared in a reply, marked A:"
+else
+  bad "36 a reply's content is invisible to search" "$SRCH"
+fi
+
+# 37. Backfill: a row archived before answers existed gets its answer from a transcript that
+#     still exists - and running it AGAIN changes nothing, because it will run on machines
+#     on a schedule of habit, not once under supervision.
+mkdir -p "$W/home/.claude/projects/bfproj"
+printf '%s\n%s\n' \
+  '{"type":"user","uuid":"b1","timestamp":"2026-07-04T09:00:00Z","message":{"content":"backfill test question"}}' \
+  '{"type":"assistant","uuid":"b2","parentUuid":"b1","message":{"content":[{"type":"text","text":"backfilled reply text"}]}}' \
+  > "$W/home/.claude/projects/bfproj/s.jsonl"
+"$PY" - "$W" <<'PYEOF'
+import hashlib, json, os, sys
+w = sys.argv[1]
+rid = hashlib.sha256("claude-code|backfill test question".encode()).hexdigest()[:16]
+with open(os.path.join(w, "prompts", "archive", "test-2026-07.jsonl"), "a", newline="\n") as fh:
+    fh.write(json.dumps({"id": rid, "at": "2026-07-04T09:00:00", "machine": "test",
+                         "tool": "claude-code", "project": "bfproj",
+                         "text": "backfill test question"}) + "\n")
+PYEOF
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" backfill ) >"$W/bf.out" 2>&1
+grep '"text": "backfill test question' "$W/prompts/archive/test-2026-07.jsonl" | grep -q "backfilled reply text" \
+  && ok "37 backfill attaches an answer to a row archived before answers existed" \
+  || bad "37 backfill did not fill the old row" "$(cat "$W/bf.out")"
+cat "$W/prompts/archive/"*.jsonl > "$W/snap1"
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" backfill ) >/dev/null 2>&1
+cat "$W/prompts/archive/"*.jsonl > "$W/snap2"
+cmp -s "$W/snap1" "$W/snap2" && ok "37b a second backfill changes nothing" \
+  || bad "37b backfill is not idempotent"
+
+# 38. The harvest heals itself: a prompt archived while its reply was still being written
+#     must get that reply on the NEXT harvest, or the daily schedule guarantees the last
+#     turn of every day stays answer-less for ever.
+mkdir -p "$W/home/.claude/projects/healproj"
+H2="$W/home/.claude/projects/healproj/s.jsonl"
+printf '%s\n' '{"type":"user","uuid":"h1","timestamp":"2026-07-05T09:00:00Z","message":{"content":"self heal test question"}}' > "$H2"
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >/dev/null 2>&1
+C1=$(cat "$W/prompts/archive/"*.jsonl | wc -l)
+printf '%s\n' '{"type":"assistant","uuid":"h2","parentUuid":"h1","message":{"content":[{"type":"text","text":"the late healed reply"}]}}' >> "$H2"
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="claude"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/heal.out" 2>&1
+C2=$(cat "$W/prompts/archive/"*.jsonl | wc -l)
+if [ "$C1" = "$C2" ] && cat "$W/prompts/archive/"*.jsonl | grep '"text": "self heal test question' | grep -q "the late healed reply"; then
+  ok "38 a reply that arrived after the harvest is attached by the next one"
+else
+  bad "38 the late reply stayed lost" "rows $C1 -> $C2; $(cat "$W/heal.out")"
+fi
+
+# 39. Codex tool traffic wears the assistant role. It is machinery, never answer, and one
+#     duplicated user event must not split a turn in two.
+mkdir -p "$W/home/.codex/sessions"
+printf '%s\n%s\n%s\n%s\n' \
+  '{"timestamp":"2026-08-02T11:00:00Z","type":"response_item","payload":{"type":"message","role":"user","content":"codex answer test question"}}' \
+  '{"timestamp":"2026-08-02T11:00:01Z","type":"event_msg","payload":{"type":"user_message","message":"codex answer test question"}}' \
+  '{"timestamp":"2026-08-02T11:00:05Z","type":"response_item","payload":{"type":"message","role":"assistant","content":"[external_agent_tool_call: run the tests]"}}' \
+  '{"timestamp":"2026-08-02T11:00:10Z","type":"response_item","payload":{"type":"message","role":"assistant","content":"the codex visible reply"}}' \
+  > "$W/home/.codex/sessions/s2.jsonl"
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="codex"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/cx.out" 2>&1
+CX="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
+CXROWS=$(echo "$CX" | grep -c '"text": "codex answer test question')
+CXROW="$(echo "$CX" | grep '"text": "codex answer test question')"
+if [ "$CXROWS" = "1" ] && echo "$CXROW" | grep -q "the codex visible reply" \
+   && ! echo "$CXROW" | grep -q "external_agent_tool_call"; then
+  ok "39 codex replies are kept, tool traffic and duplicate events are not"
+else
+  bad "39 codex answer capture leaked machinery or split the turn" "rows=$CXROWS $CXROW"
+fi
+
+# 40. A busy bot writes several messages within the same second, so insertion order is the
+#     only truth about who answered what. And a reply to our own machinery's work order must
+#     vanish with it, never leak backward onto the person's previous question.
+HH2="$W/hermes2"; mkdir -p "$HH2/profiles/orderbot"
+"$PY" - "$HH2" <<'PYEOF'
+import sqlite3, sys, os
+hh = sys.argv[1]
+con = sqlite3.connect(os.path.join(hh, "profiles", "orderbot", "state.db"))
+con.execute("CREATE TABLE sessions (id TEXT, source TEXT)")
+con.execute("CREATE TABLE messages (session_id TEXT, role TEXT, content TEXT, timestamp REAL)")
+con.execute("INSERT INTO sessions VALUES ('s9','telegram')")
+for role, txt in [
+    ("user", "order test question one"),
+    ("assistant", "reply to question one"),
+    ("user", "[WORK ORDER FROM MACHINERY] do things"),
+    ("assistant", "reply meant for the machinery"),
+    ("user", "order test question two"),
+    ("assistant", "reply to question two"),
+]:
+    con.execute("INSERT INTO messages VALUES ('s9',?,?,1785875150.0)", (role, txt))
+con.commit(); con.close()
+PYEOF
+( export HOME="$W/home" HUB_HOME="$W/home" HUB_PROMPT_SOURCES="hermes" \
+         HUB_HERMES_HOME="$HH2" HUB_TELEGRAM_TRANSCRIPT="$W/none.jsonl"
+  cd "$W" && "$PY" "$ARC" --hub "$W" archive ) >"$W/ord.out" 2>&1
+OD="$(cat "$W/prompts/archive/"*.jsonl 2>/dev/null)"
+OD1="$(echo "$OD" | grep '"text": "order test question one')"
+if echo "$OD1" | grep -q "reply to question one" && ! echo "$OD1" | grep -q "reply meant for the machinery" \
+   && ! echo "$OD" | grep -q "reply meant for the machinery" \
+   && echo "$OD" | grep '"text": "order test question two' | grep -q "reply to question two"; then
+  ok "40 same-second replies attach to their own questions; a work order swallows its reply"
+else
+  bad "40 answer attribution in the bot store went wrong" "$OD1"
+fi
+
+# 41. Rescrub reaches into answers too, because a name is always added to the list AFTER
+#     prompts and answers carrying it are already stored.
+"$PY" - "$W" <<'PYEOF'
+import json, os, sys
+w = sys.argv[1]
+with open(os.path.join(w, "prompts", "archive", "test-2026-07.jsonl"), "a", newline="\n") as fh:
+    fh.write(json.dumps({"id": "feedfacefeedface", "at": "2026-07-06T09:00:00", "machine": "test",
+                         "tool": "claude-code", "project": "", "text": "a question about the client",
+                         "answer": "the client Umbrella Consolidated pays late, keep that in mind"}) + "\n")
+PYEOF
+( export HOME="$W/home" HUB_HOME="$W/home"; "$PY" "$ARC" --hub "$W" rescrub ) >"$W/rs2.out" 2>&1
+RSROW="$(grep '"id": "feedfacefeedface"' "$W/prompts/archive/test-2026-07.jsonl")"
+if echo "$RSROW" | grep -qi "Umbrella Consolidated"; then
+  bad "41 rescrub left a named party inside a stored answer" "$(cat "$W/rs2.out")"
+elif echo "$RSROW" | grep -q "pays late"; then
+  ok "41 rescrub cleans a name out of a stored answer and keeps the answer"
+else
+  bad "41 rescrub destroyed the answer instead of cleaning it" "$RSROW"
+fi
 
 echo
 echo "  $PASS passed, $FAIL failed"

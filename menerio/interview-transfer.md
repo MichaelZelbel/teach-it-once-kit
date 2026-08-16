@@ -1,4 +1,4 @@
-# The interview transfer (Chapter 27, route two)
+# The interview transfer (optional route two)
 
 The deep route. The dump (route one) gets what the app happened to
 remember. The interview gets what actually matters, because you answer as

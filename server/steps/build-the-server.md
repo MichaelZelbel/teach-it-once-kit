@@ -105,6 +105,7 @@ And a second net inside the folder, so a stray key still cannot travel:
 ```bash
 cd "$HOME/hub"
 grep -qxF '.env*' .gitignore 2>/dev/null || echo '.env*' >> .gitignore
+grep -qxF '.hub-env' .gitignore 2>/dev/null || echo '.hub-env' >> .gitignore
 ```
 
 Explain it to them in one sentence: their keys now live in a place the backup

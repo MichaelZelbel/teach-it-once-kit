@@ -41,7 +41,7 @@ history and rotating the key.
 **The fix, both halves.**
 
 - Keep the key file outside the folder: `~/.hub-env`, not `hub/.env`.
-- Add a `.gitignore` in the folder containing `.env*`, as a second net.
+- Add a `.gitignore` in the folder containing `.env*` and `.hub-env`, as a second net.
 
 Do this before the first push, not after.
 

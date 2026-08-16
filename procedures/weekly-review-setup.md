@@ -20,7 +20,14 @@ reviews/, named with the date, in four parts:
    happened last week that mattered;
 3) the two or three things in inbox/ that belong in my context files,
    each named with the file it should go to;
-4) the one thing my priorities say I should protect this week.
+4) the one thing my priorities say I should protect this week;
+5) ONLY when this is the first review of a calendar month: ask me
+   whether I have been using any AI outside this folder since the
+   last time, name the tools I said I use if you know them, and
+   tell me the export prompt is saved in
+   prompts/library/bring-your-context-with-you.md. One short
+   paragraph, and nothing in the other three weeks of the month.
+
 Under 250 words, no pep talk. Then run it once so I can see this
 week's review.
 ```
@@ -35,6 +42,9 @@ What each part carries:
    destination file named so there is no thinking left in it.
 4. Your priorities from Chapter 6, cashed in as a decision about the
    coming week rather than a list.
+5. The once-a-month question, "are you still using an AI outside this
+   folder?", riding along inside a review you already read. See
+   `outside-ai-check.md`.
 
 ## Half two: the clock
 
@@ -53,18 +63,22 @@ recipe by hand. If you want to watch the clock itself work, press
 The review lands. It costs you ten minutes, and the ten minutes are the
 point.
 
-1. Answer the question in a new file in `inbox/`, in plain sentences:
-   what actually happened, what changed, what broke. That answer is a
-   capture (Chapter 8), and next week's review will read it.
-2. Do the three lines under "Move to context". They are already written
-   for you: source file on the left, destination file on the right.
-3. If a priority shifted, edit `context/projects.md` while the coffee is
-   still warm.
+1. Answer the question right there, to your assistant, in plain
+   sentences: what actually happened, what changed, what broke. Then
+   tell it to capture your answer in `inbox/`. You talk, it files
+   (Chapter 8), and next week's review will read what it filed.
+2. Have it make the three moves under "Move to context". They are
+   already written out: source file on the left, destination file on
+   the right.
+3. If a priority shifted, tell it that too, so `context/projects.md`
+   changes while the coffee is still warm.
 
 Your context feeds your procedures, and now a procedure feeds your
 context. That loop, running by itself, is the closest thing this book has
 to a perpetual motion machine.
 
-## Then the paperwork
+## Then the register
 
-One block in `procedures.md`. Nothing runs unlisted.
+One block in `procedures.md`. Nothing runs unlisted. Tell your assistant
+the task is live and let it write the block; if the Chapter 15 house
+rules are installed, it has often done so already.

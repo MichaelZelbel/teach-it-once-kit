@@ -13,9 +13,12 @@ the outside.
 - **`prompt-harvest.js`** starts the job. It works out where your hub is, finds a
   working Python, runs the collector, saves the result into your hub and pushes it.
 - **`hub-prompt-archive`** is the collector, and the interesting one. It reads the
-  conversation logs your AI tools keep on this computer, takes only the turns a
-  human typed, removes anything that looks like a password or a private name, and
-  writes what is left into `prompts/archive/` in your hub.
+  conversation logs your AI tools keep on this computer, takes the turns a human
+  typed and the reply the AI showed for each of them, removes anything that looks
+  like a password or a private name, and writes what is left into
+  `prompts/archive/` in your hub. It never keeps the AI's internal machinery, only
+  text you actually saw, so you can later ask "what was that answer again" as well
+  as "what did I type".
 
 Together they are the program Chapter 4 and Chapter 28 mean when they say
 *"a program fills it"*.
@@ -59,6 +62,14 @@ Search my prompt log for the one about the invoice reminder.
 
 If you want to prove they work rather than wait a day, run `hub-prompt-harvest`
 once from a terminal and read what it says.
+
+## You choose which tools are read
+
+The installer shows you which AI tools it found on your computer and lets you
+untick any of them. Your choice is kept on that machine, in `~/.hub/device.env`
+on a line like `HUB_PROMPT_SOURCES=claude,codex`. A tool not on the list is not
+read at all. To change your mind later, edit that line or run the installer
+again. An empty value (or `-`) means nothing is read on that machine.
 
 ## The honest limit
 

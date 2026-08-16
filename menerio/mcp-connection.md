@@ -1,7 +1,8 @@
 # One memory, every tool (Chapter 24)
 
-MCP is a standard socket. Any AI tool that speaks it can read the same memory. One key, and
-every tool you use answers from the same knowledge.
+MCP is a standard socket. Any AI tool that speaks it can read the same notebook. One key, and
+every tool you use answers from the same notes. No tool gets a copy; every tool reads the
+same shelf.
 
 ## Make the key
 
@@ -53,12 +54,13 @@ memory: https://mcp.menerio.com (HTTP) - Connected
 
 ## The test that proves it
 
-Make a completely empty folder. Open a session there and ask something only your memory knows:
+Make a completely empty folder. Open a session there and ask something only your notebook
+knows:
 
 ```
-Use my memory tools. Who is <person>, what are they waiting for, and
-how do they want bad news delivered? Answer only from memory, and say
-plainly if you cannot find something.
+Use my memory tools. Who is <person>, what is the latest on <a thing
+you took notes about>, and how do they want bad news delivered?
+Answer only from memory, and say plainly if you cannot find something.
 ```
 
 Expect the first attempt to refuse: the memory tools need approving before they can run. That

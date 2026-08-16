@@ -21,9 +21,25 @@ see today's brief.
 You get two things: `skills/morning-brief.md` (the recipe) and
 `brief/YYYY-MM-DD.md` (today's brief, for real).
 
-Run it by hand for two or three mornings and fix the shape by editing the
-skill file. Chapter 18's rule: no clock for a recipe you have not
-watched run.
+Run it two or three more times in the same sitting: read what came out,
+edit the skill file, run it again. The facts differ every morning anyway;
+the shape is what you are training, and the loop works best while the
+last run is still fresh in your head. Chapter 18's rule: no clock for a
+recipe you have not watched run.
+
+## One line worth stealing
+
+Tony Stubblebine, the CEO of Medium, ends his own AI morning briefing
+with every file he touched in the past 24 hours. The morning starts
+with yesterday's thread back in your hand. Steal it: add one line to
+`skills/morning-brief.md`:
+
+```
+End with one short line naming which files in this folder changed in
+the last day. If none did, say nothing.
+```
+
+Run the brief again and check the new closing line.
 
 ## Half two: the clock
 
@@ -59,11 +75,13 @@ The switch next to the task's name. **Active** becomes **Paused**, the
 next-run line disappears, the task leaves the sidebar list. Flip it back
 and the countdown returns. Do it once today, so stopping is a reflex.
 
-## Then the paperwork
+## Then the register
 
-Fill in the block in `procedures.md`: the rhythm, where it lives, and the
-off-switch. If you installed the house rules from Chapter 15, your
-assistant may have done it already.
+Tell your assistant the task is live ("the morning brief is now
+scheduled, daily at seven, on my computer; update the register") and let
+it fill in the block in `procedures.md`: the rhythm, where it lives, and
+the off-switch. If you installed the house rules from Chapter 15, it has
+often done this already. One glance to confirm.
 
 ## Honesty notes
 
