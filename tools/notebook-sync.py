@@ -11,7 +11,7 @@ Usage:
     python3 scripts/sync_menerio.py              show what would be sent
     python3 scripts/sync_menerio.py --apply      send it
 
-Needs MENERIO_HUB_API_KEY in the environment. Load it with
+Needs MENERIO_API_KEY in the environment. Load it with
 scripts/secrets.ps1 -Persist (Windows) or . scripts/secrets.sh (Linux).
 
 The module name uses an underscore, unlike the hyphenated scripts beside it,
@@ -344,9 +344,9 @@ def main(argv=None) -> int:
                              "holds, before syncing. Use after a run died partway.")
     args = parser.parse_args(argv)
 
-    api_key = os.environ.get("MENERIO_HUB_API_KEY")
+    api_key = os.environ.get("MENERIO_API_KEY")
     if args.apply and not api_key:
-        print("MENERIO_HUB_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
+        print("MENERIO_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
               "(Windows) or . scripts/secrets.sh (Linux) first.", file=sys.stderr)
         return 2
 
@@ -360,7 +360,7 @@ def main(argv=None) -> int:
 
     if args.reconcile:
         if not api_key:
-            print("--reconcile needs MENERIO_HUB_API_KEY", file=sys.stderr)
+            print("--reconcile needs MENERIO_API_KEY", file=sys.stderr)
             return 2
         remote = client.list_hub_notes()
         state = reconcile_state(docs, remote)

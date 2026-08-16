@@ -12,7 +12,7 @@
       "enabled": true,
       "url": "https://mcp.menerio.com",
       "headers": {
-        "Authorization": "Bearer {env:MENERIO_MCP_TOKEN}"
+        "Authorization": "Bearer {env:MENERIO_API_KEY}"
       }
     }
   }

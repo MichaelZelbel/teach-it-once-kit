@@ -411,9 +411,9 @@ def main(argv=None):
                         help="only records changed since this date. Skips removals.")
     args = parser.parse_args(argv)
 
-    api_key = os.environ.get("MENERIO_HUB_API_KEY")
+    api_key = os.environ.get("MENERIO_API_KEY")
     if not api_key:
-        print("MENERIO_HUB_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
+        print("MENERIO_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
               "(Windows) or . scripts/secrets.sh (Linux) first.", file=sys.stderr)
         return 2
 

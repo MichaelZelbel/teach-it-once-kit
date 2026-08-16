@@ -48,7 +48,7 @@ python3 tools/world-pull.py --apply
 Both need one thing in your environment first, the key you made in Chapter 24:
 
 ```
-export MENERIO_HUB_API_KEY=your-key-here
+export MENERIO_API_KEY=your-key-here
 ```
 
 ## What you do with them

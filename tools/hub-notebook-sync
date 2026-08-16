@@ -51,10 +51,10 @@ fi
 # here, which is a normal and complete way to own a hub.
 KEY="${HUB_AGE_KEY:-$HOMEDIR/.hub/age-key.txt}"
 STORE="$HUB/secrets/hub-secrets.env.age"
-if [ -z "${MENERIO_HUB_API_KEY:-}" ] && [ -r "$KEY" ] && [ -f "$STORE" ] && command -v age >/dev/null 2>&1; then
+if [ -z "${MENERIO_API_KEY:-}" ] && [ -r "$KEY" ] && [ -f "$STORE" ] && command -v age >/dev/null 2>&1; then
   eval "$(age -d -i "$KEY" "$STORE" 2>/dev/null | sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=\(.*\)$/export \1='"'"'\2'"'"'/p')" 2>/dev/null || true
 fi
-if [ -z "${MENERIO_HUB_API_KEY:-}" ]; then
+if [ -z "${MENERIO_API_KEY:-}" ]; then
   say "no notebook is connected on this computer, nothing to do"
   exit 0
 fi
