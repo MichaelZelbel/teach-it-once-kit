@@ -1,0 +1,81 @@
+#!/bin/sh
+# hub-notebook-sync — send what changed in your hub up to your notebook, by itself.
+#
+# WHAT THIS IS FOR. Your hub is a folder of text files on your computer. Your notebook
+# (Chapter 24) is the thing that can search those files by meaning instead of by exact
+# word. For that to be useful it has to hold a current copy, and until something ran on
+# a schedule, it only ever held whatever was true the last time somebody typed a command.
+#
+# Two things start it, and neither needs you:
+#   - the moment you save a change (the post-commit hook in your hub folder)
+#   - once an hour, for whatever happened while the computer was asleep
+#
+# IT IS SILENT AND HARMLESS WHEN YOU HAVE NO NOTEBOOK. A hub built from the book has no
+# notebook and needs none: everything in the book works on plain files. No connection
+# means no work, no error and no daily complaint about a thing you never asked for.
+#
+# Usage: hub-notebook-sync [--hub DIR] [--verbose]
+set -u
+
+HUB=""
+VERBOSE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --hub)     HUB="${2:-}"; shift 2 ;;
+    --verbose) VERBOSE=1; shift ;;
+    *) shift ;;
+  esac
+done
+
+# Never use a bare $HOME: a scheduled job can be started with almost no environment at all.
+HOMEDIR="${HOME:-}"
+[ -n "$HOMEDIR" ] || HOMEDIR="$(getent passwd "$(id -u)" 2>/dev/null | cut -d: -f6)"
+[ -n "$HOMEDIR" ] || HOMEDIR=/tmp
+
+LOG="$HOMEDIR/.hub/notebook-sync.log"
+mkdir -p "$HOMEDIR/.hub" 2>/dev/null || true
+say() { [ -n "$VERBOSE" ] && echo "$*"; echo "$(date 2>/dev/null) $*" >> "$LOG" 2>/dev/null || true; }
+
+# Where the hub is was written down when this computer was joined, because a job started
+# by the schedule cannot look around and guess.
+if [ -z "$HUB" ] && [ -r "$HOMEDIR/.hub/device.env" ]; then
+  HUB="$(sed -n 's/^[[:space:]]*HUB_DIR=//p' "$HOMEDIR/.hub/device.env" | head -1)"
+fi
+if [ -z "$HUB" ] || [ ! -d "$HUB" ]; then
+  say "no hub folder recorded on this computer, nothing to do"
+  exit 0
+fi
+
+# The connection travels with the folder: one small key on this computer opens the
+# credentials kept inside the hub. No key, or no credentials, means there is no notebook
+# here, which is a normal and complete way to own a hub.
+KEY="${HUB_AGE_KEY:-$HOMEDIR/.hub/age-key.txt}"
+STORE="$HUB/secrets/hub-secrets.env.age"
+if [ -z "${MENERIO_HUB_API_KEY:-}" ] && [ -r "$KEY" ] && [ -f "$STORE" ] && command -v age >/dev/null 2>&1; then
+  eval "$(age -d -i "$KEY" "$STORE" 2>/dev/null | sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=\(.*\)$/export \1='"'"'\2'"'"'/p')" 2>/dev/null || true
+fi
+if [ -z "${MENERIO_HUB_API_KEY:-}" ]; then
+  say "no notebook is connected on this computer, nothing to do"
+  exit 0
+fi
+
+PY=""
+for c in python3 python; do command -v "$c" >/dev/null 2>&1 && { PY="$c"; break; }; done
+if [ -z "$PY" ]; then
+  say "Python is not on this computer, so the notebook cannot be updated"
+  exit 0
+fi
+
+SELF_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+SYNC="$SELF_DIR/notebook-sync.py"
+[ -f "$SYNC" ] || SYNC="$HUB/tools/notebook-sync.py"
+if [ ! -f "$SYNC" ]; then
+  say "the notebook program is not installed on this computer"
+  exit 0
+fi
+
+out="$("$PY" "$SYNC" --apply --repo-root "$HUB" 2>&1)"
+rc=$?
+say "sync exit $rc: $(printf '%s' "$out" | tail -3 | tr '\n' ' ')"
+[ -n "$VERBOSE" ] && printf '%s\n' "$out"
+exit 0
