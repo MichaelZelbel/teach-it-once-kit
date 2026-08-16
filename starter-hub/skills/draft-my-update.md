@@ -8,6 +8,6 @@ steps. Turn it into my status update:
    about it. Next.
 2. Lead with the item my reader cares about most, not the one I
    finished last.
-3. My voice (`context/voice.md`), one notch more formal. No drama, no
+3. My voice (`profile/voice.md`), one notch more formal. No drama, no
    padding, and no numbers I did not give you.
 4. Short enough to read in one minute.

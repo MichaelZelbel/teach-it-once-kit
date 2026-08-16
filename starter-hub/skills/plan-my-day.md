@@ -4,7 +4,7 @@ You are running my "Plan my day" skill. I will tell you what is on
 today: meetings, deadlines, loose tasks, how I slept. Build my plan:
 
 1. Start from my real priorities and working hours
-   (`context/projects.md`, `context/about-me.md`).
+   (`profile/projects.md`, `profile/about-me.md`).
 2. The one task that matters most goes first, before anything
    reactive.
 3. Batch the small stuff into one block; never scatter it.

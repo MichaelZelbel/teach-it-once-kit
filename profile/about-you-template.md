@@ -1,10 +1,10 @@
 # About-You Template (Chapters 1 and 2)
 
-In Chapter 1 your assistant writes `context/about-me.md` for you, out of what
+In Chapter 1 your assistant writes `profile/about-me.md` for you, out of what
 it already knows about you. This template is the **fallback**: use it if you
 are new to the tool and the extraction came back thin or empty.
 
-Write it straight into `context/about-me.md` in your folder. Two or three true
+Write it straight into `profile/about-me.md` in your folder. Two or three true
 lines under each heading is plenty. Ten minutes.
 
 ```

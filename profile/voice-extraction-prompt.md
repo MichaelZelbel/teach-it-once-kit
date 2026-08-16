@@ -1,6 +1,6 @@
 # Voice Extraction (Chapter 7)
 
-A one-time job that fills `context/voice.md`. You do not describe your voice.
+A one-time job that fills `profile/voice.md`. You do not describe your voice.
 You show it, and let your assistant do the describing, because it can count
 habits you have never noticed about yourself.
 
@@ -25,7 +25,7 @@ In Cowork, with your folder attached:
 
 ```
 Read every file in inbox/writing-samples/. Study how I actually write,
-then write context/voice.md as a set of concrete, mechanical rules
+then write profile/voice.md as a set of concrete, mechanical rules
 another writer could follow: typical sentence length, how I open and
 close a message, how direct I am, how I deliver bad news, words and
 phrases I really use, and the words I would clearly never use. Do not

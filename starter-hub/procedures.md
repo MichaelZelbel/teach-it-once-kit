@@ -21,7 +21,7 @@ Filled example:
 
 ## Morning brief
 
-Does: reads my context files and writes today's brief before I start work.
+Does: reads my profile files and writes today's brief before I start work.
 Rhythm: daily, 07:00.             Lands: brief/YYYY-MM-DD.md in this folder.
 Lives: Claude, Scheduled tasks.   Off-switch: the task's own page, the
                                   switch next to the name.

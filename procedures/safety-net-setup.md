@@ -42,7 +42,7 @@ Undo the last change to skills/plan-my-day.md.
 ```
 
 ```
-I let something overwrite context/voice.md and it is now three useless
+I let something overwrite profile/voice.md and it is now three useless
 lines. Put it back the way it was, and show me what you restored.
 ```
 

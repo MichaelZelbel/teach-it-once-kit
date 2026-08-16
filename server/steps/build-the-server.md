@@ -58,7 +58,7 @@ Do this straight after the folder arrives, before anything else writes to it.
 Every AI assistant keeps its notes about the reader in a folder belonging to the
 tool, on one machine. Left alone, that means the server's assistant and the
 laptop's assistant each learn things the other never sees. One command points the
-tool's folder at `memory/` inside their hub, so there is one memory and git
+tool's folder at `observations/` inside their hub, so there is one memory and git
 carries it:
 
 ```bash

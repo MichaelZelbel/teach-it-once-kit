@@ -4,11 +4,11 @@ One prompt. Run it whenever the answers start feeling slightly off-target, and
 always at the start of a spring-clean.
 
 ```
-Read every file in context/. Describe my current life and work back to
+Read every file in profile/. Describe my current life and work back to
 me from those files only: who I am, who matters, what I am working on,
 what my priorities are, and how I want to be spoken to. Then list
 anything in those files that is out of date, contradicts something
-else, or is too vague to act on. Do not look outside context/ and do
+else, or is too vague to act on. Do not look outside profile/ and do
 not change anything yet.
 ```
 

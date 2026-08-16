@@ -15,13 +15,13 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 1. What Your AI Already Knows About You | `context/bring-your-context-with-you.md` (the export prompt), `context/about-you-template.md` (fallback only) | ready |
-| 4. The Folder Is the System | `starter-hub/` (eight names, including `starter-hub/memory/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
-| 5. The People Who Matter | `context/people-interview.md` | ready |
-| 6. Projects and Priorities | `context/projects-interview.md` | ready |
-| 7. Your Voice | `context/voice-extraction-prompt.md` | ready |
-| 8. Capture as You Live | `context/capture-checklist.md`, `starter-hub/memory/MEMORY.md` (the notebook the assistant keeps) | ready |
-| 9. Keeping It True | `context/mirror-test.md`, `context/spring-clean-checklist.md` | ready |
+| 1. What Your AI Already Knows About You | `profile/bring-your-context-with-you.md` (the export prompt), `profile/about-you-template.md` (fallback only) | ready |
+| 4. The Folder Is the System | `starter-hub/` (eight names, including `starter-hub/observations/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
+| 5. The People Who Matter | `profile/people-interview.md` | ready |
+| 6. Projects and Priorities | `profile/projects-interview.md` | ready |
+| 7. Your Voice | `profile/voice-extraction-prompt.md` | ready |
+| 8. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | ready |
+| 9. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
 | 10. Your App Builds the First One | `skills/practice-texts.md` | building |
 | 11. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
 | 12. Your First Five Skills | `skills/first-five-skills.md`, `starter-hub/skills/` | ready |
@@ -41,13 +41,13 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 All optional. The book works without every row below.
 
 > **Chapter 23 rewritten (2026-08-13).** Menerio is taught as the notebook notes are born in,
-> never as a copy of the context folder. `menerio/folder-to-memory.md` (the import prompt, the
+> never as a copy of the profile folder. `menerio/folder-to-memory.md` (the import prompt, the
 > "change it in the folder first" rule and the quarterly re-import) is removed, replaced by
 > `menerio/the-notebook.md`. Chapter 24's stranger test now runs on captured notes.
 
 > **`menerio/ai-memory-transport.md` and `menerio/interview-transfer.md` have no chapter row on
 > purpose.** They are the Menerio-specific versions of the same move. The general one, which works
-> with no extra product at all, is Chapter 1's `context/bring-your-context-with-you.md`. Restored
+> with no extra product at all, is Chapter 1's `profile/bring-your-context-with-you.md`. Restored
 > 2026-08-09: the 2026-07-26 files-first renumbering left Chapter 1 holding only the FALLBACK
 > template, so the kit taught the reader to fill a folder by hand while the prompt that empties
 > their old AI into it sat in a folder nothing pointed at.
@@ -73,7 +73,8 @@ from the book: nothing in the reader's text states a total duration for building
 replacement card carries the same build order measured in sittings and in what the reader has at
 the end of each one, with no days, weeks or months anywhere on it.
 
-Removed 2026-07-26: `context/people-brief-template.md`, superseded by `context/people-interview.md`.
+Removed 2026-07-26: `people-brief-template.md` (then in `context/`, now `profile/`), superseded by
+`profile/people-interview.md`.
 Removed 2026-07-26 (R4b): `skills/skill-library-template.md`. The folder is the library now, so a
 separate master-copy document has nothing left to do. What survived of it (naming rules, the
 master-copy habit) moved into Chapters 10 and 14.
@@ -96,10 +97,10 @@ New and rewritten 2026-08-09 (batch T, "the folder that does not start empty"):
 drawers, seeded and self-explaining; the library is not `skills/`, and the archive carries the
 honest limit that Claude Desktop keeps no local conversation store to harvest),
 `starter-hub/AGENTS.md` (the never-load-`prompts/` rule),
-`context/bring-your-context-with-you.md` (the four wording fixes: ask for a file, say what to do
+`profile/bring-your-context-with-you.md` (the four wording fixes: ask for a file, say what to do
 when it runs long, ask for prompts by job rather than by count, and ban keys outright; plus filing
 into `prompts/library/` rather than `skills/`), `procedures/outside-ai-check.md` (new, the monthly
-question carried inside Chapter 20's weekly review), `starter-hub/memory/MEMORY.md` (the example
+question carried inside Chapter 20's weekly review), `starter-hub/observations/MEMORY.md` (the example
 row moved inside a comment after a cold run left it sitting in the list like a real memory, the
 same defect R6 fixed in `procedures.md`).
 

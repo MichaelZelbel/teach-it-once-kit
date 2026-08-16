@@ -258,7 +258,7 @@ will remember which machine sends the thing.
 2026-07-26 18:20:44 sent and pushed
 ```
 
-Cron woke it, it pulled the folder, read the context files, wrote the brief, sent
+Cron woke it, it pulled the folder, read the profile files, wrote the brief, sent
 it to the phone, and pushed one file back to GitHub. Just the brief. No keys.
 
 Two commands worth remembering afterwards:

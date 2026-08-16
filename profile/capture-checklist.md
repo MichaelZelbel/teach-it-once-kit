@@ -67,8 +67,8 @@ Two minutes, once a week:
 
 ```
 Go through everything in inbox/ except the writing-samples folder. For
-each capture decide: does it belong in a context file, or is it noise?
-Put the keepers in the right file in context/ in my own words, tell me
+each capture decide: does it belong in a profile file, or is it noise?
+Put the keepers in the right file in profile/ in my own words, tell me
 what you moved and where, and delete the capture files you have filed.
 Ask me before deleting anything you are unsure about.
 ```

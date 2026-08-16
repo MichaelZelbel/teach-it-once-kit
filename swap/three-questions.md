@@ -14,7 +14,7 @@ now? Answer from what is in the folder. Do not change anything.
 
 It named the owner, listed the red lines from `AGENTS.md`, and then went further than asked:
 
-> **File I'd check for what matters most right now:** `context/projects.md` ... priority one is
+> **File I'd check for what matters most right now:** `profile/projects.md` ... priority one is
 > Nadia's 20-card set, deadline **Tue 28 Jul**, 5 cards in revision (4 days late, each round takes
 > 3 days), 3 not started, and Nadia hasn't been told about the slip.
 

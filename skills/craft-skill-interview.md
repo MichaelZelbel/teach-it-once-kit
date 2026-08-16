@@ -39,8 +39,8 @@ Build a proposed skill only if it passes all three filters:
 
 Say "write number 1". Each one lands as a file in `skills/`, same anatomy
 as everything else: the job, the shape, the rules. Read the file before
-you accept it, and check that it names the context files it depends on
-(`context/projects.md`, `context/voice.md`) rather than assuming.
+you accept it, and check that it names the profile files it depends on
+(`profile/projects.md`, `profile/voice.md`) rather than assuming.
 
 Expect to feed each craft skill two or three corrections in its first
 week. That is the recipe learning your taste. Chapter 14 turns those

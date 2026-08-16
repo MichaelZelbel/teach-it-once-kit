@@ -33,7 +33,7 @@ git clone https://github.com/MichaelZelbel/teach-it-once-kit.git
 ## What is where
 
 - `starter-hub/`: the folder that becomes your own system. Copy this whole folder and it is your hub. Everything else here fills it up.
-- `context/`: Part II assets. The about-you template, the people and projects interviews, the voice extraction prompt, the capture and spring-clean checklists.
+- `profile/`: Part II assets. The about-you template, the people and projects interviews, the voice extraction prompt, the capture and spring-clean checklists.
 - `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, the packaging and upload guide, practice texts.
 - `procedures/`: Part V assets. Morning brief, weekly review, watchdog, the procedure register, the red lines.
 - `living/`: the two-questions card, the privacy audit checklist, the saved-prompt card, the printable build-order card.

@@ -1,13 +1,13 @@
 # Projects and Priorities Interview (Chapter 6)
 
-Fills `context/projects.md`: what you are actually trying to get done, and
+Fills `profile/projects.md`: what you are actually trying to get done, and
 what wins when two of those collide.
 
 ## The prompt
 
 ```
-Read context/about-me.md and context/people.md, then help me fill in
-context/projects.md. Interview me about what I am actually trying to
+Read profile/about-me.md and profile/people.md, then help me fill in
+profile/projects.md. Interview me about what I am actually trying to
 get done. One question at a time, no more than eight. I want three
 things out of it: every live project with its deadline and its real
 state; my top three priorities in order; and one line saying which one

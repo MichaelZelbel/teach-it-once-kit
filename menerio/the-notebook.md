@@ -45,7 +45,7 @@ way you wrote it.
 
 ## What happened to the folder import
 
-Older printings of Chapter 23 imported the context folder into Menerio and asked you to
+Older printings of Chapter 23 imported the profile folder into Menerio and asked you to
 re-import quarterly. That design made you the sync mechanism between two copies of one fact,
 and it is retired. The folder never needed a copy: your assistant reads the folder at your
 desk, the connector (Chapter 24) lets it read the notebook anywhere, and Chapters 26 and 27

@@ -29,8 +29,8 @@ things:
 2. **The never list is real.** Every rule in it should come from
    something that has actually annoyed you.
 3. **It names the files it needs.** If the recipe depends on your voice
-   or your projects, it should say `context/voice.md` and
-   `context/projects.md`, not "you know my style".
+   or your projects, it should say `profile/voice.md` and
+   `profile/projects.md`, not "you know my style".
 
 ## Naming
 

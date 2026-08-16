@@ -1,7 +1,7 @@
 # Weekly Review Setup (Chapter 20)
 
 The procedure that keeps the rest of the system true. It reads your
-context files and your `inbox/`, tells you what changed, asks you the one
+profile files and your `inbox/`, tells you what changed, asks you the one
 question only you can answer, and hands you your weekly admin as a list
 with the file names already filled in.
 
@@ -11,14 +11,14 @@ In a session with your folder attached:
 
 ```
 Build me a weekly review. Write it as a skill file in
-skills/weekly-review.md. When it runs it should read my context files
+skills/weekly-review.md. When it runs it should read my profile files
 and everything in inbox/, then write the review as a new file in
 reviews/, named with the date, in four parts:
 1) what changed in my projects and people since last week, taken only
    from the files, and where it knows nothing it says so plainly;
 2) the one question only I can answer, asked plainly: what actually
    happened last week that mattered;
-3) the two or three things in inbox/ that belong in my context files,
+3) the two or three things in inbox/ that belong in my profile files,
    each named with the file it should go to;
 4) the one thing my priorities say I should protect this week;
 5) ONLY when this is the first review of a calendar month: ask me
@@ -70,7 +70,7 @@ point.
 2. Have it make the three moves under "Move to context". They are
    already written out: source file on the left, destination file on
    the right.
-3. If a priority shifted, tell it that too, so `context/projects.md`
+3. If a priority shifted, tell it that too, so `profile/projects.md`
    changes while the coffee is still warm.
 
 Your context feeds your procedures, and now a procedure feeds your

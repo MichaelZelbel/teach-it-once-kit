@@ -28,8 +28,8 @@ connect a notebook**, and a reader who never connects one can ignore both.
 
 - **`notebook-sync.py`** sends copies of your hub files up to your notebook so you
   can search them by meaning instead of by exact word (Chapter 24). It sends
-  `memory/`, `skills/` and each decision in `decisions.md` separately. It does not
-  send `context/` or `AGENTS.md`, because your assistant reads those at the start of
+  `observations/`, `skills/` and each decision in `decisions.md` separately. It does not
+  send `profile/` or `AGENTS.md`, because your assistant reads those at the start of
   every session anyway, and a search result that repeats what it is already reading
   is noise. Your files are never changed; the copies are.
 - **`world-pull.py`** brings the other direction down: the people, dated things and

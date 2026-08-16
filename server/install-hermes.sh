@@ -29,7 +29,7 @@ set -uo pipefail
 HUB="${HUB:-$HOME/hub}"
 BRAIN="$HUB/AGENTS.md"
 
-# Hermes reads a context file up to this many characters and no further.
+# Hermes reads a profile file up to this many characters and no further.
 CEILING=20000
 SAFE=19000
 

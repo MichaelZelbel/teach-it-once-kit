@@ -4,7 +4,7 @@ Optional. Chapters 23 and 24 only. Everything else in the book works without thi
 
 Menerio is the notebook: the place where notes born out in the world (phone, hallway, shop)
 are already home, and which every AI tool you use can read through one connector. It is not a
-copy of your context folder, and nothing is ever imported from the folder into it. One fact,
+copy of your profile folder, and nothing is ever imported from the folder into it. One fact,
 one home.
 
 | File | What it is for |

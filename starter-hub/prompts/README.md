@@ -31,12 +31,12 @@ Getting it wrong is quiet in both directions. A saved prompt in `skills/` never 
 because there is no job in your folder for it to do. A skill in `library/` can never be
 found, because nothing reads this folder on its own.
 
-## How this is different from `memory/`
+## How this is different from `observations/`
 
-`memory/` is what is true about you now. When one of those files turns out to be wrong you
+`observations/` is what is true about you now. When one of those files turns out to be wrong you
 correct it or delete it, and that is the right thing to do.
 
 A prompt you typed cannot be wrong. It is a record of something that happened, so time can
 only make it old, never false. The answer the AI gave is the same kind of thing: on that
-day, it replied this. That is why this folder only ever grows, and why `memory/` has no
+day, it replied this. That is why this folder only ever grows, and why `observations/` has no
 drawer like `archive/`.

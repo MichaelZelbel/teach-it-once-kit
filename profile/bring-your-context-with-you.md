@@ -128,9 +128,9 @@ attached and say:
 
 ```
 Read what-my-ai-knew.md at the top of this folder. File it into my folder:
-- WHO I AM goes into context/about-me.md
-- PEOPLE goes into context/people.md
-- PROJECTS goes into context/projects.md
+- WHO I AM goes into profile/about-me.md
+- PEOPLE goes into profile/people.md
+- PROJECTS goes into profile/projects.md
 - PREFERENCES AND RULES: add each one to AGENTS.md under a heading
   "What ChatGPT learned about how I work"
 - DECISIONS: append each to decisions.md with its date

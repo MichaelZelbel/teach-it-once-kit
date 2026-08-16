@@ -23,7 +23,7 @@ Once, in a session with your folder attached:
 Save the prompt I used in Chapter 1 to pull my context out of my old
 AI into prompts/library/bring-your-context-with-you.md, with a purpose
 line at the top saying what it is for and where it came from. The kit
-has the full text at context/bring-your-context-with-you.md.
+has the full text at profile/bring-your-context-with-you.md.
 ```
 
 ## Step 2: add the monthly part to your weekly review
@@ -50,7 +50,7 @@ two at once gets you a muddle rather than a saving.
 3. In a session with your folder attached, file it the way Chapter 4 filed the
    first one, and ask for only what is new to be added.
 
-The filing prompt is in `context/bring-your-context-with-you.md`, Step 4.
+The filing prompt is in `profile/bring-your-context-with-you.md`, Step 4.
 
 ## The one line that keeps this honest
 

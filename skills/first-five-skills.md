@@ -51,7 +51,7 @@ sometimes with a note about what I want to say. Draft the reply:
 1. If I gave you a note, that is the message; turn it into the reply.
    If not, propose the most sensible reply and mark every guess with
    [CHECK] so I can see it.
-2. Write in my voice (`context/voice.md`). Match the length and
+2. Write in my voice (`profile/voice.md`). Match the length and
    formality of the email I received, one notch calmer.
 3. Answer every question they asked, in their order.
 4. If I am saying no to something: early, direct, warm, no groveling.
@@ -65,7 +65,7 @@ You are running my "Plan my day" skill. I will tell you what is on
 today: meetings, deadlines, loose tasks, how I slept. Build my plan:
 
 1. Start from my real priorities and working hours
-   (`context/projects.md`, `context/about-me.md`).
+   (`profile/projects.md`, `profile/about-me.md`).
 2. The one task that matters most goes first, before anything
    reactive.
 3. Batch the small stuff into one block; never scatter it.
@@ -81,7 +81,7 @@ the meeting is with and what it is about; sometimes I will paste notes
 or the invite. Give me a brief:
 
 1. What this meeting is really about, in one sentence.
-2. What I know about the people in it (`context/people.md`); tell me
+2. What I know about the people in it (`profile/people.md`); tell me
    plainly if someone is a stranger to you.
 3. The three things I should say or ask, in order.
 4. The one thing I should not bring up, if any.
@@ -101,16 +101,16 @@ steps. Turn it into my status update:
    about it. Next.
 2. Lead with the item my reader cares about most, not the one I
    finished last.
-3. My voice (`context/voice.md`), one notch more formal. No drama, no
+3. My voice (`profile/voice.md`), one notch more formal. No drama, no
    padding, and no numbers I did not give you.
 4. Short enough to read in one minute.
 ```
 
 ## Why the file paths matter
 
-Notice that three of the five name a file in `context/`. That is not
+Notice that three of the five name a file in `profile/`. That is not
 decoration. A recipe that says "write in my voice" is asking the
-assistant to guess; a recipe that says `context/voice.md` is pointing at
+assistant to guess; a recipe that says `profile/voice.md` is pointing at
 something it can read. The difference shows up the first time you run a
 recipe somewhere cold: the one that names its files says what is missing,
 and the one that does not invents something plausible. Chapter 14 tests

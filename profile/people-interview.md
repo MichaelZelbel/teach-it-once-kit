@@ -1,21 +1,21 @@
 # People Interview (Chapter 5)
 
-Fills `context/people.md` by letting your assistant interview you, instead of
+Fills `profile/people.md` by letting your assistant interview you, instead of
 you staring at a blank file.
 
 ## Before you start
 
 Claude Desktop open, **Cowork** selected, your folder attached (Chapter 3),
-and `context/about-me.md` already in it (Chapters 1 and 2).
+and `profile/about-me.md` already in it (Chapters 1 and 2).
 
 ## The prompt
 
 ```
-Read context/about-me.md, then help me fill in context/people.md.
+Read profile/about-me.md, then help me fill in profile/people.md.
 Interview me about the people whose existence changes how I decide or
 how I word things. Start by telling me who you already suspect from my
 about-me file. Then ask me one question at a time, no more than eight
-in total. When we are done, write context/people.md yourself: one short
+in total. When we are done, write profile/people.md yourself: one short
 block per person, with their role, the one or two things that change
 how I deal with them, and anything live between us right now. Do not
 invent anyone.

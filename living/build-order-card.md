@@ -16,7 +16,7 @@ cannot name what you got, the rung is not finished.
 
 ## Take it out
 
-- [ ] 1. Extraction prompt, saved as `context/about-me.md` in `hub`
+- [ ] 1. Extraction prompt, saved as `profile/about-me.md` in `hub`
       (Ch 1). **You have:** what your AI already knew about you, in a
       file you own.
 - [ ] 2. The three cuts: wrong, private, padding (Ch 2). **You have:** a

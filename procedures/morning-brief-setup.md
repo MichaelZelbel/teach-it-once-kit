@@ -10,7 +10,7 @@ In a session with your folder attached, paste this:
 
 ```
 Build me a morning brief. Write it as a skill file in skills/, called
-morning-brief.md. When it runs, it should read my context files, work
+morning-brief.md. When it runs, it should read my profile files, work
 out what today actually needs from my projects, deadlines and people,
 and write the brief as a new file in brief/, named with today's date.
 Under 200 words, plain words, no pep talk, no invented facts. Where

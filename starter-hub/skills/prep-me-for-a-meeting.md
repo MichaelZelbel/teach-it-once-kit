@@ -5,7 +5,7 @@ the meeting is with and what it is about; sometimes I will paste notes
 or the invite. Give me a brief:
 
 1. What this meeting is really about, in one sentence.
-2. What I know about the people in it (`context/people.md`); tell me
+2. What I know about the people in it (`profile/people.md`); tell me
    plainly if someone is a stranger to you.
 3. The three things I should say or ask, in order.
 4. The one thing I should not bring up, if any.

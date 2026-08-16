@@ -37,7 +37,7 @@ import urllib.request
 # crowd out everything else, so it gets its own phase later.
 SYNC_SOURCES = [
     # Sync what gets looked UP. Skip what is already loaded: AGENTS.md and
-    # context/ are read at the start of every session, so a search result
+    # profile/ is read at the start of every session, so a search result
     # repeating them is noise.
     {"folder": "memory", "author": "machine"},
     {"folder": "skills", "author": "mixed"},
