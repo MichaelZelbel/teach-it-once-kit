@@ -10,12 +10,11 @@ Menerio, then **Settings**, then the **API Keys** tab. Press **Generate new API 
 after the tool or machine that will use it, because in six months you will want to know which
 key belongs where.
 
-Tick three boxes and leave the rest alone:
-
-- **Hub access** ("Let an assistant such as Claude, ChatGPT or your hub folder read and write
-  this memory."). Without this one the key is refused at the connector door.
-- **Notes** ("Read/write notes"). What the file sync writes.
-- **World** ("Entities, events and claims, read only"). What the world sync reads.
+The grid under **This key may touch** starts with every box ticked. For your own hub or
+assistant, leave it that way: full access is the right shape for the key you hold yourself.
+Untick boxes only for a key you hand to somebody else's app, and that key can never do more,
+whatever the app asks. (A refused tool call names the missing box, so a too-narrow key is a
+one-line fix, not a mystery.)
 
 The dialog then says, verbatim:
 
@@ -24,9 +23,10 @@ The dialog then says, verbatim:
 Believe it. Copy it into your password manager immediately. Never into your folder.
 
 **One key, not two.** Until 2026-08-16 Menerio handed out a separate `mnr_mcp_` token for the
-connector and an `mnr_` key for the API. The connector now takes the API key when it carries
-**Hub access**, so there is one key and one off-switch. Old `mnr_mcp_` tokens still work, and
-the **MCP Server** tab still lists them so any of them can be revoked; it no longer makes new ones.
+connector and an `mnr_` key for the API. Since 2026-08-18 any API key opens the connector, and
+the boxes on the key decide which tools answer, so there is one key and one off-switch. Old
+`mnr_mcp_` tokens still work, and the **MCP Server** tab still lists them so any of them can be
+revoked; it no longer makes new ones.
 
 ## The connection facts
 
@@ -34,8 +34,9 @@ the **MCP Server** tab still lists them so any of them can be revoked; it no lon
 - Transport: MCP Streamable HTTP.
 - Auth header: `Authorization: Bearer <key>`. Keys start `mnr_`.
 - Tools with nowhere to put a header: append `?key=<key>` to the URL instead.
-- If Menerio answers "This API key does not carry the `hub` scope", the key is real and the
-  **Hub access** box is not ticked. Edit the key on the **API Keys** tab.
+- If a tool call is refused with a message naming a box (for example "This key's boxes don't
+  include Notes"), the key is real and too narrow. Edit the key on the **API Keys** tab and
+  tick the named box.
 
 ## Door one: the chat app (no header field, so the key goes in the URL)
 
