@@ -340,6 +340,7 @@ def plan_pull(world, root, self_slug="me"):
     # copy. A hub-owned file is never in this list.
     seen_ids = {r["id"] for r in entities} | {r["id"] for r in events} | {r["id"] for r in claims}
     removals = []
+    menerio_owned = {"entities": 0, "events": 0, "claims": 0}
     for folder, existing in (
         ("entities", existing_entities),
         ("events", existing_events),
@@ -348,11 +349,12 @@ def plan_pull(world, root, self_slug="me"):
         for name, info in existing.items():
             if info["origin"] != MENERIO:
                 continue
+            menerio_owned[folder] += 1
             menerio_id = info["fields"].get("menerio_id", "").strip()
             if menerio_id and menerio_id not in seen_ids:
                 removals.append("world/{}/{}".format(folder, name))
 
-    return {"write": writes, "remove": sorted(removals)}
+    return {"write": writes, "remove": sorted(removals), "menerio_owned": menerio_owned}
 
 
 # --- talking to Menerio -----------------------------------------------------
@@ -377,7 +379,40 @@ class WorldClient:
         return payload.get("data") or {}
 
 
-def run_pull(world, root, client_label, apply_changes, self_slug="me"):
+# THE REMOVAL GUARD, because this pull runs unattended. A record deleted in
+# Menerio rightly takes its mirror copy with it. But an API that answers with a
+# truncated or empty list looks exactly like a mass deletion, and an hourly job
+# would execute it without anyone watching. So an unattended run refuses to
+# delete more than half of a folder's Menerio-owned files in one sweep (and
+# never trips over fewer than 20). The writes still land; only the removals
+# wait for a person to look. Override, after checking the notebook really did
+# shrink that much: --allow-mass-removal.
+MASS_REMOVAL_FLOOR = 20
+
+
+def guard_removals(plan):
+    """The subset of planned removals that an unattended run refuses to do.
+
+    Returns (safe_removals, refused_by_folder). refused_by_folder is empty when
+    everything may proceed.
+    """
+    by_folder = {}
+    for path in plan["remove"]:
+        folder = path.split("/")[1]
+        by_folder.setdefault(folder, []).append(path)
+    refused = {}
+    for folder, paths in by_folder.items():
+        owned = plan["menerio_owned"].get(folder, 0)
+        if len(paths) > MASS_REMOVAL_FLOOR and len(paths) * 2 > owned:
+            refused[folder] = len(paths)
+    if not refused:
+        return plan["remove"], {}
+    safe = [p for p in plan["remove"] if p.split("/")[1] not in refused]
+    return safe, refused
+
+
+def run_pull(world, root, client_label, apply_changes, self_slug="me",
+             allow_mass_removal=False):
     plan = plan_pull(world, root, self_slug=self_slug)
     print("{}: write {}  remove {}".format(client_label, len(plan["write"]), len(plan["remove"])))
     if not apply_changes:
@@ -387,12 +422,21 @@ def run_pull(world, root, client_label, apply_changes, self_slug="me"):
             print("  would remove {}".format(path))
         return plan
 
+    removals = plan["remove"]
+    if not allow_mass_removal:
+        removals, refused = guard_removals(plan)
+        for folder, count in sorted(refused.items()):
+            print("removal guard: {} of {} Menerio-owned {} files would vanish; "
+                  "skipped them. If the notebook really shrank that much, re-run "
+                  "with --allow-mass-removal.".format(
+                      count, plan["menerio_owned"].get(folder, 0), folder))
+
     for item in plan["write"]:
         target = root / item.path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(item.text, encoding="utf-8")
         print("  wrote  {}".format(item.path))
-    for path in plan["remove"]:
+    for path in removals:
         target = root / path
         if target.is_file():
             target.unlink()
@@ -400,24 +444,63 @@ def run_pull(world, root, client_label, apply_changes, self_slug="me"):
     return plan
 
 
+def resolve_self_slug(root, explicit=None):
+    """The entity slug that means the owner of this hub.
+
+    Order: the --self-slug flag, the HUB_SELF_SLUG environment variable, then
+    the entity file under world/entities/ whose frontmatter says `self: true`,
+    then "me". The file marker is the one that travels: it lives in the folder,
+    so every machine and every scheduled run agrees on who the owner is without
+    a flag being typed anywhere. A hub needs zero configuration this way.
+    """
+    if explicit:
+        return explicit
+    env = os.environ.get("HUB_SELF_SLUG")
+    if env:
+        return env
+    entities = pathlib.Path(root) / "world" / "entities"
+    if entities.is_dir():
+        for path in sorted(entities.glob("*.md")):
+            try:
+                text = path.read_text(encoding="utf-8")
+            except OSError:
+                continue
+            match = re.match(r"^---\n(.*?)\n---", text, re.S)
+            if not match:
+                continue
+            front = match.group(1)
+            if not re.search(r"^self:\s*true\s*$", front, re.M):
+                continue
+            slug = re.search(r"^slug:\s*(\S+)\s*$", front, re.M)
+            return slug.group(1) if slug else path.stem
+    return "me"
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Pull Menerio's World into world/.")
     parser.add_argument("--apply", action="store_true",
                         help="write the files. Without it, print what would happen.")
     parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--self-slug", default="me",
-                        help="the entity slug that means the owner of this hub")
+    parser.add_argument("--self-slug", default=None,
+                        help="the entity slug that means the owner of this hub. "
+                             "Unset, it is read from HUB_SELF_SLUG or from the "
+                             "world/entities file marked `self: true`.")
     parser.add_argument("--updated-since", default=None,
                         help="only records changed since this date. Skips removals.")
+    parser.add_argument("--allow-mass-removal", action="store_true",
+                        help="let one run delete more than half of a folder's "
+                             "Menerio-owned files. Unattended runs refuse that.")
     args = parser.parse_args(argv)
 
     api_key = os.environ.get("MENERIO_API_KEY")
     if not api_key:
-        print("MENERIO_API_KEY is not set. Run scripts/secrets.ps1 -Persist "
-              "(Windows) or . scripts/secrets.sh (Linux) first.", file=sys.stderr)
+        print("MENERIO_API_KEY is not set. Open a new terminal (the installer "
+              "teaches them the credential), or load it by hand: "
+              "eval \"$(hub-notebook-env)\"", file=sys.stderr)
         return 2
 
     root = pathlib.Path(args.repo_root).resolve()
+    args.self_slug = resolve_self_slug(root, args.self_slug)
     client = WorldClient(os.environ.get("MENERIO_BASE_URL", DEFAULT_BASE_URL), api_key)
     try:
         world = client.fetch(updated_since=args.updated_since)
@@ -442,7 +525,8 @@ def main(argv=None):
                 print("  would write  {}".format(item.path))
         return 0
 
-    run_pull(world, root, "world pull", args.apply, self_slug=args.self_slug)
+    run_pull(world, root, "world pull", args.apply, self_slug=args.self_slug,
+             allow_mass_removal=args.allow_mass_removal)
     return 0
 
 

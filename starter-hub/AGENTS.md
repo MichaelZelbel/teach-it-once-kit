@@ -14,6 +14,8 @@ purpose. If it contradicts something you believe about me, the file wins.
 - **Profile first.** My people are in `profile/people.md`, my projects and
   priorities in `profile/projects.md`, my writing voice in `profile/voice.md`.
   Use them without being asked.
+- **Pull first, push when done.** If this folder has a git remote, run
+  `git pull --rebase` before real work; when the work is done, commit and push.
 - **Skills are recipes.** Every file in `skills/` is a job I never want to
   explain again. When I name a skill, run its file exactly. When I correct
   the same thing twice, add the correction to the skill file.
