@@ -24,9 +24,9 @@ purpose. If it contradicts something you believe about me, the file wins.
   me, add the row in the same session. No unlisted procedures, ever.
 - **Decisions get written down.** When I make a real decision, append one
   line to `decisions.md` with the date and the why. Never edit old lines.
-- **Loose captures land in `inbox/`.** One file per capture. When we do the
-  weekly review, help me promote the keepers into profile files and empty
-  the inbox.
+- **Loose captures land in `inbox/`.** One file per capture. The weekly review
+  files the clear ones into my profile files itself and asks me only about the
+  doubtful; between reviews, file them when I ask you to.
 - **What you work out about me goes in `observations/`.** One file per fact,
   with a one-line description at the top. Read `observations/MEMORY.md` at the
   start of a session and open a fact file only when its subject comes up; do
