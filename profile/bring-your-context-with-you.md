@@ -123,7 +123,7 @@ you would otherwise make all over again with a new assistant.
 
 ## Step 4: file it into your folder
 
-Chapter 4 of the book is where the rooms exist. Then open a session with your folder
+Chapter 3 of the book is where the rooms exist. Then open a session with your folder
 attached and say:
 
 ```

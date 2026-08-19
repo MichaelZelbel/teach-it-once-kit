@@ -36,13 +36,13 @@ their repository cloned to `$HOME/hub` and a `git pull` that works with no
 password.
 
 **Then check what actually arrived.** If `$HOME/hub` is empty or has no
-`AGENTS.md`, they have not built the folder from Chapter 4 yet, or they pointed
+`AGENTS.md`, they have not built the folder from Chapter 3 yet, or they pointed
 at the wrong repository. Ask which:
 
 > That repository is empty. Two possibilities: this is a fresh repository you
 > made for this, or it is not the one holding your folder. If it is fresh, I can
-> put the book's starter folder in it and push, and you will have the same six
-> files Chapter 4 set up. Which is it?
+> put the book's starter folder in it and push, and you will have the same
+> rooms Chapter 3 set up. Which is it?
 
 If they want the starter folder:
 

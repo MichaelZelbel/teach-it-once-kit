@@ -1,9 +1,9 @@
 # Starter hub
 
-This folder is your personal AI system. Copy everything inside
-`starter-hub` into the `hub` folder you made in Chapter 1 (when your
-computer asks about replacing `profile/about-me.md`, keep your own),
-and point your assistant at it. Chapter 4 of the book walks through
+This folder is your personal AI system. The book's installer (Chapter 3)
+lays everything inside `starter-hub` into your `hub` folder for you;
+Appendix D is the by-hand road, a copy into an empty `hub` folder.
+Point your assistant at the result. Chapter 4 of the book walks through
 the layout; Parts II and III fill it up.
 
 **The folder names answer one question: when does your assistant read this?**
