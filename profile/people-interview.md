@@ -1,4 +1,4 @@
-# People Interview (Chapter 5)
+# People Interview (Chapter 6)
 
 Fills `profile/people.md` by letting your assistant interview you, instead of
 you staring at a blank file.
@@ -38,7 +38,7 @@ beats a phone book, and you can add to it forever.
 2. **What changes how you deal with them.** What they care about, what sets
    them off, how they like to be handled.
 3. **What is live right now** (optional). The part that goes stale, and what
-   Chapter 9 keeps honest.
+   Chapter 10 keeps honest.
 
 Specific beats complete. "Hates surprises and works months ahead" is worth
 more than three paragraphs of background.
@@ -48,7 +48,7 @@ more than three paragraphs of background.
 Give it your patterns, not your keys. For other people, use the
 over-the-shoulder test: **write only what you would be comfortable with them
 reading over your shoulder.** Their preferences, yes. Their private life, no.
-Chapter 15 turns this into a rule your assistant has to follow.
+Chapter 17 turns this into a rule your assistant has to follow.
 
 ## If you would rather write it by hand
 

@@ -1,7 +1,7 @@
 # world - your life as data
 
 **This room starts empty, and an empty one costs you nothing.** It fills the first time you
-connect a notebook and run the pull (Chapter 24). If you never connect one, you have an empty
+connect a notebook and run the pull (Chapter 26). If you never connect one, you have an empty
 folder and you have lost nothing.
 
 Everything here is one small text file, so a script can answer questions like "what changed about

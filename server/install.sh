@@ -2,7 +2,7 @@
 # =============================================================================
 # Teach It Once - the always-on server, in one line.
 #
-# Chapters 25 and 26 of the book. This puts your folder on a machine that never
+# Chapters 28 and 29 of the book. This puts your folder on a machine that never
 # sleeps, sends you a brief every morning, and lets you message your assistant
 # from your phone.
 #
@@ -152,7 +152,7 @@ KB_EXTRA_DIRS="$KIT_DIR $BOOTSTRAP_DIR"
 # --- Hand over ---------------------------------------------------------------
 mkdir -p "$HUB"
 
-PROMPT="Set up this always-on server for me, following Chapters 25 and 26 of the book Teach It Once. \
+PROMPT="Set up this always-on server for me, following Chapters 28 and 29 of the book Teach It Once. \
 Read and follow $KIT_DIR/server/steps/build-the-server.md from the top. It tells you which question \
 sheets to use and in what order; the shared ones are in $BOOTSTRAP_DIR/steps/. \
 My folder should end up at $HUB, my settings file at $HOME/.hub-env, and the kit you can copy files \

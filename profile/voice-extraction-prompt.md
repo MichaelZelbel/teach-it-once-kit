@@ -1,4 +1,4 @@
-# Voice Extraction (Chapter 7)
+# Voice Extraction (Chapter 8)
 
 A one-time job that fills `profile/voice.md`. You do not describe your voice.
 You show it, and let your assistant do the describing, because it can count
@@ -66,4 +66,4 @@ floor, not a cage.
 ## The boundary
 
 It drafts, you send. The better it sounds, the more carefully you read it
-before it leaves the house (Chapter 22).
+before it leaves the house (Chapter 24).

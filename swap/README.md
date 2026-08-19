@@ -1,6 +1,6 @@
 # swap
 
-Chapter 26: run your folder on a different company's tool and a different company's model.
+Chapter 30: run your folder on a different company's tool and a different company's model.
 
 - `opencode.json`: drop this next to your `AGENTS.md`. Nine lines: which brain to hire, what it
   must ask before touching, and where your memory lives. Notice what is not in it: your context,
@@ -11,7 +11,7 @@ Chapter 26: run your folder on a different company's tool and a different compan
 ## The finding worth carrying away
 
 The same `AGENTS.md` behaves differently in different tools. OpenCode reads it by name when it
-opens a folder. The assistant used through Parts I to V does not, which is why Chapter 15 has you
+opens a folder. The assistant used through Parts I to V does not, which is why Chapter 17 has you
 add a one-line `CLAUDE.md` pointing at it.
 
 Same file, same rules, different doorbell. The words travel as they are; only the wiring gets

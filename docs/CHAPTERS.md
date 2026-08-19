@@ -17,6 +17,12 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > gained the rows this file always owed them. The dated notes above keep the numbering of their
 > own day.
 
+> **Renumbering (2026-08-20, Batch AB).** A new Chapter 11 ("Be Nice to the Database", the
+> psychology chapter) closes Part II, and every chapter from the old 11 up moved one up. It has
+> no kit file. In the same sweep, every kit file OUTSIDE this map had its chapter references
+> resolved by content: most still carried pre-AA numbers, some pre-W, because earlier sweeps
+> only kept this map current. The dated notes above keep the numbering of their own day.
+
 ## Parts I to V (restructured, final)
 
 | Chapter | Kit asset | Status |
@@ -30,19 +36,19 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 8. Your Voice | `profile/voice-extraction-prompt.md` | ready |
 | 9. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | ready |
 | 10. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
-| 11. Your App Builds the First One | `skills/practice-texts.md` | building |
-| 12. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
-| 13. Your First Five Skills | `skills/first-five-skills.md`, `starter-hub/skills/` | ready |
-| 14. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
-| 15. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
-| 16. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md` | ready |
-| 17. The Safety Net | `procedures/safety-net-setup.md` | ready |
-| 18. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
-| 19. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
-| 20. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
-| 21. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch) | ready |
-| 22. Watchdogs | `procedures/watchdog-setup.md` | ready |
-| 23. Trust, but Verify | `living/two-questions-card.md` | ready |
+| 12. Your App Builds the First One | `skills/practice-texts.md` | building |
+| 13. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
+| 14. Your First Five Skills | `skills/first-five-skills.md`, `starter-hub/skills/` | ready |
+| 15. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
+| 16. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
+| 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md` | ready |
+| 18. The Safety Net | `procedures/safety-net-setup.md` | ready |
+| 19. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
+| 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
+| 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
+| 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch) | ready |
+| 23. Watchdogs | `procedures/watchdog-setup.md` | ready |
+| 24. Trust, but Verify | `living/two-questions-card.md` | ready |
 
 ## Part VI (restructured, final)
 
@@ -62,14 +68,14 @@ All optional. The book works without every row below.
 
 | Chapter | Kit asset | Status |
 |---|---|---|
-| 24. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
-| 25. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
-| 26. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, and the printed `setup-hub.sh` line | ready |
-| 27. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
-| 28. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
-| 29. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
-| 30. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
-| 31. A Tour of My Hub, and the Road On | none (prose) | ready |
+| 25. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
+| 26. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
+| 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, and the printed `setup-hub.sh` line | ready |
+| 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
+| 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
+| 30. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
+| 31. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
+| 32. A Tour of My Hub, and the Road On | none (prose) | ready |
 
 ## Back matter
 

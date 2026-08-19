@@ -1,5 +1,5 @@
 #!/bin/bash
-# Morning brief on a machine that never sleeps. Chapter 25.
+# Morning brief on a machine that never sleeps. Chapter 28.
 #
 # Install: save as ~/brief.sh, then `chmod +x ~/brief.sh`
 # Schedule: `crontab -e`, then one line:   0 6 * * * /home/ai/brief.sh

@@ -1,4 +1,4 @@
-# House Rules and Red Lines (Chapter 15)
+# House Rules and Red Lines (Chapter 17)
 
 Your red lines are the short list of things your AI may never do without
 your explicit yes, plus the habits that keep it from lying to you politely.

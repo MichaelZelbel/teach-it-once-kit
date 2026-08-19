@@ -1,4 +1,4 @@
-# The Saved Prompt Card (Chapters 11 and 28)
+# The Saved Prompt Card (Chapters 13 and 31)
 
 Most of your skills are read by your assistant, out of your `skills/`
 folder, without you doing anything. A few are not. The prompt that makes
@@ -48,8 +48,8 @@ prompt enough. Come back after it disappoints you twice.
 
 ## Rule 3: put a copy where you can reach it
 
-The file is on the computer you are not standing at. That is the whole
-problem in Chapter 28. Put a copy in a prompt manager, which is a website
+The file is on the computer you are not sitting at. That is the whole
+problem in Chapter 31. Put a copy in a prompt manager, which is a website
 that keeps your prompts for you, so that:
 
 - you can open it on a phone,

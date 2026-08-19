@@ -1,4 +1,4 @@
-# The Skill Interview (Chapter 11)
+# The Skill Interview (Chapter 13)
 
 Do not write a recipe from a blank page. Answer questions about how you
 like the job done, and let the assistant write the file.
@@ -44,6 +44,6 @@ Start with the verb and say whose way it is:
 
 Say the name: "Run my summarize skill on this", "Answer email my way".
 A recipe sitting in `skills/` does not fire because a matching job walked
-past. Installing it as a Skill in the app fixes that properly (Chapter 11
+past. Installing it as a Skill in the app fixes that properly (Chapter 13
 shows the upload): the app matches your request against the skill's
 description and runs it for you.

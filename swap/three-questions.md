@@ -1,4 +1,4 @@
-# The three questions (Chapter 26)
+# The three questions (Chapter 30)
 
 The entrance exam you give any new hire on their first morning. Open a terminal in your folder,
 type `opencode`, and ask these three. Answers below are from a real run on 2026-07-26, on a
@@ -35,7 +35,7 @@ It quoted real notes, and then did something nobody asked for:
 > search, but it is a standalone preference note **not attributed to Nadia**, memory doesn't say
 > whose rule it is.
 
-That is Chapter 22's habit arriving unprompted, from a model that has never met you.
+That is Chapter 24's habit arriving unprompted, from a model that has never met you.
 
 ## Question three: can you run my procedures?
 

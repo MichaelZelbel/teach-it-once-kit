@@ -1,14 +1,14 @@
-# Practice Texts (Chapters 10, 11 and 14)
+# Practice Texts (Chapters 12, 13 and 16)
 
 Messy sample texts for testing your **Summarize for me** skill (or any
 skill that eats pasted text). Both are fictional. Name your
 summarize skill, paste one of these under it, and watch the recipe do its
 work. (Paste it with a bare "Summarize this:" instead, with no Skill
 installed, and you will get a perfectly good generic summary that ignores
-the file in your folder entirely. That is Chapter 11's lesson, and it is
+the file in your folder entirely. That is Chapter 13's lesson, and it is
 worth seeing once.)
 
-## Text 1: the gym newsletter (used in Chapters 10 and 11)
+## Text 1: the gym newsletter (used in Chapters 12 and 13)
 
 ```
 Hi everyone, hope you are all doing great and enjoying the summer so far!
@@ -31,7 +31,7 @@ at the gym!
 What a good run finds: the one action that costs money (re-confirm the
 direct-debit mandate by the 31st), with its date, on its own line.
 
-## Text 2: the property manager's letter (used in Chapter 14)
+## Text 2: the property manager's letter (used in Chapter 16)
 
 ```
 Dear residents, as announced in spring the house facade will be

@@ -1,4 +1,4 @@
-# The three traps (Chapter 25)
+# The three traps (Chapter 28)
 
 All three happened while building this chapter's server from a blank Ubuntu machine on
 2026-07-26. They are in the order you will meet them.
@@ -58,4 +58,4 @@ messages you to say so. Four lines, written on day one.
 The folder on the server is a clone, and clones drift. If you edit the folder on your laptop and
 forget to push, the server works from yesterday's facts and will not tell you, because from where
 it stands yesterday's facts are the facts. Pull before you work, push when you finish. Same
-habit as Chapter 16, now with a second machine depending on it.
+habit as Chapter 18, now with a second machine depending on it.

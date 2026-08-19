@@ -1,4 +1,4 @@
-# Spring-Clean Checklist (Chapter 9)
+# Spring-Clean Checklist (Chapter 10)
 
 Fifteen minutes, quarterly (monthly if your work moves fast). Run it sooner
 whenever answers start feeling slightly off-target.

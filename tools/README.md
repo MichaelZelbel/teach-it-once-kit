@@ -20,14 +20,14 @@ the outside.
   text you actually saw, so you can later ask "what was that answer again" as well
   as "what did I type".
 
-Together they are the program Chapter 4 and Chapter 28 mean when they say
+Together they are the program Chapter 4 and Chapter 31 mean when they say
 *"a program fills it"*.
 
-The other two are the two arrows in Chapter 23's diagram. **Neither runs unless you
+The other two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.
 
 - **`notebook-sync.py`** sends copies of your hub files up to your notebook so you
-  can search them by meaning instead of by exact word (Chapter 24). It sends
+  can search them by meaning instead of by exact word (Chapter 26). It sends
   `observations/`, `skills/` and each decision in `decisions.md` separately. It does not
   send `profile/` or `AGENTS.md`, because your assistant reads those at the start of
   every session anyway, and a search result that repeats what it is already reading
@@ -45,7 +45,7 @@ python3 tools/world-pull.py                 # dry run, shows what it would write
 python3 tools/world-pull.py --apply
 ```
 
-Both need one thing in your environment first, the key you made in Chapter 24:
+Both need one thing in your environment first, the key you made in Chapter 26:
 
 ```
 export MENERIO_API_KEY=your-key-here
@@ -74,7 +74,7 @@ again. An empty value (or `-`) means nothing is read on that machine.
 ## The honest limit
 
 They can only harvest from an AI tool that keeps your conversations as files on
-your own computer, which means a terminal tool: Chapters 25 and 27. Claude Desktop,
+your own computer, which means a terminal tool: Chapters 28 and 30. Claude Desktop,
 the desk from Chapter 3, keeps no such store. If that is your only tool, this finds
 nothing, `prompts/archive/` stays empty, and nothing is broken. Use
 `prompts/library/` next door and save the prompts you care about as you go.

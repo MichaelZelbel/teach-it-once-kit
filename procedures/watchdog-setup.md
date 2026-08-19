@@ -1,4 +1,4 @@
-# Watchdog Setup (Chapter 21)
+# Watchdog Setup (Chapter 23)
 
 A watchdog is a procedure that checks something for you and speaks up
 only when reality changed. You stop checking. It starts.
@@ -20,7 +20,7 @@ Keep all five, in any order that reads naturally:
    user sees or clicks", "only if the price drops below X"). Without a
    bar, every patrol finds *something* and you have built a spam machine.
 4. **The receipt.** "Tell me what changed and where you read it, with a
-   link." Chapter 22 arriving early.
+   link." Chapter 24 arriving early.
 5. **The quiet line.** "If you find nothing solid, write exactly one
    line: 'All quiet, nothing changed.' Never pad a quiet week." A
    watchdog that says nothing is indistinguishable from a watchdog that
@@ -68,7 +68,7 @@ inbox, your bank, your company's systems) needs a **connector**: a switch
 in the settings that lets your assistant reach one of your accounts.
 
 A connector is not a bigger version of chatting. It is hands. Before you
-switch one on, have the red lines from Chapter 15 installed, and know
+switch one on, have the red lines from Chapter 17 installed, and know
 that they work harder for procedures than for chats, because a chat has
 you in the room.
 

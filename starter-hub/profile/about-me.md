@@ -20,7 +20,7 @@
 
 ## My hard limits
 
-(The things your AI should never do. Your never list from Chapter 5.)
+(The things your AI should never do. Your never list from Chapter 1.)
 
 ## Notes
 

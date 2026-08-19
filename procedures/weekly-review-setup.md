@@ -1,4 +1,4 @@
-# Weekly Review Setup (Chapter 20)
+# Weekly Review Setup (Chapter 22)
 
 The procedure that keeps the rest of the system true. It reads your
 profile files and your `inbox/`, does the filing itself, reports every
@@ -26,15 +26,15 @@ What each part carries:
 1. The clause "where it knows nothing it says so plainly" is the most
    important line in the recipe. A review that quietly invents your week
    is worse than no review.
-2. Chapter 8's filing prompt, running itself now. Every move is reported
+2. Chapter 9's filing prompt, running itself now. Every move is reported
    as one line naming source, destination and words, so undoing one
    costs a sentence.
 3. The safety on that trigger: doubt goes to you, always, one plain
    question per capture. Nothing doubtful is ever filed for you.
-4. Chapter 9's mirror test, automated: two true files that disagree,
+4. Chapter 10's mirror test, automated: two true files that disagree,
    caught by the thing that reads them side by side every week, quoting
    both lines.
-5. Your priorities from Chapter 6, cashed in as a decision about the
+5. Your priorities from Chapter 7, cashed in as a decision about the
    coming week rather than a list.
 6. The once-a-month line: a reminder, not a question, that your other
    AIs have been listening too and the export prompt brings those
@@ -74,5 +74,5 @@ to a perpetual motion machine.
 ## Then the register
 
 One block in `procedures.md`. Nothing runs unlisted. Tell your assistant
-the task is live and let it write the block; if the Chapter 15 house
+the task is live and let it write the block; if the Chapter 17 house
 rules are installed, it has often done so already.

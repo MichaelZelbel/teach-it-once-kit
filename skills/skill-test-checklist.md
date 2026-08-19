@@ -1,4 +1,4 @@
-# Testing a Skill (Chapter 14)
+# Testing a Skill (Chapter 16)
 
 Three tests. None of them takes more than a minute, and each one finds a
 different kind of broken.

@@ -1,4 +1,4 @@
-# One memory, every tool (Chapter 24)
+# One memory, every tool (Chapter 26)
 
 MCP is a standard socket. Any AI tool that speaks it can read the same notebook. One key, and
 every tool you use answers from the same notes. No tool gets a copy; every tool reads the

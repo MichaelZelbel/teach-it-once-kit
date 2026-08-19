@@ -1,4 +1,4 @@
-# Install a Recipe as a Skill (Chapter 11)
+# Install a Recipe as a Skill (Chapter 13)
 
 A recipe in `skills/` runs when you say its name. A recipe installed as a
 **Skill** in the app runs when the job comes up, because the app matches

@@ -1,4 +1,4 @@
-# The Register (Chapter 18)
+# The Register (Chapter 20)
 
 The automation rule: **never run a procedure you cannot see and stop.**
 
@@ -51,7 +51,7 @@ clock.
 
 ## The quarterly audit
 
-Do it in the same sitting as the spring-clean from Chapter 9. Walk the
+Do it in the same sitting as the spring-clean from Chapter 10. Walk the
 register in both directions:
 
 1. **Downwards:** everything on the app's **Scheduled** page must have a

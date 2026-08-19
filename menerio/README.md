@@ -1,6 +1,6 @@
 # menerio
 
-Optional. Chapters 23 and 24 only. Everything else in the book works without this folder.
+Optional. Chapters 25 and 26 only. Everything else in the book works without this folder.
 
 Menerio is the notebook: the place where notes born out in the world (phone, hallway, shop)
 are already home, and which every AI tool you use can read through one connector. It is not a
@@ -9,8 +9,8 @@ one home.
 
 | File | What it is for |
 |---|---|
-| `the-notebook.md` | Chapter 23. What goes in the notebook, what stays out, the first notes, the Review Queue, search. |
-| `mcp-connection.md` | Chapter 24. Making the token, and plugging the same notebook into more than one tool. |
+| `the-notebook.md` | Chapter 25. What goes in the notebook, what stays out, the first notes, the Review Queue, search. |
+| `mcp-connection.md` | Chapter 26. Making the token, and plugging the same notebook into more than one tool. |
 | `ai-memory-transport.md` | Optional route: pulling out what an old chat product remembers about you and importing it as notes. |
 | `interview-transfer.md` | Optional route: filling the notebook by being interviewed, when you would rather talk than paste. |
 

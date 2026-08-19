@@ -21,7 +21,7 @@ What is here. Ten names, and they are the whole system:
 
 - `AGENTS.md`: your AI's operating manual. How to work in this folder, and the
   short list of your rules. Different tools look for house rules under
-  different file names, so Chapter 15 is where you install this where
+  different file names, so Chapter 17 is where you install this where
   your assistant will actually read it.
 - `profile/`: who you are, your people, your projects, your voice. The
   Part II files. You write these.
@@ -29,10 +29,10 @@ What is here. Ten names, and they are the whole system:
   Eight are pre-loaded, and they are your red lines. The one-line version of
   each is written into `AGENTS.md` by `tools/compile-rules.py`, which is the
   only rules text your assistant reads every session. You edit the files; you
-  never edit that block. Chapter 15.
+  never edit that block. Chapter 17.
 - `skills/`: one file per skill, the five starters pre-loaded. Say a
   skill's name to run it, or install it into the app so it fires on its
-  own (Chapters 10 and 11).
+  own (Chapters 12 and 13).
 - `procedures.md`: the register. Everything that runs without you.
 - `decisions.md`: append-only log of real decisions.
 - `inbox/`: where loose captures land between weekly reviews.
@@ -40,17 +40,17 @@ What is here. Ten names, and they are the whole system:
   itself, one file per fact, with a page called `MEMORY.md` that it
   reads at the start of a session and that tells it where everything goes.
   You write `profile/`, it writes this. It starts empty and fills up on its
-  own. Chapter 8.
+  own. Chapter 9.
 - `prompts/`: what you typed to an AI. **Your assistant never reads this
   folder on its own**, it only searches it when you ask, and that rule is
   what makes it safe to keep. Two drawers, each with its own README:
   `prompts/library/` holds the prompts you keep and paste into other
   tools, and `prompts/archive/` is the log of everything you have typed.
-  Chapters 11 and 28.
+  Chapters 13 and 31.
 - `world/`: your life as data. The people, dated things and facts your
   notebook knows, copied down as small files so they survive without it.
   **It starts empty and stays empty until you connect a notebook**, and an
-  empty one costs you nothing. Chapters 23 and 24, and its own README.
+  empty one costs you nothing. Chapters 25 and 26, and its own README.
 
 Nothing here needs a terminal. It is a folder of text files, and that is
 the point.

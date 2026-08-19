@@ -1,4 +1,4 @@
-# Capture Checklist (Chapter 8)
+# Capture Checklist (Chapter 9)
 
 Pocket card. The ten-second habit that feeds `inbox/` while you live your
 life.
@@ -36,7 +36,7 @@ voice-first.
   in a month.
 - Add **why it matters** when it is not obvious.
 - **Private line:** other people's secrets and anything you would not want
-  stored stay out (full rules: Chapter 17).
+  stored stay out (full rules: Chapter 19).
 
 ## From your pocket: Dispatch
 

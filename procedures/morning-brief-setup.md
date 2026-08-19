@@ -1,4 +1,4 @@
-# Morning Brief Setup (Chapter 19)
+# Morning Brief Setup (Chapter 21)
 
 A briefing about your own week, built from your own files, waiting for
 you before you start work. Two halves: write the recipe, then hang a
@@ -24,7 +24,7 @@ You get two things: `skills/morning-brief.md` (the recipe) and
 Run it two or three more times in the same sitting: read what came out,
 edit the skill file, run it again. The facts differ every morning anyway;
 the shape is what you are training, and the loop works best while the
-last run is still fresh in your head. Chapter 18's rule: no clock for a
+last run is still fresh in your head. Chapter 20's rule: no clock for a
 recipe you have not watched run.
 
 ## One line worth stealing
@@ -80,7 +80,7 @@ and the countdown returns. Do it once today, so stopping is a reflex.
 Tell your assistant the task is live ("the morning brief is now
 scheduled, daily at seven, on my computer; update the register") and let
 it fill in the block in `procedures.md`: the rhythm, where it lives, and
-the off-switch. If you installed the house rules from Chapter 15, it has
+the off-switch. If you installed the house rules from Chapter 17, it has
 often done this already. One glance to confirm.
 
 ## Honesty notes
@@ -91,5 +91,5 @@ often done this already. One glance to confirm.
   minutes, so 07:00 can arrive at 07:04.
 - A task tied to a folder will not run against a folder it has not been
   trusted with. Same trust gate you clicked in Chapter 3.
-- The brief is written by an AI. Chapter 22's habit applies to it like
+- The brief is written by an AI. Chapter 24's habit applies to it like
   everything else.

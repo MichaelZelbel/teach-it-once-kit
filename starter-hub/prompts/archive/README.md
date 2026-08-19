@@ -17,8 +17,8 @@ that rule is the only reason this drawer is safe to have.
 ## The honest limit
 
 The log fills itself only if you use an AI tool that keeps your conversations as
-files on your own computer. That means a terminal tool, which is Chapter 25 and
-Chapter 27 of the book.
+files on your own computer. That means a terminal tool, which is Chapter 28 and
+Chapter 30 of the book.
 
 Claude Desktop, the desk the book gives you in Chapter 3, keeps no such store, so
 there is nothing for a program to harvest. If that is your only tool, this drawer

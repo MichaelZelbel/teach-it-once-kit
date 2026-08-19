@@ -1,4 +1,4 @@
-# Build the always-on server by hand (Chapters 25 and 26)
+# Build the always-on server by hand (Chapters 28 and 29)
 
 **You probably do not need this page.** The normal way is one line, pasted into
 the server as the login you were given:
@@ -204,7 +204,7 @@ One line, meaning "at 06:00 every day":
 That is the whole scheduler. It has been on every Linux machine for forty years
 and does not care whether you are awake.
 
-## 9. Hermes, so it can hear you back (Chapter 26)
+## 9. Hermes, so it can hear you back (Chapter 29)
 
 Everything above sends one way. Hermes is what makes it two-way.
 

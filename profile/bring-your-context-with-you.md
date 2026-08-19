@@ -156,6 +156,6 @@ never fire.
 ## Do it again later
 
 You will keep using that other AI. Phone, browser, whatever it is. Once a month, run the
-same prompt again and file only what is new. You do not have to remember: Chapter 20's
+same prompt again and file only what is new. You do not have to remember: Chapter 22's
 weekly review asks you on the first review of each month, and `procedures/outside-ai-check.md`
 is that branch as a file.

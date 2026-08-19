@@ -1,4 +1,4 @@
-# The monthly question: are you still working somewhere else? (Chapter 20)
+# The monthly question: are you still working somewhere else? (Chapter 22)
 
 You did not stop using your old AI. Almost nobody does. ChatGPT stays on the
 phone, or there is one project on the web you never moved, and everything you

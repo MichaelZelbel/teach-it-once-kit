@@ -1,6 +1,6 @@
-# The Privacy Audit (Chapter 17)
+# The Privacy Audit (Chapter 19)
 
-Once a quarter, in the same sitting as the spring-clean (Chapter 9). Four
+Once a quarter, in the same sitting as the spring-clean (Chapter 10). Four
 drawers, about ten minutes including the folder pass.
 
 ## Drawer one: your folder (do this one first)
@@ -27,7 +27,7 @@ Yes, do all of it. Clean it up.
 What should happen: a cleaned **copy** appears in a sibling folder, and
 your original is untouched, because red line 3 says "clean up" is not a
 green light for deleting. If your original got edited, your house rules
-from Chapter 15 are not installed. Go back and fix that first.
+from Chapter 17 are not installed. Go back and fix that first.
 
 Keep the habit: the private original stays on your machine, and only ever
 a cleaned copy goes outward.

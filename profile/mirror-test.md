@@ -1,4 +1,4 @@
-# The Mirror Test (Chapter 9)
+# The Mirror Test (Chapter 10)
 
 One prompt. Run it whenever the answers start feeling slightly off-target, and
 always at the start of a spring-clean.

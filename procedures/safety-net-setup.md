@@ -1,4 +1,4 @@
-# The Safety Net (Chapter 16)
+# The Safety Net (Chapter 18)
 
 Three prompts and one small piece of homework. Total time, about four
 minutes. You type no commands at any point.
@@ -26,7 +26,7 @@ It will ask permission before running anything. Say yes.
 
 What you should see afterwards: a first snapshot covering every file, a
 hidden `.git` folder you never have to open, and (if your house rules from
-Chapter 15 are installed) a new row in `procedures.md`, because anything
+Chapter 17 are installed) a new row in `procedures.md`, because anything
 that runs on its own gets written down.
 
 ## Using the undo, in plain words

@@ -1,4 +1,4 @@
-# Craft-Skill Interview Prompt (Chapter 13)
+# Craft-Skill Interview Prompt (Chapter 15)
 
 Do not brainstorm your craft skills; get interviewed. Open a session with
 your folder attached and paste:
@@ -18,7 +18,7 @@ it close to the perfect candidate.
 
 Answer the "what do you correct more than once" question honestly too.
 Those sentences are pure scar tissue, and they become the numbered rules
-in the file. In the run recorded for Chapter 13, one grumpy sentence
+in the file. In the run recorded for Chapter 15, one grumpy sentence
 ("never promise a delivery date unless I said the date myself, and stop
 apologising twice") turned into two rules and a whole extra skill.
 
@@ -43,5 +43,5 @@ you accept it, and check that it names the profile files it depends on
 (`profile/projects.md`, `profile/voice.md`) rather than assuming.
 
 Expect to feed each craft skill two or three corrections in its first
-week. That is the recipe learning your taste. Chapter 14 turns those
+week. That is the recipe learning your taste. Chapter 16 turns those
 corrections into a habit.

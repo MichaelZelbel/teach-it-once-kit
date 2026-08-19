@@ -1,4 +1,4 @@
-# Projects and Priorities Interview (Chapter 6)
+# Projects and Priorities Interview (Chapter 7)
 
 Fills `profile/projects.md`: what you are actually trying to get done, and
 what wins when two of those collide.
@@ -67,4 +67,4 @@ change tools.
 
 Projects rot faster than people. When something ships, say so and let your
 assistant clear the entry. When your three change, change them the same day.
-Chapter 9 is the routine; Part V hands it to a procedure that runs on its own.
+Chapter 10 is the routine; Part V hands it to a procedure that runs on its own.
