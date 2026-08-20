@@ -43,17 +43,17 @@ purpose. If it contradicts something you believe about me, the file wins.
 
 Each rule is one file in `rules/`, holding the whole story: what it is, why I
 gave it, and what its exceptions are. The short list below is written from those
-files by `tools/compile-rules.py`, and it is the only rules text you read every
+files by `hub-compile-rules`, and it is the only rules text you read every
 session, so open the file named in brackets before deciding a rule does not
 apply. **Never edit inside the block. Edit the file in `rules/` and run the
 program again.**
 
 When I give you a new rule, write it as a new file in `rules/` and run
-`python3 tools/compile-rules.py`. If the block is full, the program will say so
+`hub-compile-rules`. If the block is full, the program will say so
 and show you which lines are longest, and then the answer is to merge two rules
 that say the same thing, not to make the list longer.
 
-<!-- rules:begin - written by tools/compile-rules.py from the files in rules/. Edit those, not this. -->
+<!-- rules:begin - written by hub-compile-rules from the files in rules/. Edit those, not this. -->
 
 **I must:**
 

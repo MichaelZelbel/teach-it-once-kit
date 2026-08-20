@@ -41,7 +41,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's skills folder ships empty on purpose) | ready |
 | 15. Skills for Your Craft | `skills/craft-skill-interview.md` | ready |
 | 16. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
-| 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md` | ready |
+| 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md`, `tools/compile-rules.js` (installed as the command `hub-compile-rules`, never into the hub) | ready |
 | 18. The Safety Net | `procedures/safety-net-setup.md` | ready |
 | 19. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |

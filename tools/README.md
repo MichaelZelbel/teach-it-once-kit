@@ -1,6 +1,6 @@
 # tools
 
-Four small programs. The installer puts them on your computer. **They are not part
+Five small programs. The installer puts them on your computer. **They are not part
 of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
@@ -23,6 +23,26 @@ the outside.
 Together they are the program Chapter 4 and Chapter 31 mean when they say
 *"a program fills it"*.
 
+The third one is the only one here you type yourself.
+
+- **`compile-rules.js`** takes the one-line version of each rule in `rules/` and
+  writes them all into `AGENTS.md`, between two markers, so your assistant reads
+  your whole rulebook at the start of every session without reading a page per
+  rule. You edit the files; you never edit the block. It refuses to write past
+  4,000 characters, which is fifteen to twenty rules, and tells you which of your
+  lines are longest instead. That refusal is the point of it. Chapter 17.
+
+The installer gives it a launcher, so the command is:
+
+```
+hub-compile-rules            rewrite the block in AGENTS.md
+hub-compile-rules --check    say whether it is out of date, change nothing
+```
+
+Run that in your hub folder. It was a Python program called `compile-rules.py`
+until 2026-08-21, and the book printed it as `python3 tools/compile-rules.py`,
+a path nobody has, for a language this installer never installs.
+
 The other two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.
 
@@ -38,11 +58,11 @@ connect a notebook**, and a reader who never connects one can ignore both.
   never touches one you wrote.
 
 ```
-python3 tools/notebook-sync.py              # dry run, shows what it would send
-python3 tools/notebook-sync.py --apply
+python3 ~/.local/bin/notebook-sync.py              # dry run, shows what it would send
+python3 ~/.local/bin/notebook-sync.py --apply
 
-python3 tools/world-pull.py                 # dry run, shows what it would write
-python3 tools/world-pull.py --apply
+python3 ~/.local/bin/world-pull.py                 # dry run, shows what it would write
+python3 ~/.local/bin/world-pull.py --apply
 ```
 
 Both need one thing in your environment first, the key you made in Chapter 26:

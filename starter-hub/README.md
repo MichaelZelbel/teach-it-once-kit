@@ -27,7 +27,7 @@ What is here. Ten names, and they are the whole system:
   Part II files. You write these.
 - `rules/`: one file per rule, holding the whole story of why you gave it.
   Eight are pre-loaded, and they are your red lines. The one-line version of
-  each is written into `AGENTS.md` by `tools/compile-rules.py`, which is the
+  each is written into `AGENTS.md` by `hub-compile-rules`, which is the
   only rules text your assistant reads every session. You edit the files; you
   never edit that block. Chapter 17.
 - `skills/`: one file per skill, the five starters pre-loaded. Say a
