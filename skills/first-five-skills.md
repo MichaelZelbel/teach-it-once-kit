@@ -1,9 +1,13 @@
 # The First Five Skills (Chapters 13 and 14)
 
-Five ready-to-use recipes, one per file. The five files themselves are in
-`starter-hub/skills/` in this kit, so the fastest install is to copy them
-into the `skills/` folder in your own hub. Nothing to paste, nothing to
-retype.
+Five ready-to-use recipes, one per file. The five files themselves sit
+beside this one in `skills/` in this kit, so the fastest install is to
+copy the ones you want into the `skills/` folder in your own hub.
+Nothing to paste, nothing to retype.
+
+They are deliberately NOT part of the installer. Your `skills/` folder
+arrives empty so the first recipe in it is one you built, in Chapter 13.
+Take these when you want them, and not before.
 
 If you would rather not copy files, paste a recipe into a session with
 your folder attached and say:
