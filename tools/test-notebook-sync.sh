@@ -121,6 +121,32 @@ else
   ok "profile/ and AGENTS.md are not sent"
 fi
 
+# ---- the mass-trash guard -------------------------------------------------------------
+# A cache that remembers a hundred documents the folder no longer has is not a hundred
+# deletions, it is a rename, and throwing the notes away is the one mistake nobody sees
+# until they search for something that is gone. Michael lost 89 decisions to this in one
+# run on 2026-08-21, and 299 notes to the same shape that morning.
+guard="$("$PY" - "$HERE/notebook-sync.py" <<'GUARDEOF'
+import importlib.util, sys
+spec = importlib.util.spec_from_file_location("ns", sys.argv[1])
+ns = importlib.util.module_from_spec(spec); spec.loader.exec_module(ns)
+
+many = {"observations/gone%d.md" % i: {"note_id": "n%d" % i, "hash": "h",
+        "folder": "hub/observations"} for i in range(100)}
+print("MASS", len(ns.plan_actions([], many)["trash"]))
+
+docs = [ns.Document(doc_id="observations/o%d.md" % i, title="o%d" % i, body="b",
+                    source_path="observations/o%d.md" % i) for i in range(97)]
+few = {d.doc_id: {"note_id": "n", "hash": ns.content_hash(ns.build_note_body(d)),
+                  "folder": ns.folder_for(d.source_path)} for d in docs}
+few["observations/deleted-1.md"] = {"note_id": "x1", "hash": "h", "folder": "hub/observations"}
+few["observations/deleted-2.md"] = {"note_id": "x2", "hash": "h", "folder": "hub/observations"}
+print("FEW", len(ns.plan_actions(docs, few)["trash"]))
+GUARDEOF
+)"
+echo "$guard" | grep -q "^MASS 0$"   && ok "a cache that no longer matches the folder throws nothing away"   || bad "the mass-trash guard did not hold" "$guard"
+echo "$guard" | grep -q "^FEW 2$"   && ok "two deleted files still retire their two notes"   || bad "ordinary deletions stopped working" "$guard"
+
 echo
 echo "  $PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ] || exit 1

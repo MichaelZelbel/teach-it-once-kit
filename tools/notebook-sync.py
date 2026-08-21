@@ -219,6 +219,24 @@ def plan_actions(docs: list, state: dict) -> dict:
             # the root; once moved, the run goes quiet again.
             update.append((doc, known["note_id"]))
     trash = [entry["note_id"] for doc_id, entry in state.items() if doc_id not in seen]
+
+    # THE MASS-TRASH GUARD (2026-08-21). A note is thrown away when the cache remembers a
+    # document the hub no longer has, which is right when you delete a file and catastrophic
+    # when a lot of paths change at once. Both happen: this installer renames folders on an
+    # older hub, and one rename of a file everything points at turned every remembered id
+    # into a stranger. On Michael's laptop that trashed 89 of his decisions in one run, and
+    # on his work PC an older copy of this program trashed 299 notes the same way.
+    #
+    # Losing a few notes is a mistake you can see. Losing most of them looks like a working
+    # sync until you search for something and it is not there. So a run that would throw away
+    # more than a third of what it tracks throws away nothing instead, and says why. The cure
+    # is --reconcile, which asks the notebook what it actually holds and matches by title.
+    if trash and len(state) and len(trash) > max(10, len(state) // 3):
+        print("refusing to trash {} of the {} notes this hub tracks: that is not a few "
+              "deleted files, it is a cache that no longer matches the folder. Nothing was "
+              "thrown away. Run once with --reconcile to rebuild it from the notebook."
+              .format(len(trash), len(state)))
+        trash = []
     return {"create": create, "update": update, "trash": trash}
 
 
