@@ -48,7 +48,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
 | 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch) | ready |
 | 23. Watchdogs | `procedures/watchdog-setup.md` | ready |
-| 24. Trust, but Verify | `living/two-questions-card.md` | ready |
+| 24. Trust, but Verify | `living/two-questions-card.md`, `living/the-alternatives-card.md` | ready |
 
 ## Part VI (restructured, final)
 

@@ -18,7 +18,7 @@ It also travels. Change AI provider and the app's list goes with the app.
 
 ## The shape
 
-One block per procedure, six lines, in `procedures.md`:
+One block per procedure, eight lines, in `procedures.md`:
 
 ```
 ## (Name of the procedure)
@@ -26,6 +26,8 @@ One block per procedure, six lines, in `procedures.md`:
 Does: (what it does and what problem it solves, in your own words).
 Rhythm: (when it fires).          Lands: (where the result waits).
 Lives: (which tool runs it).      Off-switch: (exactly how to stop it).
+Can reach: (what it can read, change, send or spend. The blast radius).
+Trust: (runs on its own, or drafts and waits for you. And why).
 Last checked: (date).
 ```
 
@@ -33,6 +35,30 @@ The *Does* line is the one no app can give you. It is the answer to the
 question you will ask yourself some Tuesday months from now, when your
 phone buzzes and you cannot remember why: what is this and why did I
 build it?
+
+## You do not write these. Your assistant does.
+
+Nothing on this card is homework. Your house rules already carry the line
+"anything that runs on its own is a row in `procedures.md`", so your
+assistant fills the block in when it wires the job up, usually in the
+middle of doing something else. Your job is to read it once.
+
+The two lines worth reading slowly are the new ones:
+
+**Can reach** is the blast radius. If this thing fires wrong at three in
+the morning, what does it have its hands on? Your assistant can answer
+that honestly because it built the job, so it knows which folder the job
+reads, which file it writes, and whether it sends anything anywhere. Most
+of the time the answer is dull: *this folder, read and write, sends
+nothing*. The line earns its place on the day it says something you did
+not expect.
+
+**Trust** is how much of it runs unwatched, and there are only two
+settings. If the job cannot do anything you could not take back, it runs
+on its own from day one and you complain at it each morning until it stops
+annoying you. If it can send in your name, spend money, or delete
+something, it drafts and waits for you, permanently, and never graduates.
+That is Chapter 21, and it is shorter than it sounds.
 
 ## Ask for it in plain words
 
