@@ -1,51 +1,47 @@
 # The Alternatives Card
 
 The two-questions card next to this one checks whether an answer is
-**true**. This card checks whether it was even the **right approach**.
+**true**. This card checks whether it was the **best way** to do the
+thing.
 
-Different failure, different question. An answer can be entirely accurate
-and still be the third-best way to do the thing, and your assistant will
-never volunteer that, because it answered the question you asked.
+Those are different failures. An answer can be completely correct and
+still be the third-best idea you could have had.
 
 ## Why it happens
 
-You asked once. It picked one path and wrote it up confidently. There
-were probably five paths. Nothing in the reply tells you that, because
-the reply is not a survey of the options, it is one option wearing the
-clothes of an answer.
+You asked once. It picked one way and wrote it up. There were probably
+five ways. Nothing in the reply tells you that, because it answered the
+question you asked.
 
 ## The question
 
-When something matters and you are about to build it, commit to it, or
-send it, paste this back:
+Before you build something, commit to something, or send something that
+will be hard to change, paste this back:
 
 ```
 Brainstorm five other approaches to this. Try them out. Then debate
 which one is best and tell me which one you would pick if you were me.
 ```
 
-The last clause is the working part. **If you were me** forces it to
-answer from your situation instead of in the abstract, and your situation
-is sitting in your folder where it can read it. Without that clause you
-get a textbook comparison. With it you get a recommendation.
+**If you were me** is the part that does the work. It makes the answer
+come out of your situation instead of the average one, and your
+situation is sitting in your folder where it can read it. Leave those
+words out and you get a textbook comparison. Put them in and you get a
+recommendation.
 
 ## When to use it
 
-Not on small stuff. The trigger is different from the two questions:
-they fire before you **act**, this one fires before you **commit**.
-Choosing how to structure a skill. Picking between two tools. Deciding
-how to word something that will exist for a long time. Anything where
-being wrong is not a mistake you fix in a minute, but a thing you live
-with.
+Not on small things. The two questions fire before you **act**. This one
+fires before you **commit**: choosing between two tools, structuring
+something you will live with for a year, wording something you cannot
+easily take back.
 
-If the first answer already looks fine, that is not a reason to skip it.
-The first answer always looks fine. That is what makes this worth
-running.
+The first answer always looks fine. That is the reason to ask, not a
+reason to skip it.
 
-## The cheap version
+## The short version
 
-When you cannot be bothered with the full question, one line does most
-of the work:
+When the full question is too much effort:
 
 ```
 That was option one. Now argue against it. Where would it fail?
@@ -53,7 +49,6 @@ That was option one. Now argue against it. Where would it fail?
 
 ## Where this came from
 
-The question is Nate Herk's, from *Becoming AI Native* (2026), where it
-is one of three he runs on any AI output that ships. The other two are
-about verification and this book covers those in Chapter 24. This one
-had no home until now.
+Nate Herk, *Becoming AI Native* (2026). He runs three questions on any AI
+output that matters. Two of them are about whether the answer is true,
+and Chapter 24 covers those. This is the third one.

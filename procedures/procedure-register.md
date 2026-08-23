@@ -38,27 +38,23 @@ build it?
 
 ## You do not write these. Your assistant does.
 
-Nothing on this card is homework. Your house rules already carry the line
-"anything that runs on its own is a row in `procedures.md`", so your
-assistant fills the block in when it wires the job up, usually in the
-middle of doing something else. Your job is to read it once.
+None of this is homework. Your house rules already say "anything that
+runs on its own is a row in `procedures.md`", so your assistant fills the
+block in when it sets the job up. You read it once.
 
-The two lines worth reading slowly are the new ones:
+Two of the eight lines are worth reading slowly.
 
-**Can reach** is the blast radius. If this thing fires wrong at three in
-the morning, what does it have its hands on? Your assistant can answer
-that honestly because it built the job, so it knows which folder the job
-reads, which file it writes, and whether it sends anything anywhere. Most
-of the time the answer is dull: *this folder, read and write, sends
-nothing*. The line earns its place on the day it says something you did
-not expect.
+**Can reach** answers one question. If this goes wrong at three in the
+morning, what does it have its hands on? Your assistant can answer that,
+because it built the job. It knows which folder the job reads, which file
+it writes, and whether it sends anything anywhere. Usually the answer is
+dull: *this folder, read and write, sends nothing*. The line earns its
+keep on the day it says something else.
 
-**Trust** is how much of it runs unwatched, and there are only two
-settings. If the job cannot do anything you could not take back, it runs
-on its own from day one and you complain at it each morning until it stops
-annoying you. If it can send in your name, spend money, or delete
-something, it drafts and waits for you, permanently, and never graduates.
-That is Chapter 21, and it is shorter than it sounds.
+**Trust** says whether it runs on its own or waits for your yes. One
+question decides it: can this job do something you cannot undo? If no, it
+runs on its own from day one and you correct it as you go. If yes, it
+prepares the work and you press the button. That is Chapter 21.
 
 ## Ask for it in plain words
 
