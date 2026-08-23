@@ -75,13 +75,23 @@ trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT
 # and is never touched. The pull can fire the hub's own hooks, whose sync run finds
 # this lock and skips, harmlessly. Never push from here: pushing stays a decision, not
 # a schedule.
-if git -C "$HUB" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+#
+# NAME THE BRANCH, DO NOT LET GIT GUESS IT. `git pull --rebase origin` with no branch
+# works only on a clone whose branch has an upstream configured, and a folder that was
+# copied, restored from a backup, or cloned by a tool often has none. Git then refuses
+# with "you must specify a branch on the command line", every hour, and the run carries
+# on to the sync so nothing looks broken. On the machine this was found on, that had
+# been the answer every hour for days behind a dirty tree that was hiding it. A detached
+# HEAD yields no branch name and is skipped, because there is nothing to pull onto.
+BRANCH="$(git -C "$HUB" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+if [ -n "$BRANCH" ] \
+   && git -C "$HUB" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
    && git -C "$HUB" remote get-url origin >/dev/null 2>&1 \
    && [ ! -e "$(git -C "$HUB" rev-parse --git-path rebase-merge 2>/dev/null)" ] \
    && [ ! -e "$(git -C "$HUB" rev-parse --git-path rebase-apply 2>/dev/null)" ] \
    && [ ! -e "$(git -C "$HUB" rev-parse --git-path MERGE_HEAD 2>/dev/null)" ] \
    && [ -z "$(git -C "$HUB" status --porcelain 2>/dev/null)" ]; then
-  PULL_OUT="$(GIT_TERMINAL_PROMPT=0 git -C "$HUB" pull --rebase origin 2>&1)"
+  PULL_OUT="$(GIT_TERMINAL_PROMPT=0 git -C "$HUB" pull --rebase origin "$BRANCH" 2>&1)"
   PULL_RC=$?
   if [ "$PULL_RC" -ne 0 ]; then
     GIT_TERMINAL_PROMPT=0 git -C "$HUB" rebase --abort >/dev/null 2>&1 || true
