@@ -18,7 +18,7 @@ It also travels. Change AI provider and the app's list goes with the app.
 
 ## The shape
 
-One block per procedure, eight lines, in `procedures.md`:
+One block per procedure, six lines, in `procedures.md`:
 
 ```
 ## (Name of the procedure)
@@ -26,8 +26,6 @@ One block per procedure, eight lines, in `procedures.md`:
 Does: (what it does and what problem it solves, in your own words).
 Rhythm: (when it fires).          Lands: (where the result waits).
 Lives: (which tool runs it).      Off-switch: (exactly how to stop it).
-Can reach: (what it can read, change, send or spend. The blast radius).
-Trust: (runs on its own, or drafts and waits for you. And why).
 Last checked: (date).
 ```
 
@@ -35,26 +33,6 @@ The *Does* line is the one no app can give you. It is the answer to the
 question you will ask yourself some Tuesday months from now, when your
 phone buzzes and you cannot remember why: what is this and why did I
 build it?
-
-## You do not write these. Your assistant does.
-
-None of this is homework. Your house rules already say "anything that
-runs on its own is a row in `procedures.md`", so your assistant fills the
-block in when it sets the job up. You read it once.
-
-Two of the eight lines are worth reading slowly.
-
-**Can reach** answers one question. If this goes wrong at three in the
-morning, what does it have its hands on? Your assistant can answer that,
-because it built the job. It knows which folder the job reads, which file
-it writes, and whether it sends anything anywhere. Usually the answer is
-dull: *this folder, read and write, sends nothing*. The line earns its
-keep on the day it says something else.
-
-**Trust** says whether it runs on its own or waits for your yes. One
-question decides it: can this job do something you cannot undo? If no, it
-runs on its own from day one and you correct it as you go. If yes, it
-prepares the work and you press the button. That is Chapter 21.
 
 ## Ask for it in plain words
 

@@ -1,15 +1,12 @@
 # Procedures: everything that runs on its own
 
 <!--
-The register (Chapter 20). One block per procedure, eight facts.
+The register (Chapter 20). One block per procedure, six facts.
 
 The rule: never run a procedure you cannot see and stop. No procedure
 exists unless it has a block in this file, and that includes the ones
 outside this folder: the email auto-reply, the phone's bedtime routine,
-the recurring payment order at the bank.
-
-You do not fill these in by hand. Your assistant writes the block when
-it sets the job up, because the house rules tell it to.
+the standing order at the bank.
 
 Copy this shape, one block per procedure, below this comment:
 
@@ -18,8 +15,6 @@ Copy this shape, one block per procedure, below this comment:
 Does: (what it does and what problem it solves, in your own words).
 Rhythm: (when it fires).          Lands: (where the result waits).
 Lives: (which tool runs it).      Off-switch: (exactly how to stop it).
-Can reach: (what it can read, change, send or spend. The blast radius).
-Trust: (runs on its own, or drafts and waits for you. And why).
 Last checked: (date).
 
 Filled example:
@@ -30,8 +25,6 @@ Does: reads my profile files and writes today's brief before I start work.
 Rhythm: daily, 07:00.             Lands: brief/YYYY-MM-DD.md in this folder.
 Lives: Claude, Scheduled tasks.   Off-switch: the task's own page, the
                                   switch next to the name.
-Can reach: this folder, read and write. Sends nothing. Spends nothing.
-Trust: on its own from day one, because nothing it does can be taken back.
 Last checked: 2026-07-26.
 
 The example lives inside this comment on purpose. An empty template row
