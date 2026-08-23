@@ -21,6 +21,7 @@ Usage:
 """
 import argparse
 import dataclasses
+import datetime
 import json
 import os
 import pathlib
@@ -411,8 +412,66 @@ def guard_removals(plan):
     return safe, refused
 
 
+# THE REMOVAL NOTICE, because the guard above only catches a purge. The notebook
+# tidies its own records: it merges duplicates, splits a crowded one, and hands
+# back what it kept under fresh record ids. A pull cannot tell that apart from a
+# deletion, so it deletes the mirror file and writes the new one, and a folder
+# can lose a real fact in a sweep far too small to trip the guard. That happened
+# in the folder this tool was written for: two hourly runs took 43 claims between
+# them, 26 of which the notebook no longer held anywhere, and nothing said a word
+# for two days because each run logged one quiet line.
+#
+# So any sweep bigger than a handful copies what it deleted into
+# world/removed/<date>-removed.md and says so on stdout. The file is for a person
+# to read; no program consumes it, and deleting it once the loss has been dealt
+# with is the intended ending.
+REMOVAL_NOTICE_FLOOR = 5
+REMOVED_FOLDER = "removed"
+
+NOTICE_HEADER = """# Records the world pull deleted on {date}
+
+The notebook no longer had a record behind these mirror files, so the pull removed them.
+Their last content is copied here, because a fact must not leave this folder in silence: the
+log line that records a removal is one line in a file nobody opens, and git history only
+helps someone who already knows to look.
+
+Nothing reads this file. Decide what each record deserves, then delete it:
+
+- still true and the notebook dropped it -> re-create the file with `origin: hub`, which the
+  pull never deletes, or put the fact back into the notebook
+- no longer true -> nothing to do
+"""
+
+
+def write_removal_notice(root, removed, today):
+    """Copy every record this run deleted into world/removed/<date>-removed.md.
+
+    `removed` is a list of (repo relative path, file text) read BEFORE the delete.
+    Returns the notice's repo-relative path, or None when the sweep was small
+    enough to pass without one. Two sweeps on one day append to one file rather
+    than overwrite, because a tidy-up on the notebook's side arrives as several
+    runs an hour apart and a notice keeping only the last one hides most of it.
+    """
+    if len(removed) <= REMOVAL_NOTICE_FLOOR:
+        return None
+    relative = "world/{}/{}-removed.md".format(REMOVED_FOLDER, today)
+    path = pathlib.Path(root) / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    parts = []
+    if not path.is_file():
+        parts.append(NOTICE_HEADER.format(date=today))
+    parts.append("\nOne sweep of the pull: **{} record(s) removed.**\n".format(len(removed)))
+    for item_path, text in removed:
+        parts.append("\n## {}\n\n```\n{}\n```\n".format(item_path, (text or "").rstrip("\n")))
+
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write("".join(parts))
+    return relative
+
+
 def run_pull(world, root, client_label, apply_changes, self_slug="me",
-             allow_mass_removal=False):
+             allow_mass_removal=False, today=None):
     plan = plan_pull(world, root, self_slug=self_slug)
     print("{}: write {}  remove {}".format(client_label, len(plan["write"]), len(plan["remove"])))
     if not apply_changes:
@@ -436,11 +495,28 @@ def run_pull(world, root, client_label, apply_changes, self_slug="me",
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(item.text, encoding="utf-8")
         print("  wrote  {}".format(item.path))
+    # Read each record before deleting it, so the notice can hold what was lost
+    # rather than only its filename. A path that is already gone is skipped here
+    # and in the notice: it was never this run's to lose.
+    removed = []
     for path in removals:
         target = root / path
         if target.is_file():
+            try:
+                text = target.read_text(encoding="utf-8")
+            except OSError:
+                text = ""
             target.unlink()
+            removed.append((path, text))
             print("  removed {}".format(path))
+
+    notice = write_removal_notice(root, removed, today or datetime.date.today().isoformat())
+    if notice:
+        print("removal notice: {} record(s) deleted, their content is in {}. Nothing "
+              "reads that file; it is there so a fact does not leave the folder in "
+              "silence.".format(len(removed), notice))
+    plan["removed"] = removed
+    plan["notice"] = notice
     return plan
 
 
