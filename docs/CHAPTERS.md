@@ -46,7 +46,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 19. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
 | 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
-| 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch) | ready |
+| 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch: what each AI plan carried) | ready |
 | 23. Watchdogs | `procedures/watchdog-setup.md` | ready |
 | 24. Trust, but Verify | `living/two-questions-card.md` | ready |
 
