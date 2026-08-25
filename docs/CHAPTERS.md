@@ -23,6 +23,10 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > resolved by content: most still carried pre-AA numbers, some pre-W, because earlier sweeps
 > only kept this map current. The dated notes above keep the numbering of their own day.
 
+> **Renamed (2026-08-25, Batch AE).** Chapter 11 is now "The 21-Day Charm Challenge" (it was
+> "Be Nice to the Database"), and the counter inside it runs twenty-one days, matching Will
+> Bowen's original challenge. Still no kit file, so the table below still has no row 11.
+
 ## Parts I to V (restructured, final)
 
 | Chapter | Kit asset | Status |
