@@ -174,7 +174,8 @@ if (!names.length) {
     const wrong = names.filter((n) => n in have &&
       have[n] !== crypto.createHash("sha256").update(values[n], "utf8").digest("hex"));
     if (missing.length) {
-      bad("No. " + missing.length + (missing.length === 1 ? " of them never reaches" : " of them never reach") +
+      bad("No. " + (missing.length === names.length && names.length === 1
+          ? "Your one key never reaches" : missing.length + (missing.length === 1 ? " of them never reaches" : " of them never reach")) +
         " a program started on this computer: " + missing.join(", "));
       bad("What to do: run the installer again here. It puts them where new programs look.");
     }
@@ -185,7 +186,9 @@ if (!names.length) {
       bad("What to do: run the installer again here, which copies the current one over.");
     }
     if (!missing.length && !wrong.length) {
-      good("Yes. All " + names.length + " of them, and each one is the current one.");
+      good(names.length === 1
+        ? "Yes. Your one key, and it is the current one."
+        : "Yes. All " + names.length + " of them, and each one is the current one.");
     }
   }
 } else {
@@ -220,7 +223,9 @@ if (!names.length) {
           names.length + " keys. Missing: " + missing.join(", "));
         bad("What to do: run the installer again here, then open a new terminal.");
       } else {
-        good("Yes. A fresh terminal here holds all " + names.length + " of them.");
+        good(names.length === 1
+          ? "Yes. A fresh terminal here holds it."
+          : "Yes. A fresh terminal here holds all " + names.length + " of them.");
       }
     }
   }
