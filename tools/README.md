@@ -1,6 +1,6 @@
 # tools
 
-Five small programs. The installer puts them on your computer. **They are not part
+Six small programs. The installer puts them on your computer. **They are not part
 of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
@@ -43,7 +43,29 @@ Run that in your hub folder. It was a Python program called `compile-rules.py`
 until 2026-08-21, and the book printed it as `python3 tools/compile-rules.py`,
 a path nobody has, for a language this installer never installs.
 
-The other two are the two arrows in Chapter 25's diagram. **Neither runs unless you
+The fourth one you also type yourself, and it answers a question nothing else asks.
+
+- **`check-keys.js`** looks at the keys your hub folder is carrying and asks whether
+  they are really **on this computer**, which is a different question from whether
+  they are in the folder. It also reads `secrets/expires.txt` and tells you if one
+  of them is about to run out. It never prints a key: names, dates and counts only.
+  Chapters 24 and 27.
+
+The installer gives it a launcher, so the command is:
+
+```
+hub-check-keys               check this computer
+hub-check-keys --hub PATH    check a hub somewhere else
+```
+
+It answers four questions and the third is the useful one: *would a program you
+start right now actually get them?* On Windows it reads the list every new program
+inherits, and it compares what is there against what is in your folder, so a key
+that was replaced and never copied over shows up as the old one rather than as
+fine. On a Mac or Linux it starts a fresh terminal and looks at what that terminal
+ends up holding.
+
+The last two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.
 
 - **`notebook-sync.py`** sends copies of your hub files up to your notebook so you

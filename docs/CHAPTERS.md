@@ -23,6 +23,11 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > resolved by content: most still carried pre-AA numbers, some pre-W, because earlier sweeps
 > only kept this map current. The dated notes above keep the numbering of their own day.
 
+> **New chapter (2026-08-27, Batch AF).** A new Chapter 32, "Keep an Eye on This for Me", closes
+> Part VI before the tour, so the tour is now Chapter 33 and exactly one number moved. This map
+> still carried the tour as 32 until 2026-08-28, which is the row a later batch fixed while it
+> was here for something else.
+
 > **Renamed (2026-08-25, Batch AE).** Chapter 11 is now "The 21-Day Charm Challenge" (it was
 > "Be Nice to the Database"), and the counter inside it runs twenty-one days, matching Will
 > Bowen's original challenge. Still no kit file, so the table below still has no row 11.
@@ -52,7 +57,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
 | 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch: what each AI plan carried) | ready |
 | 23. Watchdogs | `procedures/watchdog-setup.md` | ready |
-| 24. Trust, but Verify | `living/two-questions-card.md` | ready |
+| 24. Trust, but Verify | `living/two-questions-card.md`, `living/the-alternatives-card.md`, `procedures/keys-that-expire.md` (the "prove a check by breaking it" section at the end of the card) | ready |
 
 ## Part VI (restructured, final)
 
@@ -74,18 +79,27 @@ All optional. The book works without every row below.
 |---|---|---|
 | 25. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
 | 26. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
-| 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, and the printed `setup-hub.sh` line | ready |
+| 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, the printed `setup-hub.sh` line, `procedures/keys-that-expire.md`, `tools/check-keys.js` (installed as the command `hub-check-keys`), `starter-hub/secrets/expires.txt` | ready |
 | 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
 | 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
 | 30. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
 | 31. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
-| 32. A Tour of My Hub, and the Road On | none (prose) | ready |
+| 32. Keep an Eye on This for Me | none (prose; the two reader prompts are public at querino.ai) | ready |
+| 33. A Tour of My Hub, and the Road On | none (prose) | ready |
 
 ## Back matter
 
 | Chapter | Kit asset | Status |
 |---|---|---|
 | Appendix C. What You Get, In Order | `living/build-order-card.md` | ready |
+
+New 2026-08-28 (batch AG, "a key has a life, not just a home"): `procedures/keys-that-expire.md`
+(the expiry record, the delivery check, the nagging ladder and the break-it-to-prove-it drill),
+`tools/check-keys.js` plus its `tools/hub-check-keys` launcher, and
+`starter-hub/secrets/expires.txt` so a brand new hub carries the record from day one rather
+than after an upgrade. The installer (`kit-bootstrap`) writes the same file into an existing
+hub the moment it gains a locked store, so the two roads arrive at the same folder. Rows 24
+and 27 above gained the card; no chapter was renumbered.
 
 Removed 2026-07-26 (R8): `living/one-month-plan.md`. Founder decision D-047 cut the one-month plan
 from the book: nothing in the reader's text states a total duration for building the system. The
