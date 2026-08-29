@@ -1,0 +1,12 @@
+{
+  "at": "2026-08-29T13:58:25Z",
+  "machine": "testbox",
+  "ok": true,
+  "hub": "C:\\hub\\dev\\teach-it-once-kit\\tools\\.tmp-archive-test.70520\\receipts\\hub",
+  "added": 0,
+  "sources": {
+    "skipped": []
+  },
+  "error": null,
+  "tool_version": "86b2fef84f66"
+}

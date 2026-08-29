@@ -12,6 +12,10 @@ the outside.
 
 - **`prompt-harvest.js`** starts the job. It works out where your hub is, finds a
   working Python, runs the collector, saves the result into your hub and pushes it.
+  Every run also leaves a receipt at `prompts/archive/status/<your machine>.json`
+  saying whether it worked, which hub it found and what went wrong if anything did.
+  That file is the only way to tell "there was nothing new to save today" apart from
+  "this has not run in a week", which otherwise look identical from anywhere else.
 - **`hub-prompt-archive`** is the collector, and the interesting one. It reads the
   conversation logs your AI tools keep on this computer, takes the turns a human
   typed and the reply the AI showed for each of them, removes anything that looks

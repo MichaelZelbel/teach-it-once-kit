@@ -505,7 +505,7 @@ if command -v node >/dev/null 2>&1 && [ -f "$HARV" ]; then
   # `--where` prints the hub it resolved and touches nothing, so hub-finding can be tested
   # without starting a real harvest inside a throwaway folder.
   findable() {
-    HUB_DIR="$1" HOME="$W/home" node "$HARV" --where >"$W/hc.out" 2>"$W/hc.err" || true
+    HUB_DIR="$1" HOME="$W/home" USERPROFILE="$W/home" node "$HARV" --where >"$W/hc.out" 2>"$W/hc.err" || true
     [ -s "$W/hc.out" ] && ! grep -q "could not find your hub" "$W/hc.err"
   }
   findable "$W/hubcheck/new" \
@@ -522,8 +522,52 @@ if command -v node >/dev/null 2>&1 && [ -f "$HARV" ]; then
   findable "$W/hubcheck/notahub" \
     && ok "45 a HUB_DIR someone set by hand is believed, not second-guessed" \
     || bad "45 an explicitly set HUB_DIR was overruled" "$(cat "$W/hc.err")"
+
+  # 46-49. DOES EVERY RUN LEAVE A RECEIPT? (2026-08-29)
+  # The eight-day outage was not a missing error message. The harvester printed a correct and
+  # specific sentence on every machine, ninety times, into logs nothing read. What was missing
+  # was any way for one machine to see that another had stopped, and the archive cannot carry
+  # that: a run that finds nothing writes nothing, and so does a run that never happened.
+  # Every path out of this program now files prompts/archive/status/<machine>.json.
+  R="$W/receipts"; mkdir -p "$R/home"
+  mkdir -p "$R/hub/prompts/archive" "$R/hub/observations"
+  rcpt() { cat "$R/hub/prompts/archive/status/testbox.json" 2>/dev/null; }
+
+  # A run that cannot find a hub has nowhere to file a receipt - unless it remembers the hub
+  # it used last, which is exactly the run where one is worth having. So: succeed once so the
+  # machine remembers, then break hub-finding and check it still reports.
+  HUB_MACHINE=testbox HOME="$R/home" USERPROFILE="$R/home" HUB_DIR="$R/hub" node "$HARV" --no-push >/dev/null 2>&1
+  rcpt | grep -q '"ok": true' \
+    && ok "46 a successful run says so in the hub, in its own file" \
+    || bad "46 no receipt after a good run" "$(rcpt)"
+  rcpt | grep -q '"tool_version"' \
+    && ok "47 the receipt names which copy of the pair this machine is running" \
+    || bad "47 no tool_version, so a machine on a stale harvester stays invisible"
+
+  # A FAILING RUN MUST REPORT TOO, and that is the whole point. Forced by putting this program
+  # somewhere its collector is not, which is a real state a machine reaches: the pair is
+  # installed together and one half can be replaced, moved or half-updated on its own.
+  # (Hub-finding itself cannot be broken from a test on a machine that HAS a hub at one of the
+  # well-known paths, and a test-only way to blind it would be a hole in the shipped program.)
+  mkdir -p "$R/lonely"
+  cp "$HARV" "$R/lonely/prompt-harvest.js"
+  HUB_MACHINE=testbox HOME="$R/home" USERPROFILE="$R/home" HUB_DIR="$R/hub" \
+    node "$R/lonely/prompt-harvest.js" --no-push >/dev/null 2>&1
+  rcpt | grep -q '"ok": false' \
+    && ok "48 a run that CANNOT do its job still files a receipt saying so" \
+    || bad "48 a failed harvest left no trace in the repo - the outage shape" "$(rcpt)"
+  rcpt | grep -qi 'collector' \
+    && ok "49 and the receipt carries the machine's own sentence, to be quoted back" \
+    || bad "49 the receipt records no reason, so the alert has to guess again" "$(rcpt)"
+
+  # 50. The one failure a test cannot force is the one that happened: no hub anywhere. There
+  # is no repository to write into then, so the machine remembers the hub it used last and
+  # files the bad news there. Without this, the run that most needs to report cannot.
+  [ -s "$R/home/.hub/prompt-harvest-hub" ] \
+    && ok "50 a good run remembers its hub, so a later blind run still has somewhere to report" \
+    || bad "50 nothing remembered, so a hub-finding failure would be silent again"
 else
-  echo "  --   42-45 skipped: node or prompt-harvest.js not on this machine"
+  echo "  --   42-50 skipped: node or prompt-harvest.js not on this machine"
 fi
 
 echo

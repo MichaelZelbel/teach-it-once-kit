@@ -166,6 +166,89 @@ function stampNow() {
   } catch (_) { /* a stamp we cannot write only means we harvest more often than needed */ }
 }
 
+/* THE RECEIPT: every run says, in your hub, whether it worked.
+ *
+ * WHY. Until 2026-08-29 the only thing a harvest put into the hub was archived prompts, and
+ * prompts are legitimately absent when there is nothing new to archive. So "ran and found
+ * nothing" and "could not run at all" were the same thing to anyone looking, and the only
+ * place a failure was written down was the standard error of a scheduled job, on the machine
+ * it happened on. When this program went blind on 2026-08-21 it printed a correct and
+ * specific sentence ninety times, into logs on three machines, and reached nobody. It took
+ * eight days and a person to find.
+ *
+ * A machine writes only its own file, like its own month file next door, so two machines
+ * harvesting at once still cannot collide. It goes inside prompts/archive/ so it rides the
+ * commit rule this program already has and nothing else needs to change. One object rather
+ * than an append-only log, because `git log` is the history and it is free.
+ *
+ * IT IS WRITTEN ON EVERY PATH OUT, INCLUDING THE FAILURES. That is the entire point.
+ */
+const MACHINE = (process.env.HUB_MACHINE || os.hostname()).toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+/* The last hub that worked, remembered on this machine. If hub-finding breaks tomorrow there
+ * is no repository to write a receipt into, which is exactly when one is worth having, so a
+ * failing run files its receipt in the hub it used last. Used for the receipt only, never to
+ * decide where to harvest: a remembered path is evidence about the past, not an instruction. */
+const LAST_HUB = path.join(os.homedir(), '.hub', 'prompt-harvest-hub');
+
+function toolVersion() {
+  /* Which copy of this pair is this machine running? These programs are INSTALLED, and an
+   * installed program does not update itself, so "envy is still on the old harvester" has to
+   * be readable from another machine or nobody will ever notice it. */
+  try {
+    const crypto = require('crypto'), h = crypto.createHash('sha256');
+    h.update(fs.readFileSync(__filename));
+    const c = findCollector();
+    if (c) h.update(fs.readFileSync(c));
+    return h.digest('hex').slice(0, 12);
+  } catch (_) { return null; }
+}
+
+function receipt(fields) {
+  let hub = HUB;
+  if (!hub) {
+    /* The remembered hub has to STILL BE THERE. A path that has been moved or deleted is a
+     * memory, not a place, and writing into it would quietly recreate a folder somebody got
+     * rid of - mkdir -p is happy to build a whole tree out of a stale note to self. */
+    try {
+      const remembered = fs.readFileSync(LAST_HUB, 'utf8').trim();
+      if (remembered && fs.statSync(remembered).isDirectory()) hub = remembered;
+    } catch (_) {}
+  }
+  if (!hub) return;                     // nowhere to file it. The stale receipt is the signal.
+  const dir = path.join(hub, 'prompts', 'archive', 'status');
+  const body = Object.assign({
+    at: new Date().toISOString().replace(/\.\d+Z$/, 'Z'),
+    machine: MACHINE,
+    ok: false,
+    hub: HUB,
+    added: 0,
+    sources: null,
+    error: null,
+    tool_version: toolVersion()
+  }, fields);
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, MACHINE + '.json'),
+                     JSON.stringify(body, null, 2) + '\n');
+  } catch (e) { warn('could not write the run receipt: ' + String(e.message || e)); }
+  if (HUB) { try { fs.writeFileSync(LAST_HUB, HUB + '\n'); } catch (_) {} }
+}
+
+/* How many rows the collector added, and which sources it could read, taken from its own
+ * output rather than counted again here - two counters disagreeing is a bug you only meet on
+ * the machine you are not sitting at. It prints "archived N prompts" and, when a source was
+ * skipped, "not read, by your choice: <names>". */
+function readHarvestOutput(out) {
+  const s = String(out || '');
+  const n = /archived\s+(\d+)\s+prompt/i.exec(s);
+  const skipped = /not read, by your choice:\s*(.+)/i.exec(s);
+  return {
+    added: n ? Number(n[1]) : 0,
+    skipped: skipped ? skipped[1].trim().split(/[,\s]+/).filter(Boolean) : []
+  };
+}
+
 function main() {
   /* `--where` answers the one question this program used to get wrong in silence: which folder
    * do you think my hub is? It writes nothing and changes nothing, so it is safe to run at any
@@ -178,24 +261,35 @@ function main() {
     return 1;
   }
 
+  /* A day this already ran is not a day nothing happened: the earlier run filed the receipt
+   * and it still stands. Leaving it alone keeps `at` meaning "when this machine last did the
+   * work", which is what the check on the other side reads. */
   if (ONCE_A_DAY && alreadyRanToday()) { say('already harvested today'); return 0; }
 
   if (!HUB) {
-    warn('I could not find your hub folder, so there is nowhere to file what you have typed. '
-       + 'Set HUB_DIR in ~/.hub/device.env to the folder your hub is in, or run the installer again.');
+    const msg = 'I could not find your hub folder, so there is nowhere to file what you have '
+      + 'typed. Set HUB_DIR in ~/.hub/device.env to the folder your hub is in, or run the '
+      + 'installer again.';
+    warn(msg);
+    receipt({ error: msg });        // into the hub this machine used last, if there was one
     return 1;
   }
   const collector = findCollector();
   if (!collector) {
-    warn('the collector (hub-prompt-archive) is not beside this program or in your hub, so '
-       + 'nothing can be archived. Run the installer again to put it back.');
+    const msg = 'the collector (hub-prompt-archive) is not beside this program or in your '
+      + 'hub, so nothing can be archived. Run the installer again to put it back.';
+    warn(msg);
+    receipt({ error: msg });
     return 1;
   }
 
   const py = findPython();
   if (!py) {
     // Loud, because this is not a quiet skip: this machine's prompts are being lost.
-    warn('no working python on this machine, so its prompts CANNOT be archived. Install Python 3 or set HUB_PYTHON.');
+    const msg = 'no working python on this machine, so its prompts CANNOT be archived. '
+      + 'Install Python 3 or set HUB_PYTHON.';
+    warn(msg);
+    receipt({ error: msg });
     return 1;
   }
 
@@ -206,21 +300,31 @@ function main() {
 
   const h = run(py.cmd, py.pre.concat([collector, '--hub', HUB, 'archive']));
   if (!h || h.status !== 0) {
-    warn('the harvester failed: ' + String((h && (h.stderr || h.stdout)) || 'no output').slice(0, 400));
+    const msg = 'the harvester failed: '
+      + String((h && (h.stderr || h.stdout)) || 'no output').slice(0, 400);
+    warn(msg);
+    receipt({ error: msg });
     return 1;
   }
   say(String(h.stdout || '').trim());
   stampNow();
 
+  /* The run worked. Say so IN THE HUB, before the commit, so the receipt is part of the same
+   * commit as whatever was archived - and so a day with nothing to archive still commits the
+   * one line that says this machine is alive and looking. A quiet day and a dead harvester
+   * used to be the same picture from anywhere else. */
+  const seen = readHarvestOutput(h.stdout);
+  receipt({ ok: true, added: seen.added, sources: { skipped: seen.skipped } });
+
   /* Commit ONLY the archive path. `git commit -- <path>` ignores whatever else is staged, so
    * a harvest that fires while you are mid-edit can never carry your unfinished work into a
-   * commit you did not write. */
+   * commit you did not write. The receipt lives inside this path on purpose. */
   const rel = path.join('prompts', 'archive');
   run('git', ['add', '--', rel]);
   const dirty = run('git', ['status', '--porcelain', '--', rel]);
   if (!String((dirty && dirty.stdout) || '').trim()) { say('nothing new to commit'); return 0; }
 
-  const machine = (process.env.HUB_MACHINE || os.hostname()).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const machine = MACHINE;
   const c = run('git', ['commit', '-m', 'Archive the prompts typed on ' + machine, '--', rel]);
   if (!c || c.status !== 0) { warn('commit failed: ' + String((c && (c.stderr || c.stdout)) || '').slice(0, 200)); return 1; }
   say('committed');
