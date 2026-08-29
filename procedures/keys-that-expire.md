@@ -58,10 +58,41 @@ Write `never` instead of a date for one you checked and that does not expire.
 Write `-` instead of a page when there is nowhere to go and get one.
 
 **Never put a key itself in that file.** It is plain text and it travels with
-your folder. Names, dates and links only.
+your folder. Names, dates, file paths and links only.
 
 The installer makes the file for you, with those instructions inside it. If you
 built by hand, make it yourself: it is a text file, and an empty one is valid.
+
+## The one key that does not live in your folder
+
+Nearly every key belongs in the locked store, because putting it there once puts
+it on every computer you own. A few must not. A login that belongs to one machine
+stops being that machine's login the moment two machines share it, so it stays
+where it is, in one file on one computer.
+
+That kind of key still has a last day, and it is the one most likely to die
+quietly: no other computer notices, because no other computer has it.
+
+So write it down the same way, and say where it lives with an `@`. Read the `@`
+as the word "at":
+
+```
+SOME_LOGIN@/the/file/it/lives/in  2027-03-14  -  # what it opens, and how you renew it
+```
+
+Everything else is identical. It is counted down on the same rhythm, the date is
+still the off switch, and `hub-check-keys` still asks about it. The one thing the
+`@` changes is that the check knows not to go looking for it in your folder, so it
+never tells you a key is missing when it was never meant to be there.
+
+Where there is no page to get a new one from, write `-` and put the steps in the
+words after the `#`. That is the only place they live, and both the check and your
+brief point you back at that line.
+
+**One file, not two.** You may be wondering whether a key like this needs its own
+list somewhere. It does not. The path in the line IS the declaration: it says this
+key lives here, on purpose. A second file to keep in step with the first is the
+thing this whole card exists to avoid.
 
 ## Why a file and not a calendar reminder
 
@@ -131,7 +162,10 @@ So the honest sequence is:
 
 1. You open the page from the third field and make a new key.
 2. Your assistant puts it in the locked store, on any computer that can open it.
-   This needs no passphrase and no help from you.
+   This needs no passphrase and no help from you. For a key written with an `@`,
+   this step is different: it goes into the file the `@` names, on the computer
+   that owns it, and nowhere else. Putting it into a terminal session instead of
+   into that file looks exactly like success and is not.
 3. You (or it) change the date in `secrets/expires.txt`, which is what stops the
    reminder.
 4. Run `hub-check-keys` and read question 3. Being in the store is not being on
@@ -148,6 +182,10 @@ So break it on purpose, once, while everything is calm:
   `hub-check-keys`, and read the failure. Put it back and watch it pass.
 - Put a date from last month in `secrets/expires.txt`, run it, read the failure.
   Put the real date back.
+- If you have a key written with an `@`, put yesterday's date on it and run the
+  check. It should tell you which computer is being refused and where the key
+  lives, and it should never tell you the key is missing from your folder. Put
+  the real date back.
 
 Two minutes, and now you know what it looks like when it catches something,
 rather than only what it looks like when it has nothing to say. Do the same to

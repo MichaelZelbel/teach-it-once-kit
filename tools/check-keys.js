@@ -12,6 +12,11 @@
  *
  * It never prints a key. Names, dates and counts only.
  *
+ * Question 4 also handles the one kind of key that is NOT in your folder on purpose: a login
+ * that belongs to one computer, written in secrets/expires.txt as NAME@the/file/it/lives/in.
+ * It is counted down like any other and it is never reported as missing from the folder,
+ * because it was never meant to be in there.
+ *
  *   hub-check-keys              check this computer
  *   hub-check-keys --hub PATH   check a hub somewhere else
  *
@@ -259,10 +264,23 @@ if (fs.existsSync(expires)) {
       rows.push({ status: "BAD", name: f[0], note: "the date is not written as YYYY-MM-DD" });
       continue;
     }
+    // NAME@PATH means the key lives in that one file on this computer and is NOT in your
+    // locked folder, on purpose. Question 4 counts it down like any other, and the check
+    // further down does not go looking for it in the folder, because it was never meant
+    // to be in there and "missing" would be a warning you could never make go away.
+    let name = f[0], where = "";
+    const at = name.indexOf("@");
+    if (at === 0 || at === name.length - 1) {
+      rows.push({ status: "BAD", name: f[0], note: at === 0
+        ? "there is no key name before the @"
+        : "there is no file after the @, so it says the key lives somewhere without saying where" });
+      continue;
+    }
+    if (at > 0) { name = f[0].slice(0, at); where = f[0].slice(at + 1); }
     const left = dayOf(f[1]) - now;
     rows.push({
       status: left < 0 ? "EXPIRED" : left <= 14 ? "DUE" : left <= 60 ? "SOON" : "QUIET",
-      name: f[0], date: f[1], left: left, url: f[2] || "-", note: note,
+      name: name, where: where, date: f[1], left: left, url: f[2] || "-", note: note,
     });
   }
 }
@@ -274,20 +292,33 @@ if (!fs.existsSync(expires) || !rows.length) {
   for (const r of rows.filter((x) => x.status === "BAD")) {
     bad("A line in secrets/expires.txt cannot be read (" + r.name + "): " + r.note);
   }
+  // Where a key lives is said ON the line that reports it, never on a line of its own: a key
+  // that lives on one computer fails differently, and "everything using it" would be wrong.
+  // A key with months left still says nothing at all, whichever kind it is.
   for (const r of rows.filter((x) => x.status === "EXPIRED")) {
-    bad(plain(r) + " ran out on " + r.date + ", " + (-r.left) + " days ago. Everything");
-    bad("using it is already being refused.");
+    if (r.where) {
+      bad(plain(r) + " ran out on " + r.date + ", " + (-r.left) + " days ago. It lives");
+      bad("in " + r.where + " on this computer, and that computer is already");
+      bad("being refused. No other computer of yours looks any different.");
+    } else {
+      bad(plain(r) + " ran out on " + r.date + ", " + (-r.left) + " days ago. Everything");
+      bad("using it is already being refused.");
+    }
     if (r.url !== "-") bad("Get a new one here: " + r.url);
+    else bad("There is no page for this one. The steps are on its own line in expires.txt.");
   }
   for (const r of rows.filter((x) => x.status === "DUE" || x.status === "SOON")) {
     good(plain(r) + " runs out on " + r.date + ", in " + r.left + " days.");
+    if (r.where) good("It lives in " + r.where + " on this computer, not in your folder.");
     if (r.url !== "-") good("Get a new one here: " + r.url);
+    else good("There is no page for this one. The steps are on its own line in expires.txt.");
   }
-  // A name written down that the folder does not carry. Only asked when the folder could
-  // actually be opened: "I could not look" must never be printed as "it is not there".
+  // A name written down that the folder does not carry. Only asked of the keys that are
+  // MEANT to be in the folder, and only when the folder could actually be opened: "I could
+  // not look" must never be printed as "it is not there".
   if (names.length) {
     for (const r of rows) {
-      if (r.status === "BAD" || names.includes(r.name)) continue;
+      if (r.status === "BAD" || r.where || names.includes(r.name)) continue;
       bad("secrets/expires.txt has a date for " + r.name + " and your folder carries no");
       bad("key by that name. Nothing can renew a key that is not there.");
     }
