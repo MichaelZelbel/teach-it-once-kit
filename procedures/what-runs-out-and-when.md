@@ -62,7 +62,7 @@ judged against those answers.
 Or say it in words, in a session with your folder attached:
 
 ```
-Add something with a deadline to my hub. Ask me exactly four questions, once, and never ask them again: (1) what is true when this is finished, (2) from what day to what day can I do it, (3) what does it cost me if it slips, (4) how could you tell I had done it without asking me. If I cannot give you a last day, say so plainly and do not add it: something with no last day is a wish, and this list is not for wishes. Then run hub-due add with my answers and show me the line you ran.
+Add something with a deadline to my hub. Ask me exactly four questions, once, and never ask them again: (1) what is true when this is finished, (2) from what day to what day can I do it, (3) what does it cost me if it slips, (4) how could you tell I had done it without asking me. If I cannot give you a last day, say so plainly and do not add it: something with no last day is a wish, and this list is not for wishes. Then run hub-due add with my answers, and show me the four answers as you recorded them so I can fix them now rather than in six months.
 ```
 
 *Bookmark the prompt, if you like: [querino.ai/prompts/add-a-deadline-to-my-hub](https://querino.ai/prompts/add-a-deadline-to-my-hub)*
