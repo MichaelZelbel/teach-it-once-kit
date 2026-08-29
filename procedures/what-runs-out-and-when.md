@@ -179,19 +179,42 @@ morning brief recipe, you can take it back out now. One thing, one place.
 
 ## If you do have a calendar
 
-Two extras, and only two.
+**One entry per thing, and one is the whole rule.**
 
-**Out.** Ask your assistant to put one entry on the last day of each window, with
-a real start time rather than an all-day entry. Then the deadline is on your
-phone even with no hub anywhere near you, and anyone looking at your calendar can
-see it.
+Not two. Two entries about one date is the same mistake as two reminder apps:
+the day they disagree with each other, you stop reading both.
 
-**In.** Write an event on your phone with a line in its notes like `hub: from
-1 Feb`, and ask your assistant to pick it up on the next morning run.
+**Which day.** The day your hub starts being loud, not the day the thing dies.
+`hub-due` works that day out from the same rule as everything else, so there is
+nothing for you to pick. The death date goes in the **title**, so the single
+entry still tells you both things:
 
-That is all. **The calendar never decides when you get nagged, and never knows
-whether you acted.** Let it do either of those and you are back to a reminder
-that goes off about something you did last week.
+```
+Tue 23 July, 09:00
+Renew the shop key (it runs out 27 August)
+```
+
+An entry on the day the thing dies sounds sensible and is a trap. If you renewed
+it three weeks ago, that entry is now a lie sitting in your calendar, and you
+have to remember to go and take it out. You will not.
+
+**It takes itself out.** When you finish something, your hub deletes its entry,
+as long as the day has not arrived yet. A day that has already passed is left
+alone: that one is a record of what happened. This is the half that makes a
+single entry safe to have at all, because the same thing that stops the nagging
+removes the entry.
+
+**Give it a real start time**, never an all-day entry, or the rest of your hub
+reads it as background noise and skips it.
+
+**And the other direction.** Write an event on your phone with a line in its
+notes like `hub: from 1 Feb`, and your assistant picks it up on the next morning
+run.
+
+That is all of it. **The calendar never decides when you get nagged, and never
+knows whether you acted.** Let it do either of those and you are back to a
+reminder that goes off about something you did last week.
+
 
 ## Now put it in the register
 
