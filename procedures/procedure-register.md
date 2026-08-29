@@ -49,6 +49,27 @@ Half-empty blocks are fine and honest. A "Rhythm: not scheduled yet"
 line is a true statement about the world. Fill it in when you attach the
 clock.
 
+## The cards in here that make a procedure
+
+Every one of these leaves something running, so every one of them owes
+`procedures.md` a block. This is the list to walk when you are checking
+whether the register is complete.
+
+| Card | What it leaves running | Chapter |
+|---|---|---|
+| `morning-brief-setup.md` | a brief that arrives every morning | 21 |
+| `weekly-review-setup.md` | a review that keeps its own appointment | 22 |
+| `watchdog-setup.md` | a patrol on something you used to check by hand | 23 |
+| `outside-ai-check.md` | the monthly question about AIs you use elsewhere | 22 |
+| `ai-subscription-review.md` | the monthly money line | 22 |
+| `keys-that-expire.md` | the record of when each key dies | 24, 27 |
+| `what-runs-out-and-when.md` | one daily check over everything with a last day | 33 |
+| `safety-net-setup.md` | version history and an off-machine copy | 18 |
+
+The last one is the newest and the one most likely to be missing a block,
+because it replaces several separate reminders with a single job and it is
+easy to assume the old blocks still cover it. They do not. One block.
+
 ## The quarterly audit
 
 Do it in the same sitting as the spring-clean from Chapter 10. Walk the

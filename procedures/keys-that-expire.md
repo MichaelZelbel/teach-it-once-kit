@@ -92,6 +92,21 @@ Then check it now rather than in two months. Put a made-up line in
 `secrets/expires.txt` with a date a week away, run the brief once, see the line
 appear, and take it out again.
 
+## If you have done Chapter 33, skip the wiring above
+
+Chapter 33 builds one daily check over everything in your life with a last day, and
+it reads this very file as one of its sources. So a key is in the same list as your
+tax return, with the same rhythm worked out from the same rule, and you never write
+a date in two places.
+
+If you have that, take the paragraph you just pasted back out of
+`skills/morning-brief.md` and let `hub-due today` carry keys along with everything
+else. **Two things nagging you about the same key is worse than one**, because the
+day they disagree you stop believing either.
+
+Everything else on this card stands: the file, the format, `hub-check-keys`, and the
+off switch below.
+
 ## The rhythm, and why it nags
 
 - More than 60 days: silence.

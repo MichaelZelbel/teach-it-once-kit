@@ -85,13 +85,23 @@ All optional. The book works without every row below.
 | 30. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
 | 31. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
 | 32. Keep an Eye on This for Me | none (prose; the two reader prompts are public at querino.ai) | ready |
-| 33. A Tour of My Hub, and the Road On | none (prose) | ready |
+| 33. The Thing With a Last Day | `procedures/what-runs-out-and-when.md`, `tools/due.js` (installed as the command `hub-due`), `starter-hub/due/README.md` | ready |
+| 34. A Tour of My Hub, and the Road On | none (prose) | ready |
 
 ## Back matter
 
 | Chapter | Kit asset | Status |
 |---|---|---|
 | Appendix C. What You Get, In Order | `living/build-order-card.md` | ready |
+
+New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
+(the window instead of a due date, the four questions, the self check, the cap of three a day),
+`tools/due.js` plus its `tools/hub-due` launcher, and `starter-hub/due/README.md` so a brand new
+hub carries the room from day one. It reads `starter-hub/secrets/expires.txt` as one of its
+sources, so a reader's key dates are in the same list as everything else and only one thing nags
+them. Row 33 is new and the tour moved from 33 to 34; nothing else was renumbered. The card says
+in its second paragraph that no Google account is needed for any of it, because a reader who
+thinks they need one stops reading there.
 
 New 2026-08-28 (batch AG, "a key has a life, not just a home"): `procedures/keys-that-expire.md`
 (the expiry record, the delivery check, the nagging ladder and the break-it-to-prove-it drill),

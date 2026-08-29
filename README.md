@@ -35,7 +35,7 @@ git clone https://github.com/MichaelZelbel/teach-it-once-kit.git
 - `starter-hub/`: the folder that becomes your own system. Copy this whole folder and it is your hub. Everything else here fills it up.
 - `profile/`: Part II assets. The about-you template, the people and projects interviews, the voice extraction prompt, the capture and spring-clean checklists.
 - `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, the packaging and upload guide, practice texts, and one big finished craft skill (`strip-ai-tells.md`) to see what a real one looks like.
-- `procedures/`: Part V assets. Morning brief, weekly review, watchdog, the procedure register, the red lines, and the card for keys that run out.
+- `procedures/`: Part V and VI assets. Morning brief, weekly review, watchdog, the procedure register, the red lines, the card for keys that run out, and the card for everything else that runs out (`what-runs-out-and-when.md`).
 - `living/`: the two-questions card, the privacy audit checklist, the saved-prompt card, the printable build-order card.
 - `menerio/`: Part VI, optional. The notebook chapters: what goes in it and what stays out, the MCP connection, and two optional routes for pulling an old AI's memory in.
 - `server/`: Part VI, optional. Scripts and guides for giving your system an always-on home.

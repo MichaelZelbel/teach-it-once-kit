@@ -1,6 +1,6 @@
 # tools
 
-Six small programs. The installer puts them on your computer. **They are not part
+Seven small programs. The installer puts them on your computer. **They are not part
 of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
@@ -64,6 +64,33 @@ inherits, and it compares what is there against what is in your folder, so a key
 that was replaced and never copied over shows up as the old one rather than as
 fine. On a Mac or Linux it starts a fresh terminal and looks at what that terminal
 ends up holding.
+
+The fifth is the one you will type most often.
+
+- **`due.js`** holds everything in your life that has a last day: a tax return, a
+  timesheet, a contract you have to cancel by March, a key that dies in a year.
+  Each one stores the first day you can do it and the last day you still can, and
+  how loud your hub gets follows how much of that window is left, so one rule
+  covers a job you have a week for and one you have a year for. Chapter 33.
+
+The installer gives it a launcher, so the command is:
+
+```
+hub-due                     everything, loudest first
+hub-due today               at most three, which is what your morning brief reads
+hub-due add <name> ...      make one
+hub-due done <name>         you did it
+hub-due check               close whatever can prove itself done
+```
+
+Two things about it are worth knowing before you use it. It **refuses anything
+without both dates**, in those words, which is the only thing standing between
+this and a to-do app you abandon. And it reads `secrets/expires.txt` as one of
+its sources, so the key dates from Chapter 27 are in the same list as everything
+else and there is one thing nagging you rather than two that disagree.
+
+It needs no Google account and no calendar, and nothing in the program can reach
+one.
 
 The last two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.
