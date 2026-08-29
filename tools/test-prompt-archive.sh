@@ -25,7 +25,11 @@ PASS=0; FAIL=0
 ok()  { echo "  ok   $1"; PASS=$((PASS+1)); }
 bad() { echo "  FAIL $1"; FAIL=$((FAIL+1)); [ -n "${2:-}" ] && echo "       $2"; }
 
-W="$HERE/.tmp-archive-test.$$"; rm -rf "$W"; mkdir -p "$W/memory" "$W/home"
+# The fixture hub is built the way the hub this kit INSTALLS is built: observations/, and no
+# memory/. It made a memory/ until 2026-08-29, which is why this suite stayed green through the
+# eight days both tools were unable to find a real hub at all (see the note in prompt-harvest.js).
+# A fixture that is kinder than the world is a fixture that cannot fail.
+W="$HERE/.tmp-archive-test.$$"; rm -rf "$W"; mkdir -p "$W/observations" "$W/home"
 trap 'rm -rf "$W"' EXIT
 # Point the bot reader at nothing, for every case that is not about it. On a machine that runs
 # bots this suite would otherwise find the REAL ones and archive real chats into a throwaway
@@ -482,6 +486,44 @@ elif echo "$RSROW" | grep -q "pays late"; then
   ok "41 rescrub cleans a name out of a stored answer and keeps the answer"
 else
   bad "41 rescrub destroyed the answer instead of cleaning it" "$RSROW"
+fi
+
+# 42-45. CAN THE PAIR STILL FIND A HUB? (2026-08-29)
+#
+# Everything above this line tests what the archive does once it knows where the hub is. For
+# eight days the answer was that it never got that far: prompt-harvest.js decided a folder was
+# a hub only if it held `memory/`, the hub renamed that folder on 2026-08-21, and all three of
+# Michael's machines went quiet the same day with no error anyone would see. The starter hub
+# this kit installs has never had a `memory/`, so the tool shipped broken for every new reader.
+# These four cases are the ones that would have caught it on the day.
+HARV="$HERE/prompt-harvest.js"
+if command -v node >/dev/null 2>&1 && [ -f "$HARV" ]; then
+  mkdir -p "$W/hubcheck/new" "$W/hubcheck/new/observations" \
+           "$W/hubcheck/old" "$W/hubcheck/old/memory" \
+           "$W/hubcheck/declared/scripts/config" "$W/hubcheck/notahub"
+  : > "$W/hubcheck/declared/scripts/config/hub-layout.json"
+  # `--where` prints the hub it resolved and touches nothing, so hub-finding can be tested
+  # without starting a real harvest inside a throwaway folder.
+  findable() {
+    HUB_DIR="$1" HOME="$W/home" node "$HARV" --where >"$W/hc.out" 2>"$W/hc.err" || true
+    [ -s "$W/hc.out" ] && ! grep -q "could not find your hub" "$W/hc.err"
+  }
+  findable "$W/hubcheck/new" \
+    && ok "42 a hub with observations/ and no memory/ is found - the layout this kit ships" \
+    || bad "42 the hub this kit installs is not recognised as a hub" "$(cat "$W/hc.err")"
+  findable "$W/hubcheck/old" \
+    && ok "43 a hub still carrying the old memory/ is found - an older reader keeps working" \
+    || bad "43 an older memory/ hub stopped being recognised" "$(cat "$W/hc.err")"
+  findable "$W/hubcheck/declared" \
+    && ok "44 a hub is recognised by the layout file it declares, whatever it named its folders" \
+    || bad "44 hub-layout.json was not accepted as proof of a hub" "$(cat "$W/hc.err")"
+  # An explicitly set HUB_DIR is believed. Michael's PC had it set correctly the whole time and
+  # was overruled on the strength of a missing folder, so "he told us" has to beat "it looks odd".
+  findable "$W/hubcheck/notahub" \
+    && ok "45 a HUB_DIR someone set by hand is believed, not second-guessed" \
+    || bad "45 an explicitly set HUB_DIR was overruled" "$(cat "$W/hc.err")"
+else
+  echo "  --   42-45 skipped: node or prompt-harvest.js not on this machine"
 fi
 
 echo

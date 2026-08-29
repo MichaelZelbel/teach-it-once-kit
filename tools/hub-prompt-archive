@@ -134,12 +134,27 @@ def hub_root(argv_hub=None):
         return os.path.abspath(env)
     here = os.path.dirname(os.path.abspath(__file__))
     cand = os.path.abspath(os.path.join(here, "..", ".."))
-    if os.path.isdir(os.path.join(cand, "memory")):
+    if looks_like_hub(cand):
         return cand
     for c in ("/root/hub", os.path.expanduser("~/hub"), "C:\\hub"):
-        if os.path.isdir(os.path.join(c, "memory")):
+        if looks_like_hub(c):
             return c
     return cand
+
+
+# A hub is recognised by the folders it declares, not by one hardcoded name. This asked for
+# `memory/` until 2026-08-29, which stopped being a hub folder on 2026-08-21, and the starter
+# hub this kit installs has never had one. See the long note in prompt-harvest.js: the two
+# programs are a pair and they have to agree about what a hub is.
+HUB_MARKERS = ("observations", "profile", "rules", "prompts", "memory")
+
+
+def looks_like_hub(path):
+    if not path:
+        return False
+    if os.path.isfile(os.path.join(path, "scripts", "config", "hub-layout.json")):
+        return True
+    return any(os.path.isdir(os.path.join(path, d)) for d in HUB_MARKERS)
 
 
 # --------------------------------------------------------------- the scrubber

@@ -73,11 +73,47 @@ const STAMP = path.join(os.homedir(), '.hub', 'prompt-harvest-last');
  *      inside a hub. Kept so an older setup keeps working after an update.
  *
  * If none of them holds a hub, that is said out loud rather than harvesting into thin air. */
+/* WHAT MAKES A FOLDER A HUB, and why this is not one folder name.
+ *
+ * Until 2026-08-29 this asked one question: does it contain `memory/`. On 2026-08-21 the hub
+ * renamed that folder to `observations/` and deleted the old name, and every machine stopped
+ * harvesting the same day: the work PC, the server and the laptop all went quiet within a day
+ * of each other and nothing said so, because the only place this failure is written down is a
+ * warning on the standard error of a session-end hook nobody reads. It was found eight days
+ * later, by hand.
+ *
+ * Two things made that possible and both are fixed here. The first is that a single hardcoded
+ * folder name is a dependency on a layout the hub is allowed to change, so the question is now
+ * asked of several names, plus the file where a hub declares its own folders. The second is
+ * worse: the starter hub this kit INSTALLS ships `observations/` and no `memory/`, so the
+ * harvester could not find the hub the kit itself had just created. It was broken for every new
+ * reader on day one, and the suite could not see it because the fixture built a `memory/` of its
+ * own. test-prompt-archive.sh now builds the layout the kit really ships.
+ *
+ * An explicitly set HUB_DIR is now believed rather than second-guessed. Michael's work PC had
+ * HUB_DIR=C:\hub set correctly in ~/.hub/device.env throughout, and this function overruled it
+ * on the strength of a missing folder. If someone has said where their hub is, that is the
+ * answer; guessing is only for when nobody has said. */
+const HUB_MARKERS = ['observations', 'profile', 'rules', 'prompts', 'memory'];
 function looksLikeHub(p) {
-  try { return !!p && fs.existsSync(path.join(p, 'memory')); } catch (_) { return false; }
+  try {
+    if (!p) return false;
+    if (fs.existsSync(path.join(p, 'scripts', 'config', 'hub-layout.json'))) return true;
+    return HUB_MARKERS.some(function (d) {
+      try { return fs.statSync(path.join(p, d)).isDirectory(); } catch (_) { return false; }
+    });
+  } catch (_) { return false; }
 }
 function findHub() {
-  const cands = [process.env.HUB_DIR, path.join(os.homedir(), 'hub'), '/root/hub', 'C:\\hub'];
+  /* Said out loud beats inferred. Only the shape of the answer is checked: a HUB_DIR that
+   * names something which is not a directory at all is a typo worth reporting, not obeyed. */
+  const told = process.env.HUB_DIR;
+  if (told) {
+    try { if (fs.statSync(told).isDirectory()) return path.resolve(told); } catch (_) {}
+    warn('HUB_DIR is set to "' + told + '", which is not a folder I can open. Fix it in '
+       + '~/.hub/device.env, or unset it and I will look in the usual places.');
+  }
+  const cands = [path.join(os.homedir(), 'hub'), '/root/hub', 'C:\\hub'];
   for (const c of cands) if (looksLikeHub(c)) return path.resolve(c);
   const up = path.resolve(__dirname, '..');
   return looksLikeHub(up) ? up : null;
@@ -131,6 +167,17 @@ function stampNow() {
 }
 
 function main() {
+  /* `--where` answers the one question this program used to get wrong in silence: which folder
+   * do you think my hub is? It writes nothing and changes nothing, so it is safe to run at any
+   * time, it is what the suite uses to test hub-finding without starting a real harvest, and it
+   * is the first thing to run when prompts stop appearing in the archive. */
+  if (ARGS.includes('--where')) {
+    if (HUB) { process.stdout.write(HUB + '\n'); return 0; }
+    warn('I could not find your hub folder. Set HUB_DIR in ~/.hub/device.env to the folder '
+       + 'your hub is in, or run the installer again.');
+    return 1;
+  }
+
   if (ONCE_A_DAY && alreadyRanToday()) { say('already harvested today'); return 0; }
 
   if (!HUB) {
