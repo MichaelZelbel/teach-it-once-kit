@@ -53,8 +53,7 @@ cannot name what you got, the rung is not finished.
 
 - [ ] 12. Fill the app's three-box Skill form, then ask without naming
       it (Ch 12). **You have:** a Skill that steps forward on its own.
-- [ ] 13. Get interviewed, keep the master in `skills/`, upload the
-      copy (Ch 13). **You have:** `skills/summarize.md` as the master.
+- [ ] 13. Get interviewed, get the recipe it writes (Ch 13). **You have:** `.claude/skills/summarize/SKILL.md` as the master.
 - [ ] 14. The other four starters (Ch 14). **You have:** five recipes
       for the jobs everyone repeats.
 - [ ] 15. Craft interview, then build them one at a time, two sittings

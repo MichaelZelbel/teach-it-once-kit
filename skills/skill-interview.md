@@ -10,7 +10,7 @@ first sentence to whatever job you actually repeat:
 I keep asking you to summarize long text, and I keep re-explaining how I
 want it. Make that a skill. Interview me first, one question at a time,
 until you know the job, the exact shape of the answer, and my rules. Then
-write it as a file in skills/ and tell me what you named it.
+write it as .claude/skills/<name>/SKILL.md and tell me what you named it.
 ```
 
 Expect five or six questions. Some of them will ask about decisions you
@@ -43,7 +43,7 @@ Start with the verb and say whose way it is:
 ## Running it
 
 Say the name: "Run my summarize skill on this", "Answer email my way".
-A recipe sitting in `skills/` does not fire because a matching job walked
+A recipe sitting loose in some other folder does not fire because a matching job walked
 past. Installing it as a Skill in the app fixes that properly (Chapter 13
 shows the upload): the app matches your request against the skill's
 description and runs it for you.

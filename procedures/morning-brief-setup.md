@@ -9,7 +9,7 @@ clock on it.
 In a session with your folder attached, paste this:
 
 ```
-Build me a morning brief. Write it as a skill file in skills/, called
+Build me a morning brief. Write it as a skill file in .claude/skills/, called
 morning-brief.md. When it runs, it should read my profile files, work
 out what today actually needs from my projects, deadlines and people,
 and write the brief as a new file in brief/, named with today's date.
@@ -18,7 +18,7 @@ you do not know something, say so plainly. Then run it once so I can
 see today's brief.
 ```
 
-You get two things: `skills/morning-brief.md` (the recipe) and
+You get two things: `.claude/skills/morning-brief/SKILL.md` (the recipe) and
 `brief/YYYY-MM-DD.md` (today's brief, for real).
 
 Run it two or three more times in the same sitting: read what came out,
@@ -32,7 +32,7 @@ recipe you have not watched run.
 Tony Stubblebine, the CEO of Medium, ends his own AI morning briefing
 with every file he touched in the past 24 hours. The morning starts
 with yesterday's thread back in your hand. Steal it: add one line to
-`skills/morning-brief.md`:
+`.claude/skills/morning-brief/SKILL.md`:
 
 ```
 End with one short line naming which files in this folder changed in

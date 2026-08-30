@@ -106,11 +106,11 @@ the only place it exists.
 
 ## Wiring it into the brief you already have
 
-Open `skills/morning-brief.md`, the recipe you wrote in Chapter 21, and paste
+Open `.claude/skills/morning-brief/SKILL.md`, the recipe you wrote in Chapter 21, and paste
 this into the session:
 
 ```
-Open skills/morning-brief.md and add one part. Read secrets/expires.txt, which
+Open .claude/skills/morning-brief/SKILL.md and add one part. Read secrets/expires.txt, which
 lists my keys and the date each one runs out. Work out how many days are left
 for each. Say nothing at all about a key with more than 60 days left. Between
 60 and 15 days, mention it once a week, on Mondays. With 14 days or fewer,
@@ -131,7 +131,7 @@ tax return, with the same rhythm worked out from the same rule, and you never wr
 a date in two places.
 
 If you have that, take the paragraph you just pasted back out of
-`skills/morning-brief.md` and let `hub-due today` carry keys along with everything
+`.claude/skills/morning-brief/SKILL.md` and let `hub-due today` carry keys along with everything
 else. **Two things nagging you about the same key is worse than one**, because the
 day they disagree you stop believing either.
 

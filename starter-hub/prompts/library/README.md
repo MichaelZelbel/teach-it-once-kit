@@ -6,7 +6,7 @@ A prompt is a piece of text you paste into an AI to get a job done. This drawer
 is where the good ones live, so you never have to write one twice or hunt for it
 in an old chat.
 
-**This is not the same thing as `skills/`, and mixing them up causes real
+**This is not the same thing as `.claude/skills/`, and mixing them up causes real
 trouble.** One question tells them apart:
 
 > Does my assistant run this itself, here, or do I paste it somewhere else?
@@ -18,7 +18,7 @@ saved prompt and it lives here. A prompt has no such header, and nothing reads
 this folder on its own, so your assistant can never browse this drawer and
 choose. It is yours to reach for.
 
-Getting it wrong is quiet in both directions. A saved prompt filed in `skills/`
+Getting it wrong is quiet in both directions. A saved prompt filed in `.claude/skills/`
 never fires, because there is no job in your folder for it to do. A skill filed
 here can never be found at all.
 

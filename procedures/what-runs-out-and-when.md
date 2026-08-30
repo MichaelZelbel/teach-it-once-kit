@@ -149,11 +149,11 @@ past.
 
 ## Wiring it into the brief you already have
 
-Open `skills/morning-brief.md`, the recipe you wrote in Chapter 21, and paste
+Open `.claude/skills/morning-brief/SKILL.md`, the recipe you wrote in Chapter 21, and paste
 this into the session:
 
 ```
-Open skills/morning-brief.md and add one part, near the top. Run the command hub-due today and put whatever it gives back into the brief, word for word, changing nothing and adding nothing. If it says nothing needs saying today, leave the part out entirely rather than writing that nothing is due. Do not work out for yourself which deadlines matter or how many to show: that command already decided, and its cap of three a day is the only reason this stays readable. Change nothing else in the file.
+Open .claude/skills/morning-brief/SKILL.md and add one part, near the top. Run the command hub-due today and put whatever it gives back into the brief, word for word, changing nothing and adding nothing. If it says nothing needs saying today, leave the part out entirely rather than writing that nothing is due. Do not work out for yourself which deadlines matter or how many to show: that command already decided, and its cap of three a day is the only reason this stays readable. Change nothing else in the file.
 ```
 
 *Bookmark the prompt, if you like: [querino.ai/prompts/put-my-deadlines-in-my-brief](https://querino.ai/prompts/put-my-deadlines-in-my-brief)*

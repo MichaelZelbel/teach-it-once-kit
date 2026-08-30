@@ -2,10 +2,10 @@
 
 Five ready-to-use recipes, one per file. The five files themselves sit
 beside this one in `skills/` in this kit, so the fastest install is to
-copy the ones you want into the `skills/` folder in your own hub.
+copy the ones you want into `.claude/skills/` in your own hub, each as its own folder holding a `SKILL.md`.
 Nothing to paste, nothing to retype.
 
-They are deliberately NOT part of the installer. Your `skills/` folder
+They are deliberately NOT part of the installer. Your `.claude/skills/` folder
 arrives empty so the first recipe in it is one you built, in Chapter 13.
 Take these when you want them, and not before.
 
@@ -13,7 +13,7 @@ If you would rather not copy files, paste a recipe into a session with
 your folder attached and say:
 
 ```
-Save this in skills/ as answer-email-my-way.md, exactly as written.
+Save this as a skill called answer-email-my-way, exactly as written.
 ```
 
 Every recipe has the same anatomy: the job (what goes in), the shape
@@ -21,12 +21,12 @@ Every recipe has the same anatomy: the job (what goes in), the shape
 never list). Personalize by adding a rule each time an output disappoints
 you. The second time you make the same correction, it belongs in the file.
 
-**To run one, say its name.** A file in `skills/` does not fire on its
-own. "Answer email my way" runs the recipe; "write a reply to this" does
-not. Chapter 13 removes that requirement by installing the same recipe as
-a real Skill in the app.
+**They fire on their own.** A `SKILL.md` in `.claude/skills/` steps forward when
+what you asked matches its description, without you naming it. Saying the name
+still works and is the reliable way to force one: "Answer email my way" runs that
+recipe every time. A recipe left loose anywhere else in your hub does neither.
 
-## 1. summarize-for-me.md
+## 1. summarize-for-me
 
 ```
 You are running my "Summarize for me" skill. When I hand you text with
@@ -46,7 +46,7 @@ Chapter 13 builds this one from scratch by letting the assistant
 interview you, which produces a better recipe than this default. Use this
 version if you want the shortcut, and replace it later.
 
-## 2. answer-email-my-way.md
+## 2. answer-email-my-way
 
 ```
 You are running my "Answer email my way" skill. I will give you an email,
@@ -62,7 +62,7 @@ sometimes with a note about what I want to say. Draft the reply:
 5. Give me the draft only. No commentary around it.
 ```
 
-## 3. plan-my-day.md
+## 3. plan-my-day
 
 ```
 You are running my "Plan my day" skill. I will tell you what is on
@@ -77,7 +77,7 @@ today: meetings, deadlines, loose tasks, how I slept. Build my plan:
 5. Give me a short timeline, then stop. No productivity lectures.
 ```
 
-## 4. prep-me-for-a-meeting.md
+## 4. prep-me-for-a-meeting
 
 ```
 You are running my "Prep me for a meeting" skill. I will tell you who
@@ -94,7 +94,7 @@ or the invite. Give me a brief:
 Under one page. I read this five minutes before the call.
 ```
 
-## 5. draft-my-update.md
+## 5. draft-my-update
 
 ```
 You are running my "Draft my update" skill. I will tell you, in messy

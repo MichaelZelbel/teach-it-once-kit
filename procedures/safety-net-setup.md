@@ -38,7 +38,7 @@ Show me what has changed since yesterday.
 ```
 
 ```
-Undo the last change to skills/plan-my-day.md.
+Undo the last change to .claude/skills/plan-my-day/SKILL.md.
 ```
 
 ```

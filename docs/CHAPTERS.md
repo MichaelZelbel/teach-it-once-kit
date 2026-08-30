@@ -56,9 +56,9 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 8. Your Voice | `profile/voice-extraction-prompt.md` | ready |
 | 9. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | ready |
 | 10. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
-| 12. Your App Builds the First One | `skills/practice-texts.md` | building |
-| 13. Own the Recipe | `skills/skill-interview.md`, `skills/package-a-skill.md`, `skills/practice-texts.md` | building |
-| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's skills folder ships empty on purpose) | ready |
+| 12. One File, and It Steps Forward | `skills/practice-texts.md` | building |
+| 13. Own the Recipe | `skills/skill-interview.md`, `skills/practice-texts.md` (`skills/package-a-skill.md` removed 2026-08-30: there is no upload to package for) | building |
+| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's `.claude/skills/` ships empty on purpose) | ready |
 | 15. Skills for Your Craft | `skills/craft-skill-interview.md`, `skills/strip-ai-tells.md` (a finished craft skill to read and steal from, not produced by the chapter) | ready |
 | 16. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
 | 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md`, `tools/compile-rules.js` (installed as the command `hub-compile-rules`, never into the hub) | ready |

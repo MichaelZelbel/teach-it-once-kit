@@ -10,7 +10,7 @@ something it should not decide alone. Most weeks it asks nothing.
 In a session with your folder attached:
 
 ```
-Build me a weekly review. Write it as a skill file in skills/weekly-review.md. When it runs it should read my profile files and everything in inbox/, do the filing itself, and write the review as a new file in reviews/, named with the date, in six parts, the sixth only once a month:
+Build me a weekly review. Write it as a skill file in .claude/skills/weekly-review/SKILL.md. When it runs it should read my profile files and everything in inbox/, do the filing itself, and write the review as a new file in reviews/, named with the date, in six parts, the sixth only once a month:
 1) what changed in my projects and people since last week, taken only from the files, and where it knows nothing it says so plainly;
 2) file each clear capture in inbox/ into the right profile file, in my own words, delete the capture it filed, and report every move as one line naming the source, the destination and what it said, so I can undo a move I dislike;
 3) leave anything doubtful in inbox/ untouched and ask me about it, one plain question each; when nothing is doubtful, this part is one line saying so;
@@ -43,7 +43,7 @@ What each part carries:
 ## Half two: the clock
 
 Same path as the brief: **Scheduled**, **New task**, **Set up manually**,
-prompt `Follow skills/weekly-review.md and write this week's review into
+prompt `Follow .claude/skills/weekly-review/SKILL.md and write this week's review into
 reviews/.`, your folder attached, **Automatically approve**,
 **Frequency: Weekly**, pick the day and time, **Save**. Sunday evening
 works as well as Monday morning. Pick the moment you already plan your

@@ -82,7 +82,7 @@ and it took one prompt.
 Add it to the weekly review you already have, on the first review of the month:
 
 ```
-Open skills/weekly-review.md and add a part that runs ONLY on the first
+Open .claude/skills/weekly-review/SKILL.md and add a part that runs ONLY on the first
 review of a calendar month: read my Claude Code receipts for the last 30
 days, compare them against profile/subscriptions.md, and tell me three
 things. What each plan carried. Anything I am paying for that carried

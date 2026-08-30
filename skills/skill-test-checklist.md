@@ -41,7 +41,7 @@ with the recipe, and ask:
 
 ```
 Check the reply below against every numbered rule in
-skills/<your-skill>.md. For each rule say kept or broken, and quote the
+.claude/skills/<your-skill>/SKILL.md. For each rule say kept or broken, and quote the
 part that broke it. Do not rewrite the reply.
 ```
 
