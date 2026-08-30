@@ -32,12 +32,23 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > "Be Nice to the Database"), and the counter inside it runs twenty-one days, matching Will
 > Bowen's original challenge. Still no kit file, so the table below still has no row 11.
 
+> **The switch to Claude Code (2026-08-30, Batch AJ).** The book now puts the reader on the
+> desktop app's **Code** side from Chapter 3 to the end, not Cowork. The app shows two buttons at
+> the top left, **Chat and Cowork** and **Code**, and only the second reads the reader's folder:
+> Cowork sources its skills, plugins and connectors from the claude.ai account. Measured the same
+> day, in three folders differing in one way only: a recipe as a loose file in `skills/` did
+> nothing, and the same recipe as `.claude/skills/<name>/SKILL.md` answered in the reader's own
+> shape without being named. So `starter-hub/skills/` became `starter-hub/.claude/skills/`, the
+> starter gained `CLAUDE.md`, and rows 12, 13, 17 and 20 to 23 change with it. Row 3 goes back to
+> **building** until the trust dialog is captured on a cold machine. Plan of record:
+> `hub/projects/teach-it-once-claude-code-switch-2026-08-30.md`.
+
 ## Parts I to V (restructured, final)
 
 | Chapter | Kit asset | Status |
 |---|---|---|
 | 1. What Your AI Already Knows About You | `profile/bring-your-context-with-you.md` (the export prompt), `profile/about-you-template.md` (fallback only) | ready |
-| 3. Give It a Desk and a House | `HubSetup.exe` on the Releases page, and the `kit-bootstrap` one-line installer; both lay down `starter-hub/` | ready |
+| 3. Give It Hands and a Folder | `HubSetup.exe` on the Releases page, and the `kit-bootstrap` one-line installer; both lay down `starter-hub/`, now including `starter-hub/CLAUDE.md` (the `@AGENTS.md` signpost), `starter-hub/.claude/skills/` and `starter-hub/.mcp.json` | building |
 | 4. The Folder Is the System | `starter-hub/` (the rooms, including `starter-hub/observations/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
 | 5. The Workshop Inside the House | `starter-hub/dev/README.md`, `starter-hub/.gitignore` | ready |
 | 6. The People Who Matter | `profile/people-interview.md` | ready |
