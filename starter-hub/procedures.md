@@ -23,8 +23,8 @@ Filled example:
 
 Does: reads my profile files and writes today's brief before I start work.
 Rhythm: daily, 07:00.             Lands: brief/YYYY-MM-DD.md in this folder.
-Lives: Claude, Scheduled tasks.   Off-switch: the task's own page, the
-                                  switch next to the name.
+Lives: Claude Code, Routines.     Off-switch: the routine's own page,
+                                  Status, switched to Paused.
 Last checked: 2026-07-26.
 
 The example lives inside this comment on purpose. An empty template row

@@ -16,9 +16,11 @@ purpose. If it contradicts something you believe about me, the file wins.
   Use them without being asked.
 - **Pull first, push when done.** If this folder has a git remote, run
   `git pull --rebase` before real work; when the work is done, commit and push.
-- **Skills are recipes.** Every file in `skills/` is a job I never want to
-  explain again. When I name a skill, run its file exactly. When I correct
-  the same thing twice, add the correction to the skill file.
+- **Skills are recipes.** Every folder in `.claude/skills/` holds one job I
+  never want to explain again, written in its `SKILL.md`. You load them at the
+  start of a session and reach for one when its description matches what I
+  asked, without me naming it. When I do name a skill, run its file exactly.
+  When I correct the same thing twice, add the correction to the skill file.
 - **Procedures are listed, always.** Anything that runs on its own is a row
   in `procedures.md`. If you and I set up something new that runs without
   me, add the row in the same session. No unlisted procedures, ever.
