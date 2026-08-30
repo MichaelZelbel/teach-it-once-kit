@@ -3,10 +3,10 @@
 A watchdog is a procedure that checks something for you and speaks up
 only when reality changed. You stop checking. It starts.
 
-This is the one procedure that genuinely belongs in the cloud: it reads
-the public web, it needs nothing from your folder, so it can run while
-your laptop is shut. Attach no folder, and switch **Run on your
-computer** off.
+A watchdog reads the public web and needs nothing out of your folder, so
+it is the one procedure in this book with a real argument for running in
+the cloud. It also has a real argument for staying local, and the local
+one wins on the first build. See **Where to put it**, below.
 
 ## The five parts
 
@@ -30,27 +30,38 @@ Keep all five, in any order that reads naturally:
 
 ```
 Run my product watchdog. Search the web for changes announced in the
-last seven days to Claude's Cowork, scheduled tasks, Skills, or folder
-access. Only report changes that alter what a user sees or clicks. For
-each change, tell me what changed and where you read it, with a link.
-If you find nothing solid, write exactly one line: "All quiet, nothing
+last seven days to the Claude desktop app's Code tab, its Routines, its
+skills, or how it gets access to a folder. Only report changes that
+alter what a user sees or clicks. For each change, tell me what changed
+and where you read it, with a link. Append the result to
+watch/product-watchdog.md, newest at the top, with the date on it. If
+you find nothing solid, write exactly one line: "All quiet, nothing
 changed." Never pad a quiet week.
 ```
 
-Its first run, four minutes after it was built, found a feature that had
-shipped the week before, with three dated source links, and correctly
-threw away three other findings for being nine days old rather than
-seven.
-
 ## Where to put it
 
-**Scheduled**, **New task**, **Set up manually**. Name it, add the
-one-line description, paste the prompt, leave the folder empty, switch
-**Run on your computer** off, set **Automatically approve**, set
-**Frequency: Weekly** (or Daily), pick a day and time, **Save**. The
-task page should show a pill reading **Runs in cloud**.
+**More**, **Routines**, **New routine**, **New local routine**. Name it,
+write the one-line description, paste the prompt into **Instructions**,
+pick your hub as the **Working folder**, set **Permissions** to **Accept
+edits**, set the **Schedule** to **Weekly** (or Daily), pick a day and a
+time, **Create**.
 
-Do not wait for Friday to see it work: press **Run now**.
+Two notes on that, because the obvious instinct is now wrong:
+
+- **A local routine always has a folder.** The form will not save
+  without one. "This job has no business in my folder" is no longer an
+  option, and it turns out not to be needed: giving it the hub is what
+  lets it write its weekly line into a file you already walk past.
+- **The cloud kind is the one that runs while your laptop is shut**, and
+  for a watchdog that is a genuine draw. The price is where the work
+  lands: a remote routine writes to a branch in your GitHub copy, not
+  into your folder. For a weekly one-liner that is a worse landing place.
+  Take the local one first; move it to Chapter 28's machine when you
+  want it running through the weekend.
+
+Do not wait for Friday to see it work: press **Run now**, and use that
+run to answer its questions with the always-allow option.
 
 ## Ideas to steal (public web, no special access needed)
 

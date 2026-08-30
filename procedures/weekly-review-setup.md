@@ -42,16 +42,18 @@ What each part carries:
 
 ## Half two: the clock
 
-Same path as the brief: **Scheduled**, **New task**, **Set up manually**,
-prompt `Follow .claude/skills/weekly-review/SKILL.md and write this week's review into
-reviews/.`, your folder attached, **Automatically approve**,
-**Frequency: Weekly**, pick the day and time, **Save**. Sunday evening
+Same path as the brief: **More**, **Routines**, **New routine**, **New
+local routine**. Instructions: `Follow
+.claude/skills/weekly-review/SKILL.md and write this week's review into
+reviews/.` Working folder: your hub. Permissions: **Accept edits**.
+Schedule: **Weekly**, pick the day and time, **Create**. Sunday evening
 works as well as Monday morning. Pick the moment you already plan your
 week.
 
 You do not need a disposable test copy, because you already ran the
-recipe by hand. If you want to watch the clock itself work, press
-**Run now** on the task's page.
+recipe by hand. But do press **Run now** once on the routine's page and
+answer its questions with the always-allow option, or Monday's run will
+stall on the first one and wait.
 
 ## Your half, only when it asks
 

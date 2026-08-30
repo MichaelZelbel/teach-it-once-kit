@@ -75,7 +75,7 @@ easy to assume the old blocks still cover it. They do not. One block.
 Do it in the same sitting as the spring-clean from Chapter 10. Walk the
 register in both directions:
 
-1. **Downwards:** everything on the app's **Scheduled** page must have a
+1. **Downwards:** everything on the app's **Routines** list must have a
    block in `procedures.md`. Anything unexplained gets one question,
    "what are you and why do you run?", and either earns a block on the
    spot or is deleted on the spot.
