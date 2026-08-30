@@ -44,6 +44,7 @@ Start with the verb and say whose way it is:
 
 Say the name: "Run my summarize skill on this", "Answer email my way".
 A recipe sitting loose in some other folder does not fire because a matching job walked
-past. Installing it as a Skill in the app fixes that properly (Chapter 13
-shows the upload): the app matches your request against the skill's
-description and runs it for you.
+past. Putting it at `.claude/skills/<name>/SKILL.md` in the folder you work in
+fixes that properly: a session reads that room on its own and matches your
+request against each recipe's description, so the right one steps forward
+without being named.

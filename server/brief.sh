@@ -17,7 +17,7 @@ LOG="$HOME/brief.log"
 
 git pull -q --rebase
 
-claude -p "Run the recipe in skills/morning-brief.md. Today is $TODAY." >>"$LOG" 2>&1
+claude -p "Run the recipe in .claude/skills/morning-brief/SKILL.md. Today is $TODAY." >>"$LOG" 2>&1
 
 # Telegram will not take a message longer than about four thousand characters, and it
 # refuses it in a way that is easy to miss: the curl command still succeeds. So a brief

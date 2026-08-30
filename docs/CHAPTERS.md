@@ -43,6 +43,19 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 > **building** until the trust dialog is captured on a cold machine. Plan of record:
 > `hub/projects/teach-it-once-claude-code-switch-2026-08-30.md`.
 
+> **Part V moves to Routines (2026-08-30, Batch AJ parts 8 to 14).** The clock lives in the Code
+> side's sidebar now: **More**, **Routines**, **New routine**, then **New local routine** or
+> **New remote routine**. Every label the book prints was read out of the installed build's own
+> string table (`ion-dist/i18n/en-US.json`, `Claude_1.40609.0.0`) before it went on the page, and
+> two of those readings contradicted the plan. **A local routine cannot be saved without a working
+> folder**, which retired Chapter 23's "attach no folder" instruction and gave the watchdog a file
+> to write into. **The editor refuses a sub-hourly schedule for local routines as well as cloud
+> ones**, so Chapter 21's once-an-hour footnote did not split; it now names both places the app
+> enforces it. Chapter 26 gained a third door, `.mcp.json` in the folder, verified live from a
+> Code session with no connector panel touched. Rows 9, 21 and 23 go to **building** until their
+> real runs are done. Evidence:
+> `ownward-studio/company-memory/book/chapter-verification/ch09-20-33-routines-from-the-app-string-table-2026-08-30.md`.
+
 ## Parts I to V (restructured, final)
 
 | Chapter | Kit asset | Status |
@@ -54,7 +67,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 6. The People Who Matter | `profile/people-interview.md` | ready |
 | 7. Projects and Priorities | `profile/projects-interview.md` | ready |
 | 8. Your Voice | `profile/voice-extraction-prompt.md` | ready |
-| 9. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | ready |
+| 9. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | building |
 | 10. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
 | 12. One File, and It Steps Forward | `skills/practice-texts.md` | building |
 | 13. Own the Recipe | `skills/skill-interview.md`, `skills/practice-texts.md` (`skills/package-a-skill.md` removed 2026-08-30: there is no upload to package for) | building |
@@ -65,9 +78,9 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 18. The Safety Net | `procedures/safety-net-setup.md` | ready |
 | 19. Private Things Stay Private | `living/privacy-audit-checklist.md` | ready |
 | 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
-| 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` | ready |
+| 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` (both rewritten to Routines 2026-08-30) | building |
 | 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch: what each AI plan carried) | ready |
-| 23. Watchdogs | `procedures/watchdog-setup.md` | ready |
+| 23. Watchdogs | `procedures/watchdog-setup.md` (local routine, writes into `watch/product-watchdog.md`) | building |
 | 24. Trust, but Verify | `living/two-questions-card.md`, `living/the-alternatives-card.md`, `procedures/keys-that-expire.md` (the "prove a check by breaking it" section at the end of the card) | ready |
 
 ## Part VI (restructured, final)
@@ -89,7 +102,7 @@ All optional. The book works without every row below.
 | Chapter | Kit asset | Status |
 |---|---|---|
 | 25. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
-| 26. One Memory, Every Tool | `menerio/mcp-connection.md` | ready |
+| 26. One Memory, Every Tool | `menerio/mcp-connection.md` (gained door three, `.mcp.json` in the folder) | ready |
 | 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, the printed `setup-hub.sh` line, `procedures/keys-that-expire.md`, `tools/check-keys.js` (installed as the command `hub-check-keys`), `starter-hub/secrets/expires.txt` | ready |
 | 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
 | 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |

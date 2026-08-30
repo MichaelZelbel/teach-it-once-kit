@@ -8,7 +8,7 @@ life which never updates is a picture of a life you used to have.
 
 ## 1. The mirror test
 
-In Cowork, folder attached:
+In a session with your folder selected:
 
 ```
 Read every file in profile/. Describe my current life and work back to

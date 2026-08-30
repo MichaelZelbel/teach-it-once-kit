@@ -83,11 +83,11 @@ else
 fi
 
 # 10 to 13. The dry run keeps the book's promise, offline: "It sends observations/,
-# skills/, and each decision in decisions.md as its own entry. It does not send
+# .claude/skills/, and each decision in decisions.md as its own entry. It does not send
 # profile/ or AGENTS.md." No key and no --apply, so nothing leaves the machine.
-mkdir -p "$W/hub/observations" "$W/hub/skills" "$W/hub/profile"
+mkdir -p "$W/hub/observations" "$W/hub/.claude/skills/plan-my-day" "$W/hub/profile"
 printf 'You proofread before sending.\n' > "$W/hub/observations/quirk.md"
-printf '# Plan my day\n'                 > "$W/hub/skills/plan-my-day.md"
+printf '# Plan my day\n'                 > "$W/hub/.claude/skills/plan-my-day/SKILL.md"
 printf '# About me\n'                    > "$W/hub/profile/about-me.md"
 printf '# Manual\n'                      > "$W/hub/AGENTS.md"
 cat > "$W/hub/decisions.md" <<'DECEOF'
@@ -105,8 +105,8 @@ plan="$(MENERIO_API_KEY="" "$PY" "$HERE/notebook-sync.py" --repo-root "$W/hub" 2
 
 echo "$plan" | grep -q "would create observations/quirk.md" \
   && ok "observations/ is sent" || bad "observations/ was not in the plan" "$plan"
-echo "$plan" | grep -q "would create skills/plan-my-day.md" \
-  && ok "skills/ is sent" || bad "skills/ was not in the plan" "$plan"
+echo "$plan" | grep -q "would create .claude/skills/plan-my-day/SKILL.md" \
+  && ok ".claude/skills/ is sent" || bad ".claude/skills/ was not in the plan" "$plan"
 
 n="$(echo "$plan" | grep -c "would create decisions.md#")"
 if [ "$n" = "3" ]; then

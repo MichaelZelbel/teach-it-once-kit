@@ -38,7 +38,7 @@ import urllib.request
 # else, so it stays out.
 SYNC_SOURCES = [
     {"folder": "observations", "author": "machine"},
-    {"folder": "skills", "author": "mixed"},
+    {"folder": ".claude/skills", "author": "mixed"},
 ]
 
 DECISION_LOG = "decisions.md"

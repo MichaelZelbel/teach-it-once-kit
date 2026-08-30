@@ -21,7 +21,7 @@ things are going well.
 
 ## Step 2: run the extraction
 
-In Cowork, with your folder attached:
+In a session with your folder selected:
 
 ```
 Read every file in inbox/writing-samples/. Study how I actually write,

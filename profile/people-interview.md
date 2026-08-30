@@ -5,8 +5,9 @@ you staring at a blank file.
 
 ## Before you start
 
-Claude Desktop open, **Cowork** selected, your folder attached (Chapter 3),
-and `profile/about-me.md` already in it (Chapters 1 and 2).
+Claude Desktop open on the **Code** side, a session with your hub folder
+selected (Chapter 3), and `profile/about-me.md` already in it (Chapters 1
+and 2).
 
 ## The prompt
 

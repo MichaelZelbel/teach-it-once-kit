@@ -67,6 +67,26 @@ Then `claude mcp list` and look for:
 memory: https://mcp.menerio.com (HTTP) - Connected
 ```
 
+## Door three: the folder (Chapter 27), and it is the one you keep
+
+Both doors above belong to the machine you are sitting at. A second computer
+means doing it again; a different tool means doing it again.
+
+The third door is a file in your folder, `.mcp.json`, naming your notebook's
+address. Any tool that opens the folder finds it and connects with nothing to
+click. It does not hold your key, it **names** it: the line reads
+`${MENERIO_API_KEY}` and the value is fetched from the folder's locked store
+when the tool starts, which is why the file can travel to your backup like
+every other file.
+
+Verified 2026-08-30, in the Claude desktop app's Code side, with no connector
+panel touched: a session opened on a folder whose `.mcp.json` names Menerio
+reached the notebook and answered `Total notes: 697. This week: 49.`
+
+You cannot use this door until your key has a home in the folder, which is what
+the join in Chapter 27 gives it. Panel today, file from Chapter 27, and the file
+is the one that survives your next machine.
+
 ## The test that proves it
 
 Make a completely empty folder. Open a session there and ask something only your notebook

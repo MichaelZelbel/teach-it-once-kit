@@ -51,8 +51,8 @@ cannot name what you got, the rung is not finished.
 
 ## It works your way
 
-- [ ] 12. Fill the app's three-box Skill form, then ask without naming
-      it (Ch 12). **You have:** a Skill that steps forward on its own.
+- [ ] 12. Make one folder and one `SKILL.md` by hand, then ask without
+      naming it (Ch 12). **You have:** a skill that steps forward on its own.
 - [ ] 13. Get interviewed, get the recipe it writes (Ch 13). **You have:** `.claude/skills/summarize/SKILL.md` as the master.
 - [ ] 14. The other four starters (Ch 14). **You have:** five recipes
       for the jobs everyone repeats.
