@@ -60,28 +60,20 @@ you have not connected yet. Rule 8 is a dial, not a law: tighten it to
 whichever you can stand behind. The interview in
 `procedures/red-lines-interview.md` helps you set it.
 
-## Install them: two steps
+## Install them: there is nothing to install
 
-**Step one, every session everywhere.** In Claude: **Settings**, then
-**Cowork** in the left column, then the **Global instructions** panel
-("Instructions here apply to all Cowork sessions"). Click **Edit**, paste
-the block, click **Save**. This is the one to do first if you only do one.
+Your rules are files in `rules/`. `hub-compile-rules` writes them into
+`AGENTS.md`. The one-line `CLAUDE.md` the installer left at the top of your
+hub points every session at that file. So the rules are in the room the
+moment you save them, and there is no second copy anywhere that could
+quietly hold last month's wording.
 
-**Step two, the one-line signpost.** For tools that read a rules file
-from the folder itself, point them at your master copy instead of keeping
-a second one. Ask your assistant, in a folder-attached session:
+That is the whole install, and it is why the next section is a test rather
+than a checklist.
 
-```
-Create a file called CLAUDE.md in this folder. Its entire contents
-should be one line: @AGENTS.md . That is the whole file.
-```
-
-Ask for exactly that. Vague requests ("make sure you read my house rules")
-produce clever machinery you did not ask for.
-
-Optional extra: rules that belong to only one part of your life can go in
-the **Instructions** of the Cowork project holding that folder. They stack
-on top of the global ones rather than replacing them. Skip it until you
+Two notes. A `CLAUDE.md` inside a subfolder applies only to sessions started
+there, which is how one project gets rules of its own. A `CLAUDE.md` in your
+home folder rides along in every folder on the machine. Skip both until you
 feel the need.
 
 ## Test with live ammunition before you trust it
