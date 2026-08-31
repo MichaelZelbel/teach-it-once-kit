@@ -175,13 +175,35 @@ def render_claim(record, subject_slug, object_slug=None):
         lines.append("valid_from: {}".format(record["valid_from"]))
     if record.get("valid_to"):
         lines.append("valid_to: {}".format(record["valid_to"]))
+    # When to DOUBT this fact, as opposed to when it stopped being true.
+    # Absent on rows the view cannot date (a profile entry has no dates at all).
+    if record.get("review_by"):
+        lines.append("review_by: {}".format(record["review_by"]))
+    lines.append(
+        "confidence: {}".format(record.get("confidence") or CONFIDENCE_BY_AUTHOR.get(author, "likely"))
+    )
+    # one = a second live value is a contradiction. many = several are normal.
+    #
+    # Written ONLY when the notebook actually supplies it. Defaulting to "one"
+    # here would be worse than saying nothing: a conflict check trusts an
+    # explicit line over its own fallback list, so a stamped "one" on
+    # "favorite restaurants" would report every extra favourite as a
+    # contradiction. An absent field means "not known, use the fallback".
+    if record.get("cardinality") in ("one", "many"):
+        lines.append("cardinality: {}".format(record["cardinality"]))
     lines += [
-        "confidence: {}".format(CONFIDENCE_BY_AUTHOR.get(author, "likely")),
         "source: menerio {}".format(record.get("origin", "unknown")),
         "written_by: {}".format(author),
         "rank: {}".format(record.get("rank", "normal")),
         "origin: menerio",
         "menerio_id: {}".format(record["id"]),
+    ]
+    # The note this fact came from. Two jobs: it gives search language to match
+    # on, and it is what makes "how many notes produced no claim" countable.
+    source_ref = (record.get("source_ref") or "").strip()
+    if source_ref and record.get("source_kind") == "note":
+        lines.append("source_note: {}".format(source_ref))
+    lines += [
         "---",
         "",
     ]
