@@ -43,9 +43,9 @@ export KB_TAG
 KB_SELF_URL="https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh"
 export KB_SELF_URL
 
-# v2.0 is an immutable TAG, not the moving v2 branch, so this installer runs
+# The pin is an immutable TAG, never the moving v2 branch, so this installer runs
 # exactly the code that passed its end-to-end runs until this line is edited.
-LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.0/lib.sh"
+LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.1/lib.sh"
 KIT_REPO="https://github.com/MichaelZelbel/teach-it-once-kit.git"
 KIT_DIR="$HOME/teach-it-once-kit"
 BOOTSTRAP_DIR="$HOME/.kit-bootstrap"
@@ -146,7 +146,7 @@ fetch_repo() {
 }
 
 fetch_repo "$KIT_REPO" "$KIT_DIR" "" "the book's kit"
-fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR" "v2.0" "the shared question sheets"
+fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR" "v2.1" "the shared question sheets"
 
 [ -f "$KIT_DIR/server/install-hermes.sh" ] || die "The kit downloaded but server/install-hermes.sh is missing from it."
 [ -f "$BOOTSTRAP_DIR/steps/telegram.md" ] || die "The question sheets downloaded but steps/telegram.md is missing."

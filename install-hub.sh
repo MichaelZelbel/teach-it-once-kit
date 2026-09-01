@@ -28,13 +28,13 @@
 # =============================================================================
 set -uo pipefail
 
-# v2.0 is an immutable TAG, not the moving v2 branch: this book's readers get
+# The pin is an immutable TAG, never the moving v2 branch: this book's readers get
 # exactly the code that passed its end-to-end runs, and the pin only moves by a
 # deliberate edit here. KB_BRANCH pins the library the engine fetches for
 # itself, or the entry file would be pinned while its insides floated.
-ENGINE="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.0/setup-hub.sh"
+ENGINE="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.1/setup-hub.sh"
 STARTER="https://github.com/MichaelZelbel/teach-it-once-kit.git"
-KB_BRANCH="v2.0"
+KB_BRANCH="v2.1"
 export KB_BRANCH
 
 SCRIPT="$(curl -fsSL "$ENGINE")" || SCRIPT=""
