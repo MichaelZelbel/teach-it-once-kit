@@ -61,7 +61,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | Chapter | Kit asset | Status |
 |---|---|---|
 | 1. What Your AI Already Knows About You | `profile/bring-your-context-with-you.md` (the export prompt), `profile/about-you-template.md` (fallback only) | ready |
-| 3. Give It Hands and a Folder | `HubSetup.exe` on the Releases page, and the `kit-bootstrap` one-line installer; both lay down `starter-hub/`, now including `starter-hub/CLAUDE.md` (the `@AGENTS.md` signpost), `starter-hub/.claude/skills/` and `starter-hub/.mcp.json` | building |
+| 3. Give It Hands and a Folder | `HubSetup.exe` on the Releases page, and the `kit-bootstrap` one-line installer; both lay down `starter-hub/`, now including `starter-hub/CLAUDE.md` (the `@AGENTS.md` signpost), the visible `starter-hub/skills/` room and `starter-hub/.mcp.json` | building |
 | 4. The Folder Is the System | `starter-hub/` (the rooms, including `starter-hub/observations/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
 | 5. The Workshop Inside the House | `starter-hub/dev/README.md`, `starter-hub/.gitignore` | ready |
 | 6. The People Who Matter | `profile/people-interview.md` | ready |
@@ -71,7 +71,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 10. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
 | 12. One File, and It Steps Forward | `skills/practice-texts.md` | building |
 | 13. Own the Recipe | `skills/skill-interview.md`, `skills/practice-texts.md` (`skills/package-a-skill.md` removed 2026-08-30: there is no upload to package for) | building |
-| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's `.claude/skills/` ships empty on purpose) | ready |
+| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's visible `skills/` room ships empty on purpose) | ready |
 | 15. Skills for Your Craft | `skills/craft-skill-interview.md`, `skills/strip-ai-tells.md` (a finished craft skill to read and steal from, not produced by the chapter) | ready |
 | 16. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
 | 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md`, `tools/compile-rules.js` (installed as the command `hub-compile-rules`, never into the hub) | ready |
@@ -104,8 +104,8 @@ All optional. The book works without every row below.
 | 25. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
 | 26. One Memory, Every Tool | `menerio/mcp-connection.md` (gained door three, `.mcp.json` in the folder) | ready |
 | 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, the printed `setup-hub.sh` line, `procedures/keys-that-expire.md`, `tools/check-keys.js` (installed as the command `hub-check-keys`), `starter-hub/secrets/expires.txt` | ready |
-| 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/brief.sh`, `server/three-traps.md` | ready |
-| 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | ready |
+| 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/three-traps.md` (`server/brief.sh` deleted 2026-09-02: the morning brief is a Hermes cron job now) | building |
+| 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | building |
 | 30. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
 | 31. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
 | 32. Keep an Eye on This for Me | none (prose; the two reader prompts are public at querino.ai) | ready |
@@ -117,6 +117,19 @@ All optional. The book works without every row below.
 | Chapter | Kit asset | Status |
 |---|---|---|
 | Appendix C. What You Get, In Order | `living/build-order-card.md` | ready |
+
+New 2026-09-02 (batch AK, the Hermes switch): `starter-hub/skills/` is back as the visible
+skills room. It vanished on 2026-08-30 when its `.gitkeep` moved into `.claude/skills/`, which
+pointed every non-Claude assistant at an empty folder; the starter no longer ships a real
+`.claude/skills/` at all, because the installer creates that path as a link to the visible room
+and two real folders is the master-and-copy problem this batch exists to kill.
+`starter-hub/AGENTS.md` teaches the visible room and gained the 20,000-character ceiling note.
+`install-hub.sh` and `server/install.sh` consume the immutable `kit-bootstrap` tag `v2.0`.
+`server/brief.sh` is deleted: the morning brief is a Hermes cron job created by
+`server/install-hermes.sh` with `--workdir` (the one thing that injects `AGENTS.md` into a
+scheduled run) and `--deliver telegram`, and that script stopped setting `workspace`, a key
+Hermes never read, in favour of `terminal.cwd`, which it does. Rows 28 and 29 go to building
+until their chapters are rewritten against the new shape.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),

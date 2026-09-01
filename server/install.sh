@@ -43,7 +43,9 @@ export KB_TAG
 KB_SELF_URL="https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh"
 export KB_SELF_URL
 
-LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v1/lib.sh"
+# v2.0 is an immutable TAG, not the moving v2 branch, so this installer runs
+# exactly the code that passed its end-to-end runs until this line is edited.
+LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.0/lib.sh"
 KIT_REPO="https://github.com/MichaelZelbel/teach-it-once-kit.git"
 KIT_DIR="$HOME/teach-it-once-kit"
 BOOTSTRAP_DIR="$HOME/.kit-bootstrap"
@@ -121,7 +123,17 @@ say "Getting the book's files"
 fetch_repo() {
   local url="$1" dir="$2" branch="${3:-}" name="$4"
   if [ -d "$dir/.git" ]; then
-    git -C "$dir" pull --ff-only >/dev/null 2>&1 || warn "Could not update $name; using the copy already here."
+    # When a pin is named, an existing clone is MOVED to it, or a server built
+    # last month keeps running last month's code while this file says otherwise.
+    # `git pull` cannot do that from a detached tag checkout, so fetch the ref
+    # and check it out directly. Works for a tag and a branch alike.
+    if [ -n "$branch" ]; then
+      { git -C "$dir" fetch -q --depth 1 origin "$branch" \
+          && git -C "$dir" checkout -q FETCH_HEAD; } >/dev/null 2>&1 \
+        || warn "Could not update $name to $branch; using the copy already here."
+    else
+      git -C "$dir" pull --ff-only >/dev/null 2>&1 || warn "Could not update $name; using the copy already here."
+    fi
     ok "$name updated"
   else
     if [ -n "$branch" ]; then
@@ -134,9 +146,9 @@ fetch_repo() {
 }
 
 fetch_repo "$KIT_REPO" "$KIT_DIR" "" "the book's kit"
-fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR" "v1" "the shared question sheets"
+fetch_repo "https://github.com/MichaelZelbel/kit-bootstrap.git" "$BOOTSTRAP_DIR" "v2.0" "the shared question sheets"
 
-[ -f "$KIT_DIR/server/brief.sh" ] || die "The kit downloaded but server/brief.sh is missing from it."
+[ -f "$KIT_DIR/server/install-hermes.sh" ] || die "The kit downloaded but server/install-hermes.sh is missing from it."
 [ -f "$BOOTSTRAP_DIR/steps/telegram.md" ] || die "The question sheets downloaded but steps/telegram.md is missing."
 
 # Let the assistant work without asking permission for every single step. This is

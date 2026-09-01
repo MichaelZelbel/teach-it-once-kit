@@ -16,11 +16,13 @@ purpose. If it contradicts something you believe about me, the file wins.
   Use them without being asked.
 - **Pull first, push when done.** If this folder has a git remote, run
   `git pull --rebase` before real work; when the work is done, commit and push.
-- **Skills are recipes.** Every folder in `.claude/skills/` holds one job I
-  never want to explain again, written in its `SKILL.md`. You load them at the
-  start of a session and reach for one when its description matches what I
-  asked, without me naming it. When I do name a skill, run its file exactly.
-  When I correct the same thing twice, add the correction to the skill file.
+- **Skills are recipes.** Every folder in `skills/` holds one job I never want
+  to explain again, written in its `SKILL.md`. That visible folder is the one
+  real copy; anything at `.claude/skills/` is a link the installer points at
+  it, never a second home. You load them at the start of a session and reach
+  for one when its description matches what I asked, without me naming it.
+  When I do name a skill, run its file exactly. When I correct the same thing
+  twice, add the correction to the skill file.
 - **Procedures are listed, always.** Anything that runs on its own is a row
   in `procedures.md`. If you and I set up something new that runs without
   me, add the row in the same session. No unlisted procedures, ever.
@@ -77,3 +79,11 @@ Each name in brackets is a file in `rules/` with the whole story behind that rul
 
 If I ask for something that touches one of these, say which one it touches, then
 do the safe part (for example: prepare the draft) and ask.
+
+## The ceiling
+
+Some assistants read at most 20,000 characters of this file. Past that they
+keep the beginning and the end and silently drop the middle, with no error and
+no log line anywhere, so the assistant runs with a hole in its own instructions
+and nobody is told. Keep this file short: reference material goes into its own
+file, with a one-line pointer here.

@@ -113,26 +113,13 @@ cannot reach, and even if one lands in the folder by accident, git will ignore i
 
 ## 3 — The morning job
 
-```bash
-cp "$HOME/teach-it-once-kit/server/brief.sh" "$HOME/brief.sh"
-chmod +x "$HOME/brief.sh"
-```
-
-Read the script before you move on. Its bottom half is the part that matters:
-it tells them when the brief did not get written, **and** when the brief was
-written but never reached their phone. Without that, a broken job looks exactly
-like a quiet morning and they find out three weeks later.
-
-Set the clock. Ask what time they want it, defaulting to six in the morning, and
-write the line without opening an editor (`crontab -e` would wait for a person
-and hang you forever):
-
-```bash
-( crontab -l 2>/dev/null | grep -v '/brief.sh' ; echo "0 6 * * * $HOME/brief.sh" ) | crontab -
-crontab -l
-```
-
-Filtering out the old line first is what makes a second run safe.
+The morning brief is a Hermes cron job now, not a shell script, so it is
+created in section 5, where Hermes is installed. Nothing to do here except
+know what you are building towards: a job named `morning-brief`, running at
+06:00 inside their folder, delivering to Telegram, whose own prompt orders it
+to say so plainly when a morning breaks. A silent failure and a quiet morning
+must never look alike, and `hermes cron incidents` keeps the record when one
+does break.
 
 ## 4 — Which AI answers their messages
 
@@ -163,75 +150,66 @@ job. Check before installing anything:
 - **No `AGENTS.md`:** Hermes still runs, it just will not know anything about
   them yet.
 
-### 5b — Install it
+### 5b — Install it, wire it, schedule it
+
+One script does this whole half, and it is the same one a reader can run by
+hand when something breaks, so there is exactly one copy of these steps to fix:
 
 ```bash
-command -v hermes >/dev/null 2>&1 || curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
-HERMES="$(command -v hermes 2>/dev/null || echo "$HOME/.local/bin/hermes")"
-"$HERMES" config set workspace "$HOME/hub"
+bash "$HOME/teach-it-once-kit/server/install-hermes.sh"
 ```
 
-Resolve the full path once, here, and use it everywhere below. Hermes installs
-into `~/.local/bin`, which their own shell adds to PATH but cron and systemd do
-**not**. A service that just says `hermes` works when tested by hand and fails
-every time at three in the morning.
+Read what it prints, top to bottom. It checks the ceiling again, installs
+Hermes, points `terminal.cwd` at the folder, which is the ONLY setting the
+agent's tools obey for their working folder (the old `workspace` key was a
+silent no-op that told the reader it worked), installs the gateway service
+through Hermes' own generator rather than a hand-written unit, and creates the
+`morning-brief` cron job with `--workdir`, the one thing that injects
+`AGENTS.md` into a scheduled run.
 
-### 5c — Make it survive a reboot and a logout
-
-```bash
-mkdir -p "$HOME/.config/systemd/user"
-cat > "$HOME/.config/systemd/user/hermes-gateway.service" <<UNIT
-[Unit]
-Description=Hermes gateway - the assistant that answers your messages
-After=network-online.target
-
-[Service]
-Type=simple
-WorkingDirectory=$HOME/hub
-ExecStart=$HERMES gateway
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=default.target
-UNIT
-systemctl --user daemon-reload
-loginctl enable-linger "$(whoami)"
-```
-
-Without lingering, the service stops the moment they log out, which looks exactly
-like a crash and is why half of these setups die on day two. If `enable-linger`
-is refused, that is one command for their admin account:
-`sudo loginctl enable-linger <user>`. Give them that exact line and carry on.
+One path fact worth carrying: Hermes installs into `~/.local/bin`, which their
+own shell adds to PATH but cron and systemd do **not**, which is why the script
+resolves the full path once and uses it everywhere.
 
 ## 6 — Telegram
 
 Follow `$HOME/.kit-bootstrap/steps/telegram.md`, with
-`KB_TELEGRAM_ENV="$HOME/.hub-env"`.
+`KB_TELEGRAM_ENV="$HOME/.hub-env"`. That records the bot token and chat id in
+`~/.hub-env` for anything that messages them outside Hermes.
 
-The morning job reads the same two settings from the same file, so this connects
-both directions at once: the 6am brief, and messaging the assistant back.
+The morning job's own delivery is Hermes' Telegram connection, and that one is
+Hermes' to hold: run `hermes setup` interactively with them and hand it the
+same bot token. Two directions come from this one step: the 6am brief lands on
+their phone, and they can message the assistant back.
 
-Then start the gateway:
+Then start the gateway and ask IT how it is doing:
 
 ```bash
-systemctl --user enable --now hermes-gateway
-systemctl --user status hermes-gateway --no-pager | head -5
+HERMES="$(command -v hermes 2>/dev/null || echo "$HOME/.local/bin/hermes")"
+"$HERMES" gateway start
+"$HERMES" gateway status
 ```
+
+Never read the gateway's health from `systemctl is-active`: a cleanly stopped
+gateway shows as `failed` to systemd, so it cannot tell an operator's stop
+from a crash. Hermes' own status line can.
 
 ## 7 — Prove it, do not assume it
 
 Three things have to be true, and you check all three:
 
 ```bash
+HERMES="$(command -v hermes 2>/dev/null || echo "$HOME/.local/bin/hermes")"
+
 # 1. The morning job runs end to end, right now, without waiting for 6am.
-bash "$HOME/brief.sh"; tail -3 "$HOME/brief.log"
+"$HERMES" cron run morning-brief
 
-# 2. The clock is set.
-crontab -l | grep brief.sh
+# 2. The clock will actually fire. "Run now" proves the job, NOT the schedule:
+#    the ticker lives inside the gateway, and cron status says so either way.
+"$HERMES" cron status
 
-# 3. The gateway is up.
-systemctl --user is-active hermes-gateway
+# 3. The gateway is up, asked of Hermes itself.
+"$HERMES" gateway status
 ```
 
 Then ask them to look at their phone:

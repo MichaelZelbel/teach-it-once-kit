@@ -50,8 +50,11 @@ Do this before the first push, not after.
 **What happened.** Nothing, which is the point. A procedure that fails quietly and a procedure
 that had nothing to say produce the identical experience: no message. You find out weeks later.
 
-**The fix.** The `else` branch in `brief.sh`. If the brief file is missing or empty, the runner
-messages you to say so. Four lines, written on day one.
+**The fix, twice over.** The morning-brief job's own prompt ends with the order to say
+so plainly when the recipe is missing or the brief cannot be written, so a broken
+morning arrives as a message, not as silence. And `hermes cron incidents` keeps the
+record on the server side: a failed run is a listed incident with a first-seen time
+and the stored output, not a blank space where a message should have been.
 
 ## A fourth thing, not a trap, just true
 

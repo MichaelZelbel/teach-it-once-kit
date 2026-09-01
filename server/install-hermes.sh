@@ -33,6 +33,21 @@ BRAIN="$HUB/AGENTS.md"
 CEILING=20000
 SAFE=19000
 
+# --- The shared install code, pinned -----------------------------------------
+# The same primitives the hub installer uses, fetched from the immutable v2.0
+# tag. They carry the behaviour this script must not re-learn the hard way:
+# terminal.cwd is the only lever that moves the agent, a failed one-shot still
+# exits 0, and `hermes config set` replaces a list.
+LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.0/lib.sh"
+if ! LIB="$(curl -fsSL "$LIB_URL")" || [ -z "$LIB" ]; then
+  printf '\n   STOPPED: could not download the shared install code from\n   %s\n   Check the machine has internet, then run this again.\n\n' "$LIB_URL" >&2
+  exit 1
+fi
+eval "$LIB"
+unset LIB
+
+# This script's own voice wins over the library's, so these are defined AFTER
+# the library loads and the kb_* functions pick them up when they speak.
 say()  { printf '\n== %s\n' "$1"; }
 ok()   { printf '   ok: %s\n' "$1"; }
 warn() { printf '   ATTENTION: %s\n' "$1"; }
@@ -147,43 +162,48 @@ ok "found at $HERMES"
 # --------------------------------------------------------------------------
 say "Pointing Hermes at your folder"
 
-"$HERMES" config set workspace "$HUB" >/dev/null 2>&1 \
-  && ok "workspace set to $HUB" \
-  || warn "could not set the workspace automatically. Do it yourself with:
-   $HERMES config set workspace $HUB"
+# terminal.cwd is the ONLY setting the agent's tools obey for their working
+# folder, measured on this kit's own test server. This step used to set
+# `workspace`, which is not a recognised Hermes key: the command succeeded,
+# Hermes warned, the warning went to /dev/null, and the reader was told it
+# worked while Hermes ignored it entirely. kb_point_hermes_at_hub sets the
+# real key and then PROVES the folder is readable with a file read once a
+# provider is connected; before the sign-in it says plainly it could not
+# check yet.
+KB_HERMES_BIN="$HERMES"
+export KB_HERMES_BIN
+kb_point_hermes_at_hub "$HUB" \
+  || warn "read what it said just above. Do not rely on scheduled jobs finding
+   your files until this is sorted."
 
 # --------------------------------------------------------------------------
 say "Making it start again after a reboot"
 
-UNIT="$HOME/.config/systemd/user/hermes-gateway.service"
-mkdir -p "$(dirname "$UNIT")"
-cat > "$UNIT" <<UNITFILE
-[Unit]
-Description=Hermes gateway - the assistant that answers your messages
-After=network-online.target
-
-[Service]
-Type=simple
-WorkingDirectory=$HUB
-ExecStart=$HERMES gateway
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=default.target
-UNITFILE
-ok "wrote $UNIT"
-
-systemctl --user daemon-reload >/dev/null 2>&1
-# Without lingering, a user service stops the moment you log out, which looks
-# exactly like a crash and is the reason half of these setups die on day two.
-if loginctl enable-linger "$(whoami)" >/dev/null 2>&1; then
-  ok "this account may now keep programs running while you are logged out"
+# Hermes generates its own service unit, and it is better than the one this
+# script used to write by hand, measured on the test server: it carries
+# HERMES_HOME, PATH and its self-update coordination flag, it pins
+# WorkingDirectory to its own home because a movable folder crash-loops the
+# unit before Python even loads, and it detects and reports lingering itself.
+# The hub is reached through terminal.cwd, set above, never through the unit.
+if "$HERMES" gateway install --start-on-login --no-start-now; then
+  ok "service installed and enabled; it starts with the machine from now on"
 else
-  warn "could not turn on lingering. Ask whoever owns the machine to run:
-   sudo loginctl enable-linger $(whoami)
-   Without it the assistant stops when you close your terminal."
+  warn "could not install the service. Run it by hand and read what it says:
+   $HERMES gateway install --start-on-login"
 fi
+
+# --------------------------------------------------------------------------
+say "Scheduling the morning brief"
+
+# This replaces the old brief.sh and its crontab line. The job runs inside
+# your folder, because --workdir is the one thing that injects AGENTS.md into
+# a scheduled run; Hermes delivers the reply to Telegram itself, chunking
+# included; and a morning that fails lands in `hermes cron incidents` instead
+# of looking like a quiet one. The job is created now and starts firing the
+# moment the gateway below is on; a missed slot is never caught up.
+kb_cron_job "$HUB" "morning-brief" "0 6 * * *" \
+  "Run the recipe in skills/morning-brief/SKILL.md; on an older hub it lives at .claude/skills/morning-brief/SKILL.md. It writes today's brief into brief/. When it is written, commit and push this folder, then reply with the brief's full text. If the recipe is missing or the brief cannot be written, say exactly that instead of staying quiet: a broken morning must never look like a quiet one." \
+  "telegram" || true
 
 # --------------------------------------------------------------------------
 say "What is left, and only you can do it"
@@ -204,12 +224,17 @@ cat <<NEXT
       a long line of text. That is the token. Then send your new bot any message
       so it is allowed to answer you.
 
-   When both are done, switch it on:
+   When both are done, switch it on and ask IT how it is doing:
 
-        systemctl --user enable --now hermes-gateway
-        systemctl --user status hermes-gateway
+        $HERMES gateway start
+        $HERMES gateway status
 
-   Then message your bot "what is in my folder?" from your phone. If it answers,
-   your assistant has a phone number.
+      Read the status from Hermes itself, not from systemctl: a cleanly
+      stopped gateway shows as "failed" to systemd, so systemctl cannot tell
+      an operator's stop from a crash.
+
+   Then message your bot "what is in my folder?" from your phone. If it
+   answers, your assistant has a phone number, and from the next morning the
+   brief arrives on it by itself.
 
 NEXT

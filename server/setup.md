@@ -188,21 +188,27 @@ not arrive, whatever else it says.
 
 ## 8. The runner and the clock
 
-Save `brief.sh` from this folder as `~/brief.sh`, then:
+The brief is a Hermes cron job, not a shell script, so on a first build do
+section 9 first, then come back here for the clock.
+
+One command creates the job,
+meaning "at 06:00 every day, inside my folder, delivered to Telegram":
 
 ```
-chmod +x ~/brief.sh
-crontab -e
+hermes cron create "0 6 * * *" \
+  "Run the recipe in skills/morning-brief/SKILL.md. It writes today's brief into brief/. When it is written, commit and push this folder, then reply with the brief's full text. If the recipe is missing or the brief cannot be written, say exactly that instead of staying quiet." \
+  --name morning-brief --workdir "$HOME/hub" --deliver telegram
 ```
 
-One line, meaning "at 06:00 every day":
+Two things about that command earn their place. `--workdir` is the one thing
+that injects your `AGENTS.md` into a scheduled run; without it the job runs
+with no project context at all. And the clock lives inside the gateway: a
+scheduled job fires only while `hermes gateway status` says the gateway is
+running, and a missed slot is never caught up. `hermes cron run morning-brief`
+by hand proves the job works; it proves nothing about the schedule.
 
-```
-0 6 * * * /home/ai/brief.sh
-```
-
-That is the whole scheduler. It has been on every Linux machine for forty years
-and does not care whether you are awake.
+When a morning fails, `hermes cron incidents` has the record, and the job's
+own prompt tells it to say so out loud rather than staying quiet.
 
 ## 9. Hermes, so it can hear you back (Chapter 29)
 
@@ -223,28 +229,29 @@ into its own file before you go on.
 
 ```
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
-hermes config set workspace ~/hub
+hermes config set terminal.cwd ~/hub
 ```
 
-Then a service, so it comes back after a reboot:
+`terminal.cwd` is the ONLY setting the agent's tools obey for their working
+folder. An earlier version of this page set `workspace`, which is not a
+recognised Hermes key: the command succeeds anyway and Hermes ignores it, so
+the assistant knows your house rules and still cannot open the folder they
+describe.
+
+Then a service, so it comes back after a reboot. Hermes writes a better unit
+than you would by hand, and it sorts out lingering itself:
 
 ```
-mkdir -p ~/.config/systemd/user
-```
-
-Write `~/.config/systemd/user/hermes-gateway.service` with the contents in
-`install-hermes.sh` in this folder, then:
-
-```
-systemctl --user daemon-reload
-loginctl enable-linger $(whoami)
+hermes gateway install --start-on-login
 hermes model      # choose the AI and give it your key
 hermes setup      # connect Telegram
-systemctl --user enable --now hermes-gateway
+hermes gateway start
+hermes gateway status
 ```
 
-Without `enable-linger` the service stops the moment you log out, which looks
-exactly like a crash and is why half of these setups die on day two.
+Read the gateway's health from `hermes gateway status`, never from
+`systemctl is-active`: a cleanly stopped gateway shows as `failed` to systemd,
+so systemd cannot tell your own stop from a crash.
 
 ## 10. Register it
 
@@ -254,16 +261,13 @@ will remember which machine sends the thing.
 
 ## What a working run looks like
 
-```
-2026-07-26 18:20:44 sent and pushed
-```
+The brief arrives on your phone in the morning, and the folder gained one file:
+`brief/` holds the day's page, committed and pushed. Just the brief. No keys.
 
-Cron woke it, it pulled the folder, read the profile files, wrote the brief, sent
-it to the phone, and pushed one file back to GitHub. Just the brief. No keys.
-
-Two commands worth remembering afterwards:
+Three commands worth remembering afterwards:
 
 ```
-systemctl --user status hermes-gateway   # is my assistant awake?
-tail ~/brief.log                         # did this morning's brief go out?
+hermes gateway status     # is my assistant awake?
+hermes cron runs          # did this morning's brief fire, and when?
+hermes cron incidents     # anything that broke, with the stored output
 ```

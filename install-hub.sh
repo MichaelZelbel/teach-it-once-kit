@@ -12,7 +12,7 @@
 #                       book walks you through chapter by chapter
 #   a hub already    -> brings it up to date and re-checks the wiring
 #
-# It also installs what is missing underneath (Git, Node.js, Claude Code) and
+# It also installs what is missing underneath (Git, Node.js, Hermes) and
 # gives every machine you own one shared memory.
 #
 # Safe to run as many times as you like. It never deletes anything you wrote.
@@ -28,8 +28,14 @@
 # =============================================================================
 set -uo pipefail
 
-ENGINE="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v1/setup-hub.sh"
+# v2.0 is an immutable TAG, not the moving v2 branch: this book's readers get
+# exactly the code that passed its end-to-end runs, and the pin only moves by a
+# deliberate edit here. KB_BRANCH pins the library the engine fetches for
+# itself, or the entry file would be pinned while its insides floated.
+ENGINE="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.0/setup-hub.sh"
 STARTER="https://github.com/MichaelZelbel/teach-it-once-kit.git"
+KB_BRANCH="v2.0"
+export KB_BRANCH
 
 SCRIPT="$(curl -fsSL "$ENGINE")" || SCRIPT=""
 if [ -z "$SCRIPT" ]; then

@@ -27,8 +27,7 @@ key, or your Telegram chat id, because it does not need to.
 | `install.sh` | The one line above. Covers both chapters. |
 | `steps/build-the-server.md` | What the installer works through once it starts asking. Read it to see what it will do. |
 | `setup.md` | The same build by hand, for when you want to know what it did, or something broke. |
-| `brief.sh` | The runner: pull, run the recipe, send it, push the result, shout if it failed. |
-| `install-hermes.sh` | The Chapter 29 half on its own, if you built the server by hand. |
+| `install-hermes.sh` | The Hermes half on its own, if you built the server by hand: install, point at the folder, the gateway service, and the morning-brief cron job. The job replaced the old `brief.sh`; a morning that breaks still shouts, through the job's own prompt and `hermes cron incidents`. |
 | `three-traps.md` | The three things that went wrong building this for real, and the fixes. |
 
 The installer stands on `kit-bootstrap`, a small public repository that holds the install steps
