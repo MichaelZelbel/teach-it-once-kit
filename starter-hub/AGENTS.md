@@ -82,8 +82,10 @@ do the safe part (for example: prepare the draft) and ask.
 
 ## The ceiling
 
-Some assistants read at most 20,000 characters of this file. Past that they
-keep the beginning and the end and silently drop the middle, with no error and
-no log line anywhere, so the assistant runs with a hole in its own instructions
-and nobody is told. Keep this file short: reference material goes into its own
-file, with a one-line pointer here.
+An assistant reads only so much of this file. Hermes reads at least 20,000
+characters, more with a large-context model, and the exact number moves with
+the model. Past the limit it keeps the beginning and the end and drops the
+middle; older versions did that silently, newer ones leave a note in the gap
+and a warning, and either way the assistant runs with a hole in its own
+instructions that nobody chose. Keep this file short: reference material goes
+into its own file, with a one-line pointer here.

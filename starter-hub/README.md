@@ -20,9 +20,10 @@ until its subject comes up, which is what keeps the first part small.
 What is here. Ten names, and they are the whole system:
 
 - `AGENTS.md`: your AI's operating manual. How to work in this folder, and the
-  short list of your rules. Different tools look for house rules under
-  different file names, so Chapter 17 is where you install this where
-  your assistant will actually read it.
+  short list of your rules. Hermes reads it by name at the start of every
+  conversation, so nothing needs installing. Chapter 17 is where you write
+  your own rules into it. (The one-line `CLAUDE.md` beside it is a signpost
+  for a developer tool; Chapter 5 explains it, and Hermes never reads it.)
 - `profile/`: who you are, your people, your projects, your voice. The
   Part II files. You write these.
 - `rules/`: one file per rule, holding the whole story of why you gave it.
@@ -30,9 +31,12 @@ What is here. Ten names, and they are the whole system:
   each is written into `AGENTS.md` by `hub-compile-rules`, which is the
   only rules text your assistant reads every session. You edit the files; you
   never edit that block. Chapter 17.
-- `skills/`: one file per skill, the five starters pre-loaded. Say a
-  skill's name to run it, or install it into the app so it fires on its
-  own (Chapters 12 and 13).
+- `skills/`: one folder per recipe, each with a `SKILL.md` inside. It starts
+  empty on purpose; the installer has already told Hermes where this room is,
+  so a recipe you put here is found without you naming it. Chapters 12 to 14
+  fill it, and the five starter recipes are in the kit download beside this
+  folder, ready to copy in. The hidden `.claude/skills/` is a link the
+  installer points at this room, never a second home.
 - `procedures.md`: the register. Everything that runs without you.
 - `decisions.md`: append-only log of real decisions.
 - `inbox/`: where loose captures land between weekly reviews.

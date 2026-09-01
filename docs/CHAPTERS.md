@@ -62,8 +62,8 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 |---|---|---|
 | 1. What Your AI Already Knows About You | `profile/bring-your-context-with-you.md` (the export prompt), `profile/about-you-template.md` (fallback only) | ready |
 | 3. Give It Hands and a Folder | `HubSetup.exe` on the Releases page, and the `kit-bootstrap` one-line installer; both lay down `starter-hub/`, now including `starter-hub/CLAUDE.md` (the `@AGENTS.md` signpost), the visible `starter-hub/skills/` room and `starter-hub/.mcp.json` | building |
-| 4. The Folder Is the System | `starter-hub/` (the rooms, including `starter-hub/observations/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`) | ready |
-| 5. The Workshop Inside the House | `starter-hub/dev/README.md`, `starter-hub/.gitignore` | ready |
+| 4. The Folder Is the System | `starter-hub/` (the rooms, including the visible `starter-hub/skills/`, `starter-hub/observations/` and `starter-hub/prompts/library/` + `starter-hub/prompts/archive/`); the ceiling note at the foot of `starter-hub/AGENTS.md` | ready |
+| 5. The Workshop Inside Your Hub | `starter-hub/dev/README.md`, `starter-hub/.gitignore`, `starter-hub/CLAUDE.md` (the one-line signpost the chapter explains; the installer's `.claude/skills` link is the chapter's "one room, two doors") | ready |
 | 6. The People Who Matter | `profile/people-interview.md` | ready |
 | 7. Projects and Priorities | `profile/projects-interview.md` | ready |
 | 8. Your Voice | `profile/voice-extraction-prompt.md` | ready |
@@ -130,6 +130,16 @@ and two real folders is the master-and-copy problem this batch exists to kill.
 scheduled run) and `--deliver telegram`, and that script stopped setting `workspace`, a key
 Hermes never read, in favour of `terminal.cwd`, which it does. Rows 28 and 29 go to building
 until their chapters are rewritten against the new shape.
+
+Batch 5 of the same switch (2026-09-02): Chapters 4 and 5 rewritten. The starter README stops
+saying that "different tools look for house rules under different names" (Hermes reads
+`AGENTS.md` by name; the signpost is Chapter 5's business) and stops claiming five recipes are
+pre-loaded in `skills/` (that room ships empty; the five live beside it in the kit's own
+`skills/`). The ceiling note in `starter-hub/AGENTS.md` was rechecked against Hermes 0.20.6's
+source: 20,000 characters is a floor that scales with the model, and a truncation now leaves a
+marker in the gap and a warning, so "no error and no log line anywhere" came out. Rows 4 and 5
+carry the new assets and Chapter 5's real title. Evidence:
+`ownward-studio/company-memory/book/chapter-verification/ch04-05-hermes-and-the-developer-door-2026-09-02.md`.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
