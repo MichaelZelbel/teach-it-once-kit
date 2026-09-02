@@ -38,30 +38,17 @@ voice-first.
 - **Private line:** other people's secrets and anything you would not want
   stored stay out (full rules: Chapter 19).
 
-## From your pocket: Dispatch
+## From your pocket: a messenger
 
-Set up once, then capture from anywhere and the file appears in your folder
-at home.
+Your folder is on your computer; the hallway is not. Hermes' answer is a
+messenger: the same program can sit on the other end of a Telegram chat, read
+the same folder and follow the same house rules, so the capture sentence works
+from a queue exactly as it works at your desk. Chapter 29 wires it, in about two
+minutes, on the machine from Chapter 28 that never sleeps.
 
-1. Update **Claude Desktop**, and install or update **Claude** on your phone,
-   iOS or Android
-2. On the computer, in the Code side's sidebar, open **More** and click
-   **Dispatch**. It sits one line below **Routines**, with a **Beta** tag
-3. Turn it on, and answer the two questions: whether it may reach your files,
-   and whether it may keep this computer awake while it works
-4. Sign in on the phone with the same account
-
-Dispatch used to live in the other tab, and Anthropic's own page still says so.
-In this build it is on the Code side, which means you never leave the side of
-the app that reads your folder.
-
-Four things to know. It needs **Pro or Max**, and is not on Team or Enterprise
-seats. Dispatch is **one single conversation**, which means everything you send
-is on both screens: dictate it in the car park, pick it up at your desk. Your
-computer must be **awake with the app open** while Claude works, so your phone
-is the microphone and the computer is still the hands. And the feature is
-**labelled beta**, so if a button has moved, look for its new name rather than
-assuming you did something wrong.
+Two things to know. Your phone is the microphone; the machine running Hermes is
+the hands, and a laptop in a bag handles nothing until you open it (Chapter
+21's rule). And the message is the same sentence: "Capture this in my inbox: ..."
 
 **Fallback:** capture into whatever you have to hand, then at your desk say
 *"take everything I sent you today and put it in my inbox."*
