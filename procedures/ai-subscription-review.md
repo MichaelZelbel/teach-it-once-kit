@@ -4,24 +4,36 @@ Most people who use AI seriously end up paying for three or four things. One
 plan does almost all the work. One or two are quietly costing money every month
 for something you stopped using in spring.
 
-You cannot tell which is which by remembering. But your computer has been
-keeping the receipts the whole time, and nobody has ever read them.
+You cannot tell which is which by remembering. But Hermes has been keeping the
+receipts the whole time, and one command reads them back.
 
 ## The receipts you already have
 
-Every time your AI does a piece of work, it writes down what it did: which model
-answered, how much it read, how much it wrote. That record is sitting in a
-folder on your machine right now.
+Every conversation Hermes runs, it writes down: which model answered, how much
+it read, how much it wrote, and whether that cost anything beyond your
+subscription. Nothing to install, nothing to sign up for:
 
-On a machine running Claude Code it is `~/.claude/projects/` on Mac and Linux,
-and `C:\Users\<you>\.claude\projects\` on Windows. You do not have to install
-anything or sign up for anything. The file is already there.
+```
+hermes insights --days 30
+```
 
-The first time this was run on the author's machine it found thirty days of
-work in three hundred files: twelve billion units of reading and forty-eight
-million of writing, all through one flat monthly plan. That plan turned out to
-be carrying about eighty times its own price in work. The plan he had actually
-been worrying about was carrying about one percent.
+The cost section is the part that matters. On the author's machine after a
+week on Hermes (2026-09-02, 0.20.6): twenty-three sessions, eighty-five million
+units of text, and
+
+```
+Estimated:   ~$0.50
+Included:    17 session(s) (subscription, no provider invoice)
+Unknown:     4 session(s) (no pricing data)
+```
+
+The flat subscription carried almost everything and produced no invoice; two
+metered models tried on the side added up to the coins; four sessions could not
+be priced and were said so, not shown as free.
+
+Two honest limits. `hermes insights` reports what you used, not how much of your
+allowance is left: a receipt, not a fuel gauge. And it is per profile, so a
+second profile keeps its own receipts.
 
 That is the whole point of this card. Not to find you a cheaper plan. To show
 you the sizes, so you worry about the right one.
@@ -50,7 +62,7 @@ having is ten real jobs from your own month run through both, judged by you.
 
 ## Step 1: start the list
 
-In a session with your folder attached:
+In a session in Hermes:
 
 ```
 Create profile/subscriptions.md. Add one block per AI subscription I pay
@@ -59,7 +71,7 @@ than guessing:
 
 ## (name of the plan)
 Costs: ($X per month, or blank).  Renews: (a day of the month, or blank).
-Receipts: (claude-code, or none).  Status: active.
+Receipts: (hermes insights, or none).  Status: active.
 
 The ones I pay for right now are: (list them).
 ```
@@ -69,9 +81,9 @@ Blanks are not a failure. A blank is next month's question.
 ## Step 2: read the receipts
 
 ```
-Read my Claude Code transcript folder and total up, for the last 30 days
-and for each model: how many messages, how much was read, how much was
-written. Do not price anything yet. Show me the table.
+Run hermes insights --days 30 and show me its cost section and its models
+table as they are. Do not price anything yourself, and do not tell me
+which model is better.
 ```
 
 You now know something about your own AI use that you did not know before,
@@ -82,12 +94,12 @@ and it took one prompt.
 Add it to the weekly review you already have, on the first review of the month:
 
 ```
-Open .claude/skills/weekly-review/SKILL.md and add a part that runs ONLY on the first
-review of a calendar month: read my Claude Code receipts for the last 30
-days, compare them against profile/subscriptions.md, and tell me three
-things. What each plan carried. Anything I am paying for that carried
-nothing. And ONE question, if the list cannot answer something the
-receipts raise. Never tell me which model is better. Never show a plan
+Open skills/weekly-review/SKILL.md and add a part that runs ONLY on the first
+review of a calendar month: run hermes insights --days 30, read its cost
+section and its models table, compare them against profile/subscriptions.md,
+and tell me three things. What each plan carried. Anything I am paying for
+that carried nothing. And ONE question, if the list cannot answer something
+the receipts raise. Never tell me which model is better. Never show a plan
 you could not measure as zero, say you could not measure it.
 Change nothing else.
 ```
@@ -95,8 +107,9 @@ Change nothing else.
 ## The two mistakes to design out, and why
 
 **Never show a plan you cannot measure as zero.** Most consumer plans publish no
-receipts at all. "I could not see this one" and "$0.00" look identical on a
-page, and they point at opposite decisions. One means ask; the other means
+receipts at all, and `hermes insights` itself lists sessions it cannot price as
+"Unknown", never as free. "I could not see this one" and "$0.00" look identical
+on a page, and they point at opposite decisions. One means ask; the other means
 cancel. Cancelling on a zero you never measured is the expensive mistake here.
 
 **A unit of work on a flat plan does not cost you money.** This is the one almost

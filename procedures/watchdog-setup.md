@@ -3,10 +3,11 @@
 A watchdog is a procedure that checks something for you and speaks up
 only when reality changed. You stop checking. It starts.
 
-A watchdog reads the public web and needs nothing out of your folder, so
-it is the one procedure in this book with a real argument for running in
-the cloud. It also has a real argument for staying local, and the local
-one wins on the first build. See **Where to put it**, below.
+A watchdog reads the public web and needs almost nothing out of your
+folder, so nothing ties it to the computer in front of you. Build it on
+your laptop first, so you can watch it work; move it to the machine that
+never sleeps (Chapter 28) the day you own one, because on a laptop it
+patrols only while the lid is open and Hermes' gateway is running.
 
 ## The five parts
 
@@ -17,8 +18,9 @@ Keep all five, in any order that reads naturally:
 2. **The watch.** What to look at, said narrowly. One watchdog per
    worry. A watchdog that watches everything sees nothing.
 3. **The bar.** What counts as news ("only changes that alter what a
-   user sees or clicks", "only if the price drops below X"). Without a
-   bar, every patrol finds *something* and you have built a spam machine.
+   user sees, clicks or pays", "only if the price drops below X").
+   Without a bar, every patrol finds *something* and you have built a
+   spam machine.
 4. **The receipt.** "Tell me what changed and where you read it, with a
    link." Chapter 24 arriving early.
 5. **The quiet line.** "If you find nothing solid, write exactly one
@@ -26,42 +28,32 @@ Keep all five, in any order that reads naturally:
    watchdog that says nothing is indistinguishable from a watchdog that
    broke. Silence you can trust has to be spoken out loud.
 
-## Worked example (the author's own, run for real)
+## Worked example (the author's own, run for real 2026-09-02)
+
+One line, weekly on Monday at nine, your hub as the working folder:
 
 ```
-Run my product watchdog. Search the web for changes announced in the
-last seven days to the Claude desktop app's Code tab, its Routines, its
-skills, or how it gets access to a folder. Only report changes that
-alter what a user sees or clicks. For each change, tell me what changed
-and where you read it, with a link. Append the result to
-watch/product-watchdog.md, newest at the top, with the date on it. If
-you find nothing solid, write exactly one line: "All quiet, nothing
-changed." Never pad a quiet week.
+hermes cron create "0 9 * * 1" "Run my product watchdog. Search the web for changes announced in the last seven days to Hermes Agent: its desktop app, its scheduled jobs, its skills, or how it gets access to a folder. Also check for changes to what a ChatGPT subscription costs or includes. Only report changes that alter what a user sees, clicks or pays. For each change, tell me what changed and where you read it, with a link. Append the result to watch/product-watchdog.md, newest at the top, with the date on it. If you find nothing solid, write exactly one line: \"All quiet, nothing changed.\" Never pad a quiet week." --name product-watchdog --workdir /path/to/your/hub
 ```
+
+Then `hermes cron run product-watchdog` to see it work once, right now. On
+Hermes 0.20.6 the first run came back with seven dated findings and their
+links (three of them Hermes 0.21.0 release notes, one of them the fact
+that writes to `AGENTS.md` and skills are now approval-gated) plus one
+line saying no price change was found. Web search needs no key: Hermes
+rotates public free tiers of several search vendors.
 
 ## Where to put it
 
-**More**, **Routines**, **New routine**, **New local routine**. Name it,
-write the one-line description, paste the prompt into **Instructions**,
-pick your hub as the **Working folder**, set **Permissions** to **Accept
-edits**, set the **Schedule** to **Weekly** (or Daily), pick a day and a
-time, **Create**.
-
-Two notes on that, because the obvious instinct is now wrong:
-
-- **A local routine always has a folder.** The form will not save
-  without one. "This job has no business in my folder" is no longer an
-  option, and it turns out not to be needed: giving it the hub is what
-  lets it write its weekly line into a file you already walk past.
-- **The cloud kind is the one that runs while your laptop is shut**, and
-  for a watchdog that is a genuine draw. The price is where the work
-  lands: a remote routine writes to a branch in your GitHub copy, not
-  into your folder. For a weekly one-liner that is a worse landing place.
-  Take the local one first; move it to Chapter 28's machine when you
-  want it running through the weekend.
-
-Do not wait for Friday to see it work: press **Run now**, and use that
-run to answer its questions with the always-allow option.
+- **The job has a folder, on purpose.** `--workdir` your hub is what lets
+  it write its weekly line into `watch/product-watchdog.md`, a landing
+  place you already walk past, and what hands the job your house rules.
+- **It wants the machine that never sleeps.** Chapter 21's rule bites
+  hardest here. `hermes cron status` tells you whether it will fire on
+  this machine; a missed Monday is never caught up.
+- **A hand run proves the job, not the clock.** `hermes cron run` works
+  with the gateway stopped and records `source=direct`; a run the clock
+  fired records `source=builtin`.
 
 ## Ideas to steal (public web, no special access needed)
 
@@ -70,18 +62,30 @@ run to answer its questions with the always-allow option.
 - A software release or feature change that affects how you work.
 - Tour dates, ticket sales, a festival lineup.
 - Mentions of your name, your business, or your product.
-- The buttons and menus of the AI app you depend on. They get renamed.
+- The commands and screens of the AI tool you depend on. They get
+  renamed, and so do the plans you pay for.
+
+## The honest paragraph
+
+A watchdog that shares a program, a subscription and a machine with the
+thing it watches cannot see every failure: if Hermes will not start, the
+job that would have told you does not start either. For a weekly look at
+release notes that is a fair trade. For the machine itself, Chapter 28
+adds a check that runs with no AI in it and a test that the repairing
+agent can still answer. For a genuinely separate pair of eyes, the
+cross-vendor watchdog kit runs a different company's tool as the watcher.
 
 ## Boundary: watchdogs and hands
 
 These watchdogs read the public web. Watching *private* things (your
-inbox, your bank, your company's systems) needs a **connector**: a switch
-in the settings that lets your assistant reach one of your accounts.
+inbox, your bank, your company's systems) needs a **connector**: a door
+that lets your assistant reach one of your accounts (Chapter 26's MCP
+servers are the Hermes shape of that door).
 
 A connector is not a bigger version of chatting. It is hands. Before you
-switch one on, have the red lines from Chapter 17 installed, and know
-that they work harder for procedures than for chats, because a chat has
-you in the room.
+open one, have the red lines from Chapter 17 in your `AGENTS.md`, and
+know that they work harder for procedures than for chats, because a chat
+has you in the room.
 
 Two layers, and you want both:
 
@@ -92,5 +96,5 @@ Two layers, and you want both:
 
 ## Then the paperwork
 
-One block in `procedures.md`, including the off-switch. Nothing runs
-unlisted.
+One block in `procedures.md`, including the off-switch (`hermes cron pause
+product-watchdog`). Nothing runs unlisted.

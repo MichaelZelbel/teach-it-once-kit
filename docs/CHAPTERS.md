@@ -79,8 +79,8 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 19. Private Things Stay Private | `living/privacy-audit-checklist.md` (rewritten 2026-09-02 for Hermes: the transcript and the distillation are on the reader's disk, `hermes sessions stats`, `hermes memory status`, `hermes mcp list`) | ready |
 | 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
 | 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` (both rewritten to `hermes cron` 2026-09-02, on a job the builtin ticker fired on the test server) | ready |
-| 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch: what each AI plan carried) | ready |
-| 23. Watchdogs | `procedures/watchdog-setup.md` (local routine, writes into `watch/product-watchdog.md`) | building |
+| 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md` (the clock is `hermes cron`, 2026-09-02), `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch, read from `hermes insights` since 2026-09-02) | ready |
+| 23. Watchdogs | `procedures/watchdog-setup.md` (a `hermes cron` job with `--workdir`, writes into `watch/product-watchdog.md`; the worked example ran for real 2026-09-02) | ready |
 | 24. Trust, but Verify | `living/two-questions-card.md`, `living/the-alternatives-card.md`, `procedures/keys-that-expire.md` (the "prove a check by breaking it" section at the end of the card) | ready |
 
 ## Part VI (restructured, final)
@@ -176,6 +176,15 @@ and jobs never ask. The Routines form, the once-an-hour floor, the seven-day cat
 Keep-computer-awake setting are gone with the Claude app. Row 21 goes to ready on a job the
 builtin ticker fired on the test server (`source=builtin`). Evidence:
 `ownward-studio/company-memory/book/chapter-verification/ch20-21-the-clock-on-hermes-2026-09-02.md`.
+
+Batch 11 (2026-09-02): Chapters 22, 23, 32, 33. `procedures/weekly-review-setup.md`,
+`procedures/watchdog-setup.md` and `procedures/ai-subscription-review.md` rewritten: the weekly
+clock is a `hermes cron` line with a weekday; the receipts are `hermes insights --days 30` (the
+author's own cost section printed, fifty cents metered, seventeen sessions on the subscription); the
+watchdog is a `hermes cron` job whose worked example ran for real and found, among seven dated
+items, that Hermes 0.21.0 approval-gates writes to `AGENTS.md` and skills. Rows 22 and 23 to ready.
+Evidence:
+`ownward-studio/company-memory/book/chapter-verification/ch22-23-32-33-receipts-and-watchdogs-on-hermes-2026-09-02.md`.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),

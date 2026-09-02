@@ -7,10 +7,10 @@ something it should not decide alone. Most weeks it asks nothing.
 
 ## Half one: the recipe
 
-In a session with your folder attached:
+In a session in Hermes:
 
 ```
-Build me a weekly review. Write it as a skill file in .claude/skills/weekly-review/SKILL.md. When it runs it should read my profile files and everything in inbox/, do the filing itself, and write the review as a new file in reviews/, named with the date, in six parts, the sixth only once a month:
+Build me a weekly review. Write it as a skill file in skills/weekly-review/SKILL.md. When it runs it should read my profile files and everything in inbox/, do the filing itself, and write the review as a new file in reviews/, named with the date, in six parts, the sixth only once a month:
 1) what changed in my projects and people since last week, taken only from the files, and where it knows nothing it says so plainly;
 2) file each clear capture in inbox/ into the right profile file, in my own words, delete the capture it filed, and report every move as one line naming the source, the destination and what it said, so I can undo a move I dislike;
 3) leave anything doubtful in inbox/ untouched and ask me about it, one plain question each; when nothing is doubtful, this part is one line saying so;
@@ -42,18 +42,26 @@ What each part carries:
 
 ## Half two: the clock
 
-Same path as the brief: **More**, **Routines**, **New routine**, **New
-local routine**. Instructions: `Follow
-.claude/skills/weekly-review/SKILL.md and write this week's review into
-reviews/.` Working folder: your hub. Permissions: **Accept edits**.
-Schedule: **Weekly**, pick the day and time, **Create**. Sunday evening
-works as well as Monday morning. Pick the moment you already plan your
-week.
+The same line as the brief, with a weekday in the fifth field. `0 7 * * 1`
+is Monday at seven:
+
+```
+hermes cron create "0 7 * * 1" "Follow skills/weekly-review/SKILL.md and write this week's review into reviews/." --name weekly-review --workdir /path/to/your/hub
+```
+
+Your hub as `--workdir`, because the review reads your files just as the
+brief does, and because that is what hands the job your `AGENTS.md`.
+Sunday evening works as well as Monday morning; pick the moment you
+already plan your week. Then `hermes cron status`: if the gateway is not
+running on this machine, Monday's review will not write itself, and
+nothing is caught up later (see `where-it-runs.md`).
 
 You do not need a disposable test copy, because you already ran the
-recipe by hand. But do press **Run now** once on the routine's page and
-answer its questions with the always-allow option, or Monday's run will
-stall on the first one and wait.
+recipe by hand. `hermes cron run weekly-review` fires it once more if you
+want to see the job run from the clock's side; it proves the recipe, not
+the schedule. No approval pass is needed: a review that only reads and
+writes inside your folder reaches for nothing Hermes would ask about, and
+a scheduled job that did would be refused rather than left waiting.
 
 ## Your half, only when it asks
 
@@ -76,5 +84,5 @@ to a perpetual motion machine.
 ## Then the register
 
 One block in `procedures.md`. Nothing runs unlisted. Tell your assistant
-the task is live and let it write the block; if the Chapter 17 house
-rules are installed, it has often done so already.
+the job is live and let it write the block; your house rules say so, and
+it has often done so already.
