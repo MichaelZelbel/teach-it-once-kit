@@ -307,4 +307,4 @@ copied straight into a folder.
 Published 2026-09-02 (Hermes edition): manuscript at ownward-studio `73825d7`, Leanpub `teachitonce`
 published 07:05 UTC, A4 239 pages. Chapter 9 now prints a real pocket capture (Telegram from a desk,
 and the gateway's API door) landing in `inbox/` on the test server; the kit is unchanged by it. The
-installers pin kit-bootstrap v2.4.
+installers pinned kit-bootstrap v2.4 then; since installer v2.2.0 (2026-09-03) they pin **v2.5** (the user folder is the suggestion; Documents, Desktop, Pictures, Music, Videos and cloud roots are refused).
