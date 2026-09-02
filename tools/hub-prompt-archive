@@ -739,6 +739,8 @@ def _harvest_locked(hub, dry, since, machine):
         seen.add(rid)
         row = {"id": rid, "at": rec["at"][:19], "machine": machine, "tool": rec["tool"],
                "project": rec["project"], "text": clean}
+        if rec.get("channel"):
+            row["channel"] = rec["channel"]  # which door: desktop, cli or telegram
         if ans:
             pa = prepare_answer(ans, terms)
             if pa:
