@@ -218,6 +218,18 @@ the recipe read from the visible `skills/` room); `swap/openrouter-notes.md` pri
 `living/` carry no tool-specific wording and are unchanged; the chapter's dialogue was re-run on
 Hermes (ChatGPT plan prices, then "Now check it").
 
+Batches 16 and 17 (2026-09-02): the DevOps pair and the book's frame. Two new repositories carry
+Hermes watching Hermes: `hermes-self-devops-watchdog` (public; the operator is a second Hermes
+profile, the shell floor is fetched from its one upstream at a pinned commit and hash-verified, a
+self-check probes the healer every five minutes, alerts go through `hermes send`) and
+`hermes-self-devops-kit` (private; the premium kit forked with the operator swapped). Run 10 on the
+test VPS found and fixed: the floor restarted a gateway that had no messaging platform yet (fixed
+upstream on branch `floor/no-platform-guard`, pinned), Windows checkouts shipping CRLF shell (both
+repositories force LF and the build strips CR), and file modes. The book's front matter names one
+ChatGPT subscription and the tested platforms; Appendices C and D follow the Hermes chapters;
+Chapter 30 gained the swap inside Hermes and the fallback ladder. Chapter 34 waits for Michael's
+yes on his live hub. Nothing in this kit changed for these batches beyond this note.
+
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
 `tools/due.js` plus its `tools/hub-due` launcher, and `starter-hub/due/README.md` so a brand new
