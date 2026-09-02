@@ -144,8 +144,8 @@ repository's **Settings**, **Deploy keys** with write access, and
 ## 7. Wire the folder the way the laptop is wired
 
 ```
-git clone --depth 1 --branch v2.3 https://github.com/MichaelZelbel/kit-bootstrap.git ~/.kit-bootstrap
-KB_BRANCH=v2.3 bash ~/.kit-bootstrap/setup-hub.sh --hub ~/hub --skip-prereqs --sources hermes
+git clone --depth 1 --branch v2.4 https://github.com/MichaelZelbel/kit-bootstrap.git ~/.kit-bootstrap
+KB_BRANCH=v2.4 bash ~/.kit-bootstrap/setup-hub.sh --hub ~/hub --skip-prereqs --sources hermes
 ```
 
 This is the same script the laptop installer runs. It tops the folder up with

@@ -44,7 +44,7 @@ export KB_SELF_URL
 
 # The pin is an immutable TAG, never the moving v2 branch, so this installer runs
 # exactly the code that passed its end-to-end runs until this line is edited.
-KB_PIN="v2.3"
+KB_PIN="v2.4"
 LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/$KB_PIN/lib.sh"
 KIT_REPO="https://github.com/MichaelZelbel/teach-it-once-kit.git"
 AI_USER="${AI_USER:-ai}"
