@@ -38,24 +38,37 @@ revoked; it no longer makes new ones.
   include Notes"), the key is real and too narrow. Edit the key on the **API Keys** tab and
   tick the named box.
 
-## Door one: the chat app (no header field, so the key goes in the URL)
+## Door one: Hermes, in one line (the header, properly)
 
-**Settings**, then under the **Customize** heading, **Connectors**. (It used to sit under
-Settings directly; the old entry now only tells you it moved.) Then **Add**, then
-**Add custom connector**.
-
-The dialog asks for a **Name** and a **Remote MCP server URL**, and nothing else that matters.
-There is nowhere to put a key, so use the URL form, all one line:
+Hermes keeps its connections in its own settings, per profile, never in your folder. In
+a terminal:
 
 ```
-https://mcp.menerio.com?key=PASTE-YOUR-KEY-HERE
+hermes mcp add notebook --url https://mcp.menerio.com
 ```
 
-Press **Add**. Verified 2026-07-26: the connector reaches **Connected** and exposes 53 tools,
-each marked **Needs approval**. Leave that setting alone. It means the tool has to ask you
-before it touches your memory.
+**Call it `notebook`, not `memory`.** Hermes has a built-in memory tool of its own, and a
+connection named `memory` gets confused with it: asked for "my memory tools", Hermes 0.20.6
+searched its own two memory files, found nothing, and said so (measured twice, 2026-09-02).
 
-## Door two: a terminal tool (header, properly)
+It asks "Does this server require authentication?" (yes) and then "API key / Bearer
+token" (paste the key). The key is written to Hermes' own `.env` for secrets as
+`MCP_NOTEBOOK_API_KEY`, and the settings file only ever names it. The connection is tried
+on the spot. Then:
+
+```
+hermes mcp list
+hermes mcp test notebook
+```
+
+Verified 2026-09-02 on Hermes 0.20.6: `list` shows `notebook  https://mcp.menerio.com  all
+enabled`, and `test` reports `Connected` and `Tools discovered: 58`. `hermes mcp configure
+notebook` switches individual tools off; the writing tools are the ones to consider.
+
+Hermes also has a catalogue of well-known servers (`hermes mcp catalog`, then `hermes mcp
+install <name>`). Menerio is not in it, which is why it is added by address.
+
+## Door two: Claude Code, the developer's tool (header, properly)
 
 ```
 claude mcp add --transport http memory https://mcp.menerio.com --header "Authorization: Bearer PASTE-YOUR-KEY-HERE"
@@ -67,25 +80,24 @@ Then `claude mcp list` and look for:
 memory: https://mcp.menerio.com (HTTP) - Connected
 ```
 
-## Door three: the folder (Chapter 27), and it is the one you keep
-
-Both doors above belong to the machine you are sitting at. A second computer
-means doing it again; a different tool means doing it again.
+## Door three: the folder file, for Claude Code
 
 The third door is a file in your folder, `.mcp.json`, naming your notebook's
-address. Any tool that opens the folder finds it and connects with nothing to
-click. It does not hold your key, it **names** it: the line reads
+address. Claude Code finds it whenever it opens the folder and connects with
+nothing to click. It does not hold your key, it **names** it: the line reads
 `${MENERIO_API_KEY}` and the value is fetched from the folder's locked store
 when the tool starts, which is why the file can travel to your backup like
 every other file.
 
-Verified 2026-08-30, in the Claude desktop app's Code side, with no connector
-panel touched: a session opened on a folder whose `.mcp.json` names Menerio
-reached the notebook and answered `Total notes: 697. This week: 49.`
+Verified 2026-08-30, in Claude Code, with no connector panel touched: a session
+opened on a folder whose `.mcp.json` names Menerio reached the notebook and
+answered `Total notes: 697. This week: 49.`
 
-You cannot use this door until your key has a home in the folder, which is what
-the join in Chapter 27 gives it. Panel today, file from Chapter 27, and the file
-is the one that survives your next machine.
+**Hermes does not read this file.** Checked on Hermes 0.20.6 with a folder that
+had one (`hermes mcp list`: "No MCP servers configured"), and confirmed in the
+source, where the string `.mcp.json` does not appear. For Hermes the thing that
+travels is door one, run once per machine; the installer prints the line when
+it lays the folder down.
 
 ## The test that proves it
 
@@ -93,13 +105,18 @@ Make a completely empty folder. Open a session there and ask something only your
 knows:
 
 ```
-Use my memory tools. Who is <person>, what is the latest on <a thing
-you took notes about>, and how do they want bad news delivered?
-Answer only from memory, and say plainly if you cannot find something.
+Use my notebook's tools, and nothing on this computer. Who is <person>,
+what is the latest on <a thing you took notes about>, and how do they
+want bad news delivered? Answer only from what the notebook returns, and
+say plainly if you cannot find something.
 ```
 
-Expect the first attempt to refuse: the memory tools need approving before they can run. That
-refusal is the permission model working, not a fault. Approve them and ask again.
+Both phrases matter, measured on Hermes 0.20.6. "Notebook" because "my memory tools" sends
+Hermes to its own memory files. "Nothing on this computer" because "search my notes" made
+it search the disk: an empty folder is empty, but the tools reach the whole machine, and it
+answered fluently from a test folder two directories away. A plain "I cannot find anything
+about that" is a pass too, if you never took the note: the point is that it answers from
+the notebook or says so, and never invents.
 
 ## Wire an agent tool automatically
 
@@ -113,4 +130,5 @@ tool's instructions file. It asks for your key as its first step.
 - **One key per place.** Retire a machine, revoke that one key, everything else keeps working.
 - **The API Keys tab is the off-switch.** Revoking a key cuts that tool off at once. Know where
   the page is before you need it.
-- **Keep write tools on approval.** A tool that can save notes can save the wrong note forever.
+- **Reading before writing.** A tool that can save notes can save the wrong note forever.
+  `hermes mcp configure memory` switches a writing tool off until you want it.

@@ -83,11 +83,13 @@ else
 fi
 
 # 10 to 13. The dry run keeps the book's promise, offline: "It sends observations/,
-# .claude/skills/, and each decision in decisions.md as its own entry. It does not send
+# skills/, and each decision in decisions.md as its own entry. It does not send
 # profile/ or AGENTS.md." No key and no --apply, so nothing leaves the machine.
-mkdir -p "$W/hub/observations" "$W/hub/.claude/skills/plan-my-day" "$W/hub/profile"
+# The visible skills/ is the room since the Hermes switch (2026-09-02); .claude/skills
+# is a link the installer makes, and on an older hub it may still be the only room.
+mkdir -p "$W/hub/observations" "$W/hub/skills/plan-my-day" "$W/hub/profile"
 printf 'You proofread before sending.\n' > "$W/hub/observations/quirk.md"
-printf '# Plan my day\n'                 > "$W/hub/.claude/skills/plan-my-day/SKILL.md"
+printf '# Plan my day\n'                 > "$W/hub/skills/plan-my-day/SKILL.md"
 printf '# About me\n'                    > "$W/hub/profile/about-me.md"
 printf '# Manual\n'                      > "$W/hub/AGENTS.md"
 cat > "$W/hub/decisions.md" <<'DECEOF'
@@ -105,8 +107,17 @@ plan="$(MENERIO_API_KEY="" "$PY" "$HERE/notebook-sync.py" --repo-root "$W/hub" 2
 
 echo "$plan" | grep -q "would create observations/quirk.md" \
   && ok "observations/ is sent" || bad "observations/ was not in the plan" "$plan"
-echo "$plan" | grep -q "would create .claude/skills/plan-my-day/SKILL.md" \
-  && ok ".claude/skills/ is sent" || bad ".claude/skills/ was not in the plan" "$plan"
+echo "$plan" | grep -q "would create skills/plan-my-day/SKILL.md" \
+  && ok "the visible skills/ is sent" || bad "skills/ was not in the plan" "$plan"
+
+# An older hub that has not been topped up keeps its recipes in .claude/skills only.
+# It must still be sent, or a reader who skipped the re-run loses their recipes from
+# the notebook without a word.
+mkdir -p "$W/oldhub/.claude/skills/plan-my-day"
+printf '# Plan my day\n' > "$W/oldhub/.claude/skills/plan-my-day/SKILL.md"
+oldplan="$(MENERIO_API_KEY="" "$PY" "$HERE/notebook-sync.py" --repo-root "$W/oldhub" 2>&1)"
+echo "$oldplan" | grep -q "would create .claude/skills/plan-my-day/SKILL.md" \
+  && ok "an older hub's .claude/skills/ is still sent" || bad "the older hub's recipes were not in the plan" "$oldplan"
 
 n="$(echo "$plan" | grep -c "would create decisions.md#")"
 if [ "$n" = "3" ]; then

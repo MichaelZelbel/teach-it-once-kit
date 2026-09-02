@@ -38,8 +38,26 @@ import urllib.request
 # else, so it stays out.
 SYNC_SOURCES = [
     {"folder": "observations", "author": "machine"},
-    {"folder": ".claude/skills", "author": "mixed"},
+    {"folder": "skills", "author": "mixed"},
 ]
+
+# The visible skills/ is the room since the Hermes switch (2026-09-02). The hidden
+# .claude/skills is a link the installer points at it, so on a topped-up hub the two
+# are one folder and the visible name wins. An older hub that has not been re-run
+# still keeps its recipes under the hidden name only, and those must still be sent.
+SKILLS_ALIASES = (".claude/skills",)
+
+
+def source_folder(repo_root: pathlib.Path, source: dict) -> str:
+    """The folder a source actually lives in on this hub: the named one, or an alias
+    when the named one is missing and an alias is there."""
+    if (repo_root / source["folder"]).is_dir():
+        return source["folder"]
+    if source["folder"] == "skills":
+        for alias in SKILLS_ALIASES:
+            if (repo_root / alias).is_dir():
+                return alias
+    return source["folder"]
 
 DECISION_LOG = "decisions.md"
 
@@ -145,7 +163,7 @@ def split_decision_log(text: str, source_path: str) -> list:
 def collect_documents(repo_root: pathlib.Path) -> list:
     docs = []
     for source in SYNC_SOURCES:
-        folder = repo_root / source["folder"]
+        folder = repo_root / source_folder(repo_root, source)
         if not folder.is_dir():
             continue
         for path in sorted(folder.rglob("*.md")):
@@ -179,7 +197,8 @@ def folder_for(source_path: str) -> str:
 
 def author_for(source_path: str) -> str:
     for source in SYNC_SOURCES:
-        if source_path.startswith(source["folder"] + "/"):
+        names = (source["folder"],) + (SKILLS_ALIASES if source["folder"] == "skills" else ())
+        if any(source_path.startswith(n + "/") for n in names):
             return source["author"]
     if source_path.startswith(DECISION_LOG):
         return "owner"

@@ -1,14 +1,16 @@
 # The Privacy Audit (Chapter 19)
 
 Once a quarter, in the same sitting as the spring-clean (Chapter 10). Four
-drawers, about ten minutes including the folder pass.
+drawers, about ten minutes including the folder pass. Three of the four now
+live on your own disk, which makes this shorter than it used to be.
 
 ## Drawer one: your folder (do this one first)
 
 The drawer that did not exist before this book, and the only one where you
 can fix a problem completely rather than manage it.
 
-In a session with your folder attached:
+In a session in Hermes, which has been working in your folder since the
+installer pointed it there:
 
 ```
 Go through every file in this folder and tell me what should not be in
@@ -26,8 +28,9 @@ Yes, do all of it. Clean it up.
 
 What should happen: a cleaned **copy** appears in a sibling folder, and
 your original is untouched, because red line 3 says "clean up" is not a
-green light for deleting. If your original got edited, your house rules
-from Chapter 17 are not installed. Go back and fix that first.
+green light for deleting. If your original got edited, run the book's
+PELICAN test (Chapter 17): either `AGENTS.md` is not being read, or the
+rule has been edited out of it.
 
 Keep the habit: the private original stays on your machine, and only ever
 a cleaned copy goes outward.
@@ -46,47 +49,61 @@ What the audit looks for, in the order that matters:
 
 ## Drawer two: the transcript
 
-Every chat you ever had, word for word, in your history. In Claude:
-**Settings**, then **Privacy**. Under **Your data** you will find
-**Export data**, plus **Shared chats** and **Shared artifacts**, each with
-a **Manage** button.
+Every conversation you have had with Hermes, word for word. It is on your
+disk, not on a website: one small database per profile, inside Hermes' own
+folder. Nothing to export and nothing to unshare, because nothing was ever
+shared.
 
-Open both Manage screens. Every conversation and page you ever shared by
-link is listed, and some may still be reachable by anyone holding the URL.
-Delete the ones you do not actively want alive. The shared-artifacts
-screen warns: "Unpublishing removes the public link. Once an artifact is
-unpublished, it can't be republished."
+To see how much is there, in a terminal:
 
-While you are on the Privacy screen, decide these two rather than leaving
-them at the default:
+```
+hermes sessions stats
+```
 
-- **Location metadata.** "Allow Claude to use coarse location metadata
-  (city/region) to improve product experiences."
-- **Help improve our AI models.** "Allow the use of your chats and coding
-  sessions to train and improve Anthropic AI models." This is the one
-  people mean when they ask whether it trains on their work.
+Three lines: sessions, messages, size. To read one conversation as plain
+text, `hermes sessions export` writes it out (as Markdown with
+`--format md`). To make them all go away, delete the profile; Hermes warns
+in as many words that this removes "all config, API keys, memories,
+sessions, skills, cron jobs".
 
-## Drawer three: what the app remembers on its own
+## Drawer three: what the assistant remembers on its own
 
-**Settings**, then **Memory** (further down the left column, under
-**Customize**). Two switches:
+Two text files, `MEMORY.md` and `USER.md`, in the `memories` folder inside
+Hermes' own folder (on Windows, `%LOCALAPPDATA%\hermes\memories`; a
+profile keeps its own pair inside its profile folder). Open them in any
+text editor. Read them the way the person you live with would read them.
+Correct what is wrong, remove what should not be there, or empty the file.
 
-- **Search and reference chats.** "Allow Claude to search for relevant
-  details in past chats."
-- **Generate memory from chats.** "Allow Claude to generate memory from
-  your chats."
+`hermes memory status` shows whether the built-in memory is switched on
+and whether any external memory provider has replaced it.
 
-Under them is a table of what it has actually kept, grouped into **You**,
-**Topics** and **Areas**, each row with a name, a summary and a date. Read
-it the way the person you live with would read it. Correct what is wrong,
-remove what should not be there.
+One trap, measured on Hermes 0.20.6: `hermes profile create <name> --clone`
+copies both memory files into the new profile and does not say so. A
+second profile made "to try something" carries your memory with it.
 
-## Drawer four: connected apps
+## Drawer four: the doors
 
-**Settings**, then **Connectors**. One question per row: does this
-connection still earn its access? Disconnect what you stopped using.
-Different in kind from the other drawers, because a connected mailbox is
-everything, including other people's letters to you.
+Two kinds of door, and what leaves your machine leaves through them.
+
+**The model.** Every turn you type goes to the provider you signed in with
+in Chapter 3 and the answer comes back. Hermes sends your conversations
+nowhere else: its gateway monitoring is off unless you switch it on, and
+even then carries no message content by design. What the provider does
+with your turns is decided in your account with that company. Spend ten
+minutes there once and set the training and retention choices the way you
+want; the switch that matters is theirs, not Hermes'.
+
+**Connected tools.** Chapter 26 connects MCP servers. Each is a line in
+Hermes' own settings:
+
+```
+hermes mcp list
+```
+
+One question per row: does this connection still earn its access? Remove
+what you stopped using with `hermes mcp remove <name>`. Different in kind
+from the other drawers, because a connected mailbox is everything,
+including other people's letters to you.
 
 ## The sorting rule (pin this)
 
@@ -101,14 +118,17 @@ everything, including other people's letters to you.
 
 ## What "private" honestly means
 
-Everything above is privacy inside your account. It is not a vault. The
-company operating your assistant stores your conversations on its servers
-under its rules. A cloud assistant is roughly as private as a reputable
+Everything above is privacy on your machine: your conversations, your
+assistant's memory of you and your folder all live on a disk you own. The
+honest limit is the model. Each turn is sent to the provider you chose,
+under its rules, so a cloud model is roughly as private as a reputable
 email account: private enough for your calendar, your drafts, your people
 pages and your plans, not private enough for keys or for anything you
-would not put in an email.
+would not put in an email. For people who want more, `hermes egress` keeps
+your real keys out of the assistant's hands entirely; it is off until you
+ask for it.
 
-The part that is different now: the thing you value most is not in the
-account at all. It is in your folder, with a private copy you control. If
-the trade ever stops being worth it, you close the account and walk away
-carrying everything.
+The part that is different now: the thing you value most was never in
+anybody's account. It is in your folder, with a private copy you control.
+If the trade with a provider ever stops being worth it, you point Hermes at
+a different one and keep everything.
