@@ -209,6 +209,15 @@ sync) stay on the machine's own scheduler, not on `hermes cron`, because they mu
 whether or not a gateway is up. `server/setup.md`, `server/README.md`, `steps/build-the-
 server.md` and `three-traps.md` rewritten for the Hermes build.
 
+Batches 14 and 15 (2026-09-02): Chapters 30, 31 and 24. `swap/opencode.json` names the notebook
+server `notebook`, the name Hermes knows it by (Chapter 26); `swap/three-questions.md` carries the
+three answers from the 2026-09-02 run (OpenCode 1.18.3, Kimi K3 through OpenRouter, Sam's folder,
+the recipe read from the visible `skills/` room); `swap/openrouter-notes.md` prices re-read live
+(K3 unchanged, the sibling a little lower); `swap/README.md` says OpenCode and Hermes both read
+`AGENTS.md` by name and Claude Code needs the `CLAUDE.md` signpost. Chapter 24's two cards under
+`living/` carry no tool-specific wording and are unchanged; the chapter's dialogue was re-run on
+Hermes (ChatGPT plan prices, then "Now check it").
+
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
 `tools/due.js` plus its `tools/hub-due` launcher, and `starter-hub/due/README.md` so a brand new
