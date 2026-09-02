@@ -5,7 +5,7 @@ your folder attached and paste:
 
 ```
 I want to build skills for my specific job: recipes I save once as files
-in .claude/skills/ and reuse. Interview me to find my three best candidates. Ask
+in skills/ and reuse. Interview me to find my three best candidates. Ask
 one question at a time, five questions maximum, about the tasks I repeat
 every week, the ones I always explain the same way, and the ones I dread.
 Then propose three skills, each with a name and what it takes in and
@@ -37,7 +37,7 @@ Build a proposed skill only if it passes all three filters:
 
 ## Then build them
 
-Say "write number 1". Each one lands as its own folder in `.claude/skills/`, same anatomy
+Say "write number 1". Each one lands as its own folder in `skills/`, same anatomy
 as everything else: the job, the shape, the rules. Read the file before
 you accept it, and check that it names the profile files it depends on
 (`profile/projects.md`, `profile/voice.md`) rather than assuming.

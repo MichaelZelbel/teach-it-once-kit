@@ -69,9 +69,9 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 8. Your Voice | `profile/voice-extraction-prompt.md` | ready |
 | 9. Capture as You Live | `profile/capture-checklist.md`, `starter-hub/observations/MEMORY.md` (the notebook the assistant keeps) | building |
 | 10. Keeping It True | `profile/mirror-test.md`, `profile/spring-clean-checklist.md` | ready |
-| 12. One File, and It Steps Forward | `skills/practice-texts.md` | building |
-| 13. Own the Recipe | `skills/skill-interview.md`, `skills/practice-texts.md` (`skills/package-a-skill.md` removed 2026-08-30: there is no upload to package for) | building |
-| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's visible `skills/` room ships empty on purpose) | ready |
+| 12. One File, and It Steps Forward | `skills/practice-texts.md`; the reader builds `skills/summarize-for-me/SKILL.md` by hand in the visible room | ready |
+| 13. Own the Recipe | `skills/skill-interview.md`, `skills/practice-texts.md` (`skills/package-a-skill.md` removed 2026-08-30: there is no upload to package for) | ready |
+| 14. Your First Five Skills | `skills/first-five-skills.md` plus the five recipes beside it in `skills/` (NOT in `starter-hub/`: the reader's visible `skills/` room ships empty on purpose). `answer-email-my-way.md` gained the file-reading sentence in rule 1 and the `[CHECK]` allowance in rule 5 on 2026-09-02, after a real run showed why | ready |
 | 15. Skills for Your Craft | `skills/craft-skill-interview.md`, `skills/strip-ai-tells.md` (a finished craft skill to read and steal from, not produced by the chapter) | ready |
 | 16. Test Like a Pro | `skills/skill-test-checklist.md` | ready |
 | 17. The Red Lines | `procedures/red-lines-template.md`, `procedures/red-lines-interview.md`, `tools/compile-rules.js` (installed as the command `hub-compile-rules`, never into the hub) | ready |
@@ -140,6 +140,17 @@ source: 20,000 characters is a floor that scales with the model, and a truncatio
 marker in the gap and a warning, so "no error and no log line anywhere" came out. Rows 4 and 5
 carry the new assets and Chapter 5's real title. Evidence:
 `ownward-studio/company-memory/book/chapter-verification/ch04-05-hermes-and-the-developer-door-2026-09-02.md`.
+
+Batches 6 and 7 of the same switch (2026-09-02): Chapters 12 to 16 teach skills from the visible
+`skills/` room, and every Part III kit file says `skills/<name>/SKILL.md` where it used to say
+`.claude/skills/`. The three-folder experiment (no recipe, a loose recipe, a recipe as
+`skills/<name>/SKILL.md`) was re-run through Hermes 0.20.6 on a fresh profile and came out as
+the chapters teach it, so rows 12 and 13 go to ready. `answer-email-my-way.md` changed after a
+real run: Hermes followed it to the letter, read only the file the recipe named, and marked its
+guesses; the recipe now names `people.md` and `projects.md` in rule 1, and rule 5 allows the
+`[CHECK]` marks it had been forbidding. The README's install line names Hermes, not Claude Code.
+Evidence:
+`ownward-studio/company-memory/book/chapter-verification/ch12-16-skills-from-the-visible-room-2026-09-02.md`.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),

@@ -1,12 +1,12 @@
-# The First Five Skills (Chapters 13 and 14)
+# The First Five Skills (Chapters 12 to 14)
 
 Five ready-to-use recipes, one per file. The five files themselves sit
 beside this one in `skills/` in this kit, so the fastest install is to
-copy the ones you want into `.claude/skills/` in your own hub, each as its own folder holding a `SKILL.md`.
+copy the ones you want into `skills/` in your own hub, each as its own folder holding a `SKILL.md` with the label on top.
 Nothing to paste, nothing to retype.
 
-They are deliberately NOT part of the installer. Your `.claude/skills/` folder
-arrives empty so the first recipe in it is one you built, in Chapter 13.
+They are deliberately NOT part of the installer. Your `skills/` folder
+arrives empty so the first recipe in it is one you built, in Chapter 12.
 Take these when you want them, and not before.
 
 If you would rather not copy files, paste a recipe into a session with
@@ -21,7 +21,7 @@ Every recipe has the same anatomy: the job (what goes in), the shape
 never list). Personalize by adding a rule each time an output disappoints
 you. The second time you make the same correction, it belongs in the file.
 
-**They fire on their own.** A `SKILL.md` in `.claude/skills/` steps forward when
+**They fire on their own.** A `SKILL.md` in its own folder under `skills/` steps forward when
 what you asked matches its description, without you naming it. Saying the name
 still works and is the reliable way to force one: "Answer email my way" runs that
 recipe every time. A recipe left loose anywhere else in your hub does neither.

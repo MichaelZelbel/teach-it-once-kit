@@ -16,7 +16,7 @@ Whichever computer you use, one thing to run and no decisions to make. It works 
 curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/install-hub.sh | bash
 ```
 
-Either one sets up your hub with the `starter-hub/` folder below already in place, installs the few things it needs underneath (Git, Node.js and Claude Code), and makes one memory that every machine you own shares. If that computer already has a hub, it updates that one instead. Run it as often as you like; it never deletes anything you have written.
+Either one sets up your hub with the `starter-hub/` folder below already in place, installs the few things it needs underneath (Git, Node.js, and on Linux Hermes itself; on Windows it checks that Hermes Desktop is there), and makes one memory that every machine you own shares. If that computer already has a hub, it updates that one instead. Run it as often as you like; it never deletes anything you have written.
 
 **Windows will warn you the first time.** You will see a blue box saying "Windows protected your PC", and at first the only button is *Don't run*. Click **More info**, then **Run anyway**. Windows shows this for any program whose publisher it has not seen enough copies of yet. It is not a virus warning and says nothing about whether the program is safe.
 
@@ -34,7 +34,7 @@ git clone https://github.com/MichaelZelbel/teach-it-once-kit.git
 
 - `starter-hub/`: the folder that becomes your own system. Copy this whole folder and it is your hub. Everything else here fills it up.
 - `profile/`: Part II assets. The about-you template, the people and projects interviews, the voice extraction prompt, the capture and spring-clean checklists.
-- `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, practice texts, and one big finished craft skill (`strip-ai-tells.md`) to see what a real one looks like. These are the book's teaching copies; in your own hub a recipe lives at `.claude/skills/<name>/SKILL.md`.
+- `skills/`: Part III assets. The skill interview, the five starter recipes, the craft-skill interview, the test checklist, practice texts, and one big finished craft skill (`strip-ai-tells.md`) to see what a real one looks like. These are the book's teaching copies; in your own hub a recipe lives at `skills/<name>/SKILL.md`.
 - `procedures/`: Part V and VI assets. Morning brief, weekly review, watchdog, the procedure register, the red lines, the card for keys that run out, and the card for everything else that runs out (`what-runs-out-and-when.md`).
 - `living/`: the two-questions card, the privacy audit checklist, the saved-prompt card, the printable build-order card.
 - `menerio/`: Part VI, optional. The notebook chapters: what goes in it and what stays out, the MCP connection, and two optional routes for pulling an old AI's memory in.

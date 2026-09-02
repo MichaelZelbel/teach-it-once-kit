@@ -10,7 +10,7 @@ first sentence to whatever job you actually repeat:
 I keep asking you to summarize long text, and I keep re-explaining how I
 want it. Make that a skill. Interview me first, one question at a time,
 until you know the job, the exact shape of the answer, and my rules. Then
-write it as .claude/skills/<name>/SKILL.md and tell me what you named it.
+write it as skills/<name>/SKILL.md and tell me what you named it.
 ```
 
 Expect five or six questions. Some of them will ask about decisions you
@@ -44,7 +44,7 @@ Start with the verb and say whose way it is:
 
 Say the name: "Run my summarize skill on this", "Answer email my way".
 A recipe sitting loose in some other folder does not fire because a matching job walked
-past. Putting it at `.claude/skills/<name>/SKILL.md` in the folder you work in
+past. Putting it at `skills/<name>/SKILL.md` in the folder you work in
 fixes that properly: a session reads that room on its own and matches your
 request against each recipe's description, so the right one steps forward
 without being named.
