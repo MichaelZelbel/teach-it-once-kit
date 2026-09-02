@@ -38,7 +38,7 @@ SAFE=19000
 # tag. They carry the behaviour this script must not re-learn the hard way:
 # terminal.cwd is the only lever that moves the agent, a failed one-shot still
 # exits 0, and `hermes config set` replaces a list.
-LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.1/lib.sh"
+LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.2/lib.sh"
 if ! LIB="$(curl -fsSL "$LIB_URL")" || [ -z "$LIB" ]; then
   printf '\n   STOPPED: could not download the shared install code from\n   %s\n   Check the machine has internet, then run this again.\n\n' "$LIB_URL" >&2
   exit 1
@@ -68,12 +68,12 @@ ok "running as $(whoami), folder found at $HUB"
 # --------------------------------------------------------------------------
 # THE CEILING NOBODY TELLS YOU ABOUT.
 #
-# Hermes puts your AGENTS.md into every single conversation, and it will not take
-# more than 20,000 characters of it. Past that it keeps the beginning and the end
-# and throws away the MIDDLE. No error. No line in any log. The agent is not told
-# either, so it cannot mention it. Your assistant simply stops knowing whatever
-# was in the middle of its own instructions, and from the outside it just looks
-# like it got worse at its job.
+# Hermes puts your AGENTS.md into every single conversation. It reads at least
+# 20,000 characters of it (more with a large-context model; the number moves with
+# the model), and past its limit it keeps the beginning and the end and drops the
+# MIDDLE. Older builds did that silently; 0.20.6 leaves a note in the gap and a
+# warning. Either way your assistant runs with a hole in its own instructions
+# that nobody chose. 20,000 is the floor every build honours, so that is the wall.
 #
 # This is checked first, before anything is installed, because it is the single
 # most expensive thing on this page to learn the hard way.
@@ -82,10 +82,11 @@ say "Checking your instructions still fit"
 if [ -f "$BRAIN" ]; then
   N=$(wc -m < "$BRAIN" | tr -d ' ')
   if [ "$N" -ge "$CEILING" ]; then
-    die "AGENTS.md is $N characters. Hermes reads the first 14,000 and the last
-   4,000 and silently drops the $((N - 18000)) in between, so your assistant would
-   run with a hole in its instructions and no way to know. Move reference material
-   into its own file, leave a pointer to it, and get this under $SAFE characters."
+    die "AGENTS.md is $N characters, over the 20,000 that every Hermes build reads.
+   Past its limit Hermes keeps the beginning and the end of the file and drops the
+   middle, so your assistant would run with a hole in its instructions. Move
+   reference material into its own file, leave a pointer to it, and get this under
+   $SAFE characters."
   elif [ "$N" -ge "$SAFE" ]; then
     warn "AGENTS.md is $N characters. It still fits, but it is only $((CEILING - N))
    from the point where Hermes starts dropping the middle of it without telling
@@ -185,7 +186,14 @@ say "Making it start again after a reboot"
 # WorkingDirectory to its own home because a movable folder crash-loops the
 # unit before Python even loads, and it detects and reports lingering itself.
 # The hub is reached through terminal.cwd, set above, never through the unit.
-if "$HERMES" gateway install --start-on-login --no-start-now; then
+# ONE GATEWAY PER MACHINE. The one-line installer's root phase installs the
+# gateway as a SYSTEM service, and a user service beside it is the dual-unit
+# trap: newer Hermes warns "Both user and system gateway services are installed"
+# and `hermes gateway status` reports the user unit, so a stopped user unit hides a
+# running system one. When the system unit is there, this step leaves it alone.
+if [ -f /etc/systemd/system/hermes-gateway.service ]; then
+  ok "a system service is already in charge of the gateway (installed as root); not adding a user service beside it"
+elif "$HERMES" gateway install --start-on-login --no-start-now; then
   ok "service installed and enabled; it starts with the machine from now on"
 else
   warn "could not install the service. Run it by hand and read what it says:
