@@ -1,62 +1,85 @@
 # The three questions (Chapter 30)
 
 The entrance exam you give any new hire on their first morning. Open a terminal in your folder,
-type `opencode`, and ask these three. Answers below are from a real run on 2026-07-26, on a
-server, with `moonshotai/kimi-k3`, in the book's illustrator folder. Unedited.
+type `opencode`, and ask these three. Answers below are from a real run on 2026-09-02, on the
+author's Windows PC, OpenCode 1.18.3 with `openrouter/moonshotai/kimi-k3`, in the book's
+illustrator folder (Sam's), with the notebook connected under the name `notebook`. Unedited
+apart from marked cuts and the house rule on dashes.
 
 ## Question one: do you know whose house this is?
 
 ```
-Whose folder is this, what are the standing rules you must follow
-here, and which file would you check for what matters most right
-now? Answer from what is in the folder. Do not change anything.
+Whose folder is this, what are the house rules you must follow here,
+and which file would you check for what matters most right now?
+Answer from what is in the folder. Do not change anything.
 ```
 
-It named the owner, listed the red lines from `AGENTS.md`, and then went further than asked:
+It read `.`, `profile/about-me.md` and `profile/projects.md`, named the owner, listed the rules
+from `AGENTS.md` as a must and a must-never, and then went further than asked:
 
-> **File I'd check for what matters most right now:** `profile/projects.md` ... priority one is
-> Nadia's 20-card set, deadline **Tue 28 Jul**, 5 cards in revision (4 days late, each round takes
-> 3 days), 3 not started, and Nadia hasn't been told about the slip.
+> `profile/projects.md`, "projects and priorities." Right now it says: (1) the **Little Seasons
+> cards for Nadia (Wren Books)**, 20 cards, cards 8 to 12 in revisions running about 4 days
+> behind, with all 20 planned by the 28th, and (2) a **rate draft owed to Dana (Bramble Studio)**
+> this week. Everything else (Tom's contract, the parked portfolio refresh) is secondary to those two.
 
-It found `AGENTS.md` on its own, because this tool looks for that filename. Your other assistant
-does not. Same file, different doorbell.
+It found `AGENTS.md` on its own, because this tool looks for that filename, as Hermes does.
+Claude Code looks for `CLAUDE.md`, which is why Chapter 5 leaves a one-line signpost. Same file,
+different doorbell.
 
-## Question two: can you reach my memory?
+## Question two: can you reach my notebook?
 
 ```
-Use my memory tools to look up who <person> is and how they want bad
-news delivered. Report what the memory returned. Do not read any file
-in this folder for the answer.
+Use my notebook tools to look up who Nadia is and how she wants bad
+news delivered. Report what the notebook returned. Do not read any
+file in this folder for the answer.
 ```
 
-It quoted real notes, and then did something nobody asked for:
+It tried six doors into the notebook (`search_contacts`, `search_brain`, `get_contact_context`,
+`get_person_notes`, `search_notes`, `get_claims`), then:
 
-> **Gap, honestly stated:** a note titled "Lead with bad news, no apology" surfaced in semantic
-> search, but it is a standalone preference note **not attributed to Nadia**, memory doesn't say
-> whose rule it is.
+> **Who is Nadia?**
+> - `search_contacts` and `get_contact_context`: **no contact named Nadia exists.** There is no
+>   person record for her.
+> ...
+> **How does she want bad news delivered?**
+> - **Nothing.** No note, no claim, no contact field anywhere in the notebook addresses this.
+>
+> ... her identity lives in the hub folder (people.md), which you told me not to read, so I'm
+> leaving that gap named rather than filled.
 
-That is Chapter 24's habit arriving unprompted, from a model that has never met you.
+The same two gaps Chapter 26's test found with Hermes, named the same way, and the folder it was
+told not to read left unread. That is Chapter 24's habit arriving unprompted, from a model that
+has never met you. (If your notebook holds the Chapter 25 notes, expect the answers instead of
+the gaps; the shape of the behaviour is the point.)
 
 ## Question three: can you run my procedures?
 
 ```
-Read skills/plan-my-day.md. In three sentences: what does this
+Read skills/plan-my-day/SKILL.md. In three sentences: what does this
 procedure produce, and what does it refuse to do? Change nothing.
 End your reply with exactly: Nothing modified.
 ```
 
-It summarised both halves correctly, and added:
-
-> (Note: `git status` shows a pre-existing modification to `opencode.json` that was already there
-> before this session; I only read files and ran read-only commands.)
+> This procedure produces a short, timed plan for your day built from your real priorities and
+> working hours, with the single most-important task placed first and all small tasks batched
+> into one block. It also names one item on your list that you should not do today, with a
+> reason why. It refuses to scatter small tasks across the day and refuses to give productivity
+> lectures, stopping after the timeline.
 >
 > Nothing modified.
 
-It separated a change it found from a change it made. That is the behaviour you want from
-anything with hands.
+`git status` afterwards: clean. It read the recipe from the visible `skills/` room, the same room
+Hermes reads, and stopped where it was told to stop.
 
 ## What passing means
 
 Three for three means your system is not locked to a vendor. A price rise, a model that gets
 worse, a company having a bad year: your answer is a one-line edit to `opencode.json`, not a
 migration.
+
+## A note on running it non-interactively
+
+`opencode run "<question>"` answers one question and exits, which is how the answers above were
+captured. One of four runs produced no output and was stopped after four minutes; the retry
+answered in under a minute. Permission prompts (`"ask"`) do not appear in that mode for
+read-only questions, because reading needs no permission.

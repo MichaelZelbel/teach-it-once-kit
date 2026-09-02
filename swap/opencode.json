@@ -7,7 +7,7 @@
     "webfetch": "ask"
   },
   "mcp": {
-    "memory": {
+    "notebook": {
       "type": "remote",
       "enabled": true,
       "url": "https://mcp.menerio.com",

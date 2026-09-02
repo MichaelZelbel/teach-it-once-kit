@@ -13,13 +13,13 @@ one key. It is the neutral option for the swap test: no single vendor owns your 
 
 ## Model ids used in the book
 
-Prices move. These were read live from the OpenRouter model list on **2026-07-26**. Check before
-relying on them.
+Prices move. These were read live from the OpenRouter model list on **2026-07-26** and again on
+**2026-09-02** (unchanged for K3, a little lower for the sibling). Check before relying on them.
 
 - `moonshotai/kimi-k3`: the swap-test model. About **$3 per million input tokens** and **$15 per
   million output tokens**.
-- `moonshotai/kimi-k2.7-code`: the budget sibling for mechanical work, about **$0.73 per million
-  input** and **$3.50 per million output**, so roughly a quarter of the price.
+- `moonshotai/kimi-k2.7-code`: the budget sibling for mechanical work, about **$0.66 per million
+  input** and **$3.40 per million output**, so roughly a quarter of the price.
 
 Note the unit: tokens, not words. A million tokens is very roughly 750,000 words of English.
 
