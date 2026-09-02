@@ -23,9 +23,9 @@ Filled example:
 
 Does: reads my profile files and writes today's brief before I start work.
 Rhythm: daily, 07:00.             Lands: brief/YYYY-MM-DD.md in this folder.
-Lives: Claude Code, Routines.     Off-switch: the routine's own page,
-                                  Status, switched to Paused.
-Last checked: 2026-07-26.
+Lives: Hermes cron, this computer. Off-switch: hermes cron pause morning-brief,
+                                  or hermes cron remove morning-brief.
+Last checked: 2026-09-02.
 
 The example lives inside this comment on purpose. An empty template row
 sitting in the open reads like a real procedure, and a register you

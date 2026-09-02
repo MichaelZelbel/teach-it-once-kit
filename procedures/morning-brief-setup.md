@@ -6,11 +6,11 @@ clock on it.
 
 ## Half one: the recipe (do this first, always)
 
-In a session with your folder attached, paste this:
+In a session in Hermes, paste this:
 
 ```
 Build me a morning brief. Write it as a skill, in
-.claude/skills/morning-brief/SKILL.md. When it runs, it should read my
+skills/morning-brief/SKILL.md. When it runs, it should read my
 profile files, work out what today actually needs from my projects,
 deadlines and people, and write the brief as a new file in brief/,
 named with today's date. Under 200 words, plain words, no pep talk, no
@@ -18,8 +18,8 @@ invented facts. Where you do not know something, say so plainly. Then
 run it once so I can see today's brief.
 ```
 
-You get two things: `.claude/skills/morning-brief/SKILL.md` (the recipe)
-and `brief/YYYY-MM-DD.md` (today's brief, for real).
+You get two things: `skills/morning-brief/SKILL.md` (the recipe) and
+`brief/YYYY-MM-DD.md` (today's brief, for real).
 
 Run it two or three more times in the same sitting: read what came out,
 edit the skill file, run it again. The facts differ every morning anyway;
@@ -32,7 +32,7 @@ recipe you have not watched run.
 Tony Stubblebine, the CEO of Medium, ends his own AI morning briefing
 with every file he touched in the past 24 hours. The morning starts
 with yesterday's thread back in your hand. Steal it: add one line to
-`.claude/skills/morning-brief/SKILL.md`:
+`skills/morning-brief/SKILL.md`:
 
 ```
 End with one short line naming which files in this folder changed in
@@ -43,84 +43,76 @@ Run the brief again and check the new closing line.
 
 ## Half two: the clock
 
-1. In the Code side's sidebar, open **More** and click **Routines**. The
-   page is titled **Routines**, and across the top it says *Local
-   routines only run while your computer is awake and online.*
-2. Top right, **New routine**. It offers **New local routine** and
-   **New remote routine**. Take the local one. Read `where-it-runs.md`
-   if you want to know why before you click.
-3. Fill in the form:
-   - **Name**: Morning brief. **Description**: one line saying what it
-     is for. The description is required.
-   - **Instructions**: `Follow .claude/skills/morning-brief/SKILL.md and
-     write today's brief as a dated file in brief/.`
-   - **Working folder**: **Select folder**, and pick your hub. A local
-     routine will not save without one.
-   - **Branch** and **Worktree**: leave alone. They belong to people who
-     write software.
-   - **Permissions**: **Accept edits** is the sane setting for a job that
-     only writes into `brief/`. Not **Manual**, which stalls waiting for
-     you. Never **Bypass permissions**.
-   - **Model**: leave on **Default**.
-   - **Schedule**: **Daily**, then pick your time.
-4. **Create**.
+One line, in a terminal, with your hub's full path at the end:
 
-## Do the approval pass before you walk away
+```
+hermes cron create "0 7 * * *" "Follow skills/morning-brief/SKILL.md and write today's brief as a dated file in brief/." --name morning-brief --workdir /path/to/your/hub
+```
 
-The routine's page has a **Run now** button. Press it, watch one real
-run, and answer every question it asks with the always-allow option
-rather than the once-only one. Those answers stick, and future runs
-inherit them. Skip this and you get the worst failure in the book: a
-brief that started at seven, hit one question, and waited politely until
-you opened the app at nine.
+Hermes answers with the job's card: the id, the name, the schedule, the
+workdir and the next run. Read `where-it-runs.md` for what each of the
+four parts decides. The one people leave out is `--workdir`: it is the
+folder the job runs in, and the only thing that hands the job your
+`AGENTS.md`.
 
-What you granted is listed on the routine's page under **Always
-allowed**, one row each, with a bin beside every row. Before the first
-run that section reads *Approvals you grant during a run appear here.*
+Then check the one line that decides whether it will ever fire:
+
+```
+hermes cron status
+```
+
+If it says the gateway is not running, nothing you scheduled will fire.
+Start the gateway with the machine (`hermes gateway install`), or accept
+that the brief arrives when the machine is on, or move to Chapter 28's
+server. Nothing is caught up: a missed 07:00 is gone.
+
+## Prove the clock, not just the recipe
+
+Set a throwaway job three minutes ahead and watch it fire (verified
+2026-09-02 on Hermes 0.21.0: created 00:56 for `59 00 * * *`, recorded at
+00:59:38 with `source=builtin`, and a second dated brief in `brief/`):
+
+```
+hermes cron create "59 00 * * *" "Follow skills/morning-brief/SKILL.md and write today's brief as a dated file in brief/." --name clock-test --workdir /path/to/your/hub
+hermes cron runs
+hermes cron remove clock-test
+```
+
+`hermes cron run <name>` fires a job by hand; that proves the recipe and
+nothing about the clock (`source=direct`).
 
 ## The off-switch
 
-**Pause routine** on the routine's page. The next-run line goes and the
-entry drops out of the running list. **Enable routine** puts it back. Do
-it once today, so stopping is a reflex.
+```
+hermes cron list
+hermes cron pause morning-brief
+hermes cron resume morning-brief
+hermes cron remove morning-brief
+```
 
-Deleting asks one extra question. The confirmation says *Any sessions
-from this routine will be archived*, and under it is a checkbox, **Also
-delete files on disk**. Empty, the clock dies and the routine's own file
-stays. Ticked, both go.
-
-## Its prompt is a file you own
-
-A local routine keeps its instructions on disk, a folder per routine
-under `~/.claude/scheduled-tasks/`, each holding a `SKILL.md`. Edit it in
-a text editor and the next run uses the new words. Only the instructions
-live there: the schedule, the folder, the model and whether it is on at
-all are held by the app.
+Pause takes it off the clock and says `Paused job: morning-brief`; resume
+puts it back. Do it once today, so stopping is a reflex. `hermes cron
+runs` lists every run with its source and time; `hermes cron incidents`
+groups failures (first seen, last seen, the error, the output file), so
+you read one entry rather than a log.
 
 ## Then the register
 
-Tell your assistant the routine is live ("the morning brief is now
-scheduled, daily at seven, as a local routine on my computer; update the
+Tell your assistant the job is live ("the morning brief is now scheduled,
+daily at seven, as a Hermes cron job on this computer; update the
 register") and let it fill in the block in `procedures.md`: the rhythm,
-where it lives, and the off-switch. If you installed the house rules
-from Chapter 17, it has often done this already. One glance to confirm.
+where it lives, and the off-switch. Your house rules already say so, and
+it has often done this already. One glance to confirm.
 
 ## Honesty notes
 
-- Routines need a paid plan. The same one this book has needed since
-  Chapter 3.
-- A schedule fires at most once an hour, both kinds. The schedule box
-  refuses anything shorter with *Schedules must run at most once per
-  hour*, and a routine that got one anyway is switched off with a message
-  saying so. Runs are staggered by a few minutes on top, so 07:00 can
-  arrive at 07:04.
-- On a laptop that sleeps through 07:00: on waking, the app looks back
-  seven days, starts exactly one catch-up for the most recent miss, and
-  discards anything older. Six missed days produce one brief, not six.
-- **Settings**, **Desktop app**, **General**, **Keep computer awake**
-  stops idle-sleep so runs can fire. It says its own limit: your display
-  can still turn off, and closing the laptop lid still puts it to sleep.
-- A local routine will not run against a folder it has not been trusted
-  with. Same trust gate you clicked in Chapter 3.
+- No new subscription. A run costs what a conversation costs.
+- Any frequency you like; no once-an-hour floor. A job fires within a
+  minute or so of its slot.
+- Nothing is ever caught up. Chapter 21 says it twice on purpose.
+- A scheduled job never asks. A dangerous command is refused, not paused
+  for approval. A brief that only writes into `brief/` never needs one.
+- The recipe is a file in your folder; the schedule lives in Hermes on the
+  machine that runs it. That is why the register exists.
 - The brief is written by an AI. Chapter 24's habit applies to it like
   everything else.

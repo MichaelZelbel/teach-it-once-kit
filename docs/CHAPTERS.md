@@ -78,7 +78,7 @@ One row per chapter that uses the kit. Status: **ready** = verified and final fo
 | 18. The Safety Net | `procedures/safety-net-setup.md` | ready |
 | 19. Private Things Stay Private | `living/privacy-audit-checklist.md` (rewritten 2026-09-02 for Hermes: the transcript and the distillation are on the reader's disk, `hermes sessions stats`, `hermes memory status`, `hermes mcp list`) | ready |
 | 20. The Clock Changes Everything | `procedures/procedure-register.md`, `starter-hub/procedures.md` | ready |
-| 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` (both rewritten to Routines 2026-08-30) | building |
+| 21. The Morning Brief | `procedures/morning-brief-setup.md`, `procedures/where-it-runs.md` (both rewritten to `hermes cron` 2026-09-02, on a job the builtin ticker fired on the test server) | ready |
 | 22. The Weekly Review That Runs Itself | `procedures/weekly-review-setup.md`, `procedures/outside-ai-check.md` (the monthly branch), `procedures/ai-subscription-review.md` (the second monthly branch: what each AI plan carried) | ready |
 | 23. Watchdogs | `procedures/watchdog-setup.md` (local routine, writes into `watch/product-watchdog.md`) | building |
 | 24. Trust, but Verify | `living/two-questions-card.md`, `living/the-alternatives-card.md`, `procedures/keys-that-expire.md` (the "prove a check by breaking it" section at the end of the card) | ready |
@@ -167,6 +167,15 @@ is `hermes mcp add memory --url https://mcp.menerio.com` (verified live on 0.20.
 door because Hermes never reads it. `tools/notebook-sync.py` sends the visible `skills/` and
 falls back to an older hub's `.claude/skills/`, test-first (16 passed). Evidence:
 `ownward-studio/company-memory/book/chapter-verification/ch19-26-drawers-and-doors-on-hermes-2026-09-02.md`.
+
+Batch 10 (2026-09-02): Chapters 20 and 21. `procedures/where-it-runs.md` and
+`procedures/morning-brief-setup.md` rewritten for `hermes cron`: the clock lives inside the
+gateway, `hermes cron status` says in one line whether jobs will fire, nothing is ever caught up,
+`--workdir` is what hands a job its `AGENTS.md`, a hand run proves the recipe and not the clock,
+and jobs never ask. The Routines form, the once-an-hour floor, the seven-day catch-up and the
+Keep-computer-awake setting are gone with the Claude app. Row 21 goes to ready on a job the
+builtin ticker fired on the test server (`source=builtin`). Evidence:
+`ownward-studio/company-memory/book/chapter-verification/ch20-21-the-clock-on-hermes-2026-09-02.md`.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
