@@ -303,3 +303,8 @@ New: `menerio/folder-to-memory.md` (the folder is the import source, not the cha
 `swap/three-questions.md`.
 Removed: `swap/opencode-config.example.jsonc`, replaced by a real `swap/opencode.json` that can be
 copied straight into a folder.
+
+Published 2026-09-02 (Hermes edition): manuscript at ownward-studio `73825d7`, Leanpub `teachitonce`
+published 07:05 UTC, A4 239 pages. Chapter 9 now prints a real pocket capture (Telegram from a desk,
+and the gateway's API door) landing in `inbox/` on the test server; the kit is unchanged by it. The
+installers pin kit-bootstrap v2.4.
