@@ -230,6 +230,17 @@ ChatGPT subscription and the tested platforms; Appendices C and D follow the Her
 Chapter 30 gained the swap inside Hermes and the fallback ladder. Chapter 34 waits for Michael's
 yes on his live hub. Nothing in this kit changed for these batches beyond this note.
 
+Michael's answers (2026-09-02, morning): no screenshots from him, ever; the live hub configured
+for Hermes with every agent in the book still working (`windows/setup-hub.ps1` from kit-bootstrap
+run on `C:\hub`: Hermes reads `C:\hub\.claude\skills`, works in `C:\hub`, eighteen deny rules;
+the production hub profile's `skills.external_dirs` points at its clone's `.claude/skills`); a
+fresh Menerio account for the book's fixtures made by the session itself, seeded with Chapter 25's
+four notes, so Chapters 25, 26 and 30 agree; the Leanpub upload is the session's job, through the
+Leanpub API, after the book is green. Pins move to kit-bootstrap **v2.4**: the hidden skills doors
+(`.claude/skills`, `.agents/skills`) are ignored and untracked by git when they are links, found
+while configuring the live hub (a Windows junction looks like a folder to git, and a committed
+hub would carry two copies of every recipe).
+
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
 `tools/due.js` plus its `tools/hub-due` launcher, and `starter-hub/due/README.md` so a brand new
