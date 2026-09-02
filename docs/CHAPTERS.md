@@ -104,7 +104,7 @@ All optional. The book works without every row below.
 | 25. When the Folder Outgrows Itself | `menerio/the-notebook.md` | ready |
 | 26. One Memory, Every Tool | `menerio/mcp-connection.md` (door one is `hermes mcp add` since 2026-09-02, verified against the live server; `.mcp.json` is Claude Code's door, and Hermes does not read it), `tools/notebook-sync.py` (sends the visible `skills/`, and an older hub's `.claude/skills/`) | ready |
 | 27. Install Your Hub on Every Machine | `HubSetup.exe` on the Releases page, the printed `setup-hub.sh` line, `procedures/keys-that-expire.md`, `tools/check-keys.js` (installed as the command `hub-check-keys`), `starter-hub/secrets/expires.txt` | ready |
-| 28. The Always-On Server | `server/install.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/three-traps.md` (`server/brief.sh` deleted 2026-09-02: the morning brief is a Hermes cron job now) | building |
+| 28. The Always-On Server | `server/install.sh` (the one pasted line: root installs Hermes for the `ai` account, sets `terminal.cwd` before the system gateway, hands over; the account signs in by device code, fetches the folder by one question and a GitHub code, runs the same `setup-hub.sh` as the laptop, keys outside the folder, morning brief on `hermes cron` with `--workdir` and `--deliver telegram`, register block), `server/install-hermes.sh`, `server/steps/build-the-server.md`, `server/setup.md`, `server/three-traps.md`. `server/brief.sh` deleted 2026-09-02: the morning brief is a Hermes cron job. Run end to end on the test server twice on 2026-09-02; the second run is what the chapter quotes. | ready |
 | 29. Your Assistant on Telegram, with Hermes | `server/install.sh`, `server/install-hermes.sh` | building |
 | 30. The Swap Test | `swap/opencode.json`, `swap/three-questions.md`, `swap/openrouter-notes.md` | ready |
 | 31. Your Saved Prompts, Anywhere | `living/saved-prompt-card.md`, `starter-hub/prompts/README.md`, `starter-hub/prompts/library/README.md`, `starter-hub/prompts/archive/README.md` | ready |
@@ -185,6 +185,29 @@ watchdog is a `hermes cron` job whose worked example ran for real and found, amo
 items, that Hermes 0.21.0 approval-gates writes to `AGENTS.md` and skills. Rows 22 and 23 to ready.
 Evidence:
 `ownward-studio/company-memory/book/chapter-verification/ch22-23-32-33-receipts-and-watchdogs-on-hermes-2026-09-02.md`.
+
+Batch 13 (2026-09-02): Chapters 27 and 28. `server/install.sh` rewritten on the shared Hermes
+primitives (kit-bootstrap v2.3): root installs the tools, the `ai` account and Hermes for it,
+writes `terminal.cwd` BEFORE installing the gateway as a system service (the gateway bridges
+that setting once, at startup), and hands over; the account signs in by device code, answers
+one question (which repository) with GitHub by code, runs the same `setup-hub.sh` as the
+laptop with `--sources hermes`, puts plain keys in `~/.hub-env`, runs `install-hermes.sh`
+(ceiling, folder proof, morning brief on `hermes cron` with `--workdir` and `--deliver
+telegram`, no user gateway beside a system one), appends the register block, and prints
+what only the reader can do (`hermes setup`, one system restart). Run end to end twice on
+the test server; the second run is what Chapter 28 quotes. Two defects the first run found,
+fixed test-first: the library read its deny list back with `grep -q` on a pipeline under
+`pipefail`, which races (exit 141 when grep quits early) and printed a false "the leash is
+NOT on" over eighteen stored, enforced rules (`kb_hermes_list_has`, v2.3); and the register
+check matched the starter's own `## Morning brief` example inside a comment. Also fixed: the
+by-hand script's closing block printed a second time under the installer. The prompt log
+(`tools/hub-prompt-archive`) now reads a Windows Hermes: `HERMES_HOME`, the default profile's
+`state.db` at the root of it, desktop and cli sessions as the person's; entries say
+`tool=hermes` with a `channel`. On the author's machine that turned 69 invisible prompts into
+archived ones. One deviation, on purpose: the kit's two quiet jobs (prompt archive, notebook
+sync) stay on the machine's own scheduler, not on `hermes cron`, because they must run
+whether or not a gateway is up. `server/setup.md`, `server/README.md`, `steps/build-the-
+server.md` and `three-traps.md` rewritten for the Hermes build.
 
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
