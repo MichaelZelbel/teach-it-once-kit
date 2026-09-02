@@ -7,11 +7,14 @@ the server as the login you were given:
 curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh | bash
 ```
 
-That does everything below and asks you three questions while it goes.
+That does everything below, asks you which repository holds your folder, and
+shows you two codes to type on your phone. `steps/build-the-server.md` is the
+step-by-step account of what it does.
 
 This page is the same thing done by hand. Two reasons to read it: you want to
 know what the one line actually did, or something has broken and you are trying
-to find which part. Every step here was run on a blank Ubuntu machine.
+to find which part. Every step here was run on the book's test server, an
+Ubuntu 24.04 machine, on Hermes 0.21.0.
 
 ---
 
@@ -26,85 +29,94 @@ address and a way to log in.
 adduser ai
 ```
 
-Everything after this happens as `ai`. The account you were given can destroy
-the machine; your assistant does not need that. This is the same instinct as the
-red lines: draw the boundary while nothing is at stake.
+Everything after this happens as `ai`, except the one root step in section 5.
+The account you were given can destroy the machine; your assistant does not need
+that. This is the same instinct as the red lines: draw the boundary while nothing
+is at stake.
 
 It matters more here than on your laptop. On your laptop the leash is a
 question: it asks, you answer. On a server at three in the morning there is
 nobody to answer, so the leash cannot be a question. **It has to be the walls.**
+Hermes helps: a scheduled job that reaches for a dangerous command is refused,
+not left waiting for a click.
 
-## 3. Install the assistant
+## 3. Install Hermes, as `ai`
 
 ```
-curl -fsSL https://claude.ai/install.sh | bash
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
 Run this as `ai`, not with `sudo`. It installs into the home folder of whoever
-runs it, so under `sudo` it would land in root's home and your own account would
-not find it.
-
-> Older versions of this page installed Node first and then used npm. That is no
-> longer needed: the installer above downloads a finished program and never
-> touches Node.
+runs it (`~/.local/bin/hermes`), brings its own Python, and needs only `curl`,
+`git` and `xz` on the machine, which root installs if they are missing. It will
+mention that `ripgrep` is absent and that file search falls back to `grep`; that
+is fine.
 
 ## 4. Sign in with no browser on the machine
 
 ```
-claude auth login
+hermes auth add openai-codex --type oauth --no-browser
 ```
 
-> **Why this and not `claude setup-token`.** Both work, and they do different
-> jobs. `setup-token` gives you a long-lived token and prints it, for you to save
-> yourself as `CLAUDE_CODE_OAUTH_TOKEN` in `~/.hub-env`; the morning job picks it
-> up from there. That works, and it is what this page used to say. Two things
-> make `auth login` the better first choice: it saves the sign-in itself, so
-> there is nothing for you to copy and store, and it never puts a year-long
-> credential on your screen. If you use `setup-token`, remember that on its own
-> it does not sign the machine in, and save the token or nothing will run.
-
-It tries to open a browser, fails, because there is not one, and then tells you
-what to do:
-
-> Opening browser to sign in…
->
-> If the browser didn't open, visit: https://claude.com/cai/oauth/authorize?...
->
-> Paste code here if prompted >
-
-Open that address on your own computer. You get a consent screen:
-
-> Claude Code would like to connect to your Claude chat account
->
-> YOUR ACCOUNT WILL BE USED TO:
-> Contribute to your Claude subscription usage
-
-Read that middle line before approving: the server's work comes out of the
-subscription you already pay for. Approve, copy the code it returns, paste it
-into the waiting server.
-
-## 5. Give the server your folder
-
-There are two ways. **The first is easier and is what the one-line installer
-does.** The second is here because some people would rather not put a GitHub
-login on a rented machine at all, and that is a fair thing to want.
-
-### 5a. The short way: sign in to GitHub with a code
-
-Install the GitHub tool once (as the admin account, since it installs software):
+Not `hermes login`, which is deprecated and says so. The command prints exactly
+this shape:
 
 ```
-(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
-  && sudo mkdir -p -m 755 /etc/apt/keyrings \
-  && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-  && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-  && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-  && sudo mkdir -p -m 755 /etc/apt/sources.list.d \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-  && sudo apt update && sudo apt install gh -y
+To continue, follow these steps:
+
+  1. Open this URL in your browser:
+     https://auth.openai.com/codex/device
+
+  2. Enter this code:
+     XXXX-XXXXX
+
+Waiting for sign-in... (press Ctrl+C to cancel)
 ```
 
-Then, back as `ai`:
+Open the address on any device, type the code, approve. No browser on the
+server, no credential copied from another machine. The code lasts fifteen
+minutes, measured; an expired attempt writes nothing and is safe to repeat. If
+Hermes finds a Codex CLI login on the machine it offers to import it and
+recommends against, in its own words: a separate login is recommended, because
+two programs sharing one sign-in log each other out.
+
+Then check, and set the model the book uses:
+
+```
+hermes auth list
+hermes model
+```
+
+## 5. The folder's path first, then the gateway, as root
+
+Two commands, in this order, and the order is the point. The gateway copies
+`terminal.cwd` into its own environment once, when it starts, so the folder's
+path is written before the service exists:
+
+```
+sudo -u ai -H /home/ai/.local/bin/hermes config set terminal.cwd /home/ai/hub
+sudo /home/ai/.local/bin/hermes gateway install --system --run-as-user ai --start-on-login --force
+```
+
+Hermes writes a better unit than you would by hand (it carries `HERMES_HOME`,
+`PATH`, its self-update flag, `WantedBy=multi-user.target`, and pins
+`WorkingDirectory` to its own home on purpose, because a movable folder
+crash-loops the unit before Python loads). It starts with the machine, no login
+and no lingering needed, and came back fourteen seconds after a reboot on the
+test server. One system gateway per machine: do not also install a user unit,
+or `hermes gateway status` reports the wrong one.
+
+`terminal.cwd` is the ONLY setting the agent's tools obey for their working
+folder. An earlier version of this page set `workspace`, which is not a
+recognised Hermes key: the command succeeded, Hermes ignored it, and the
+assistant knew your house rules and still could not open the folder they
+describe.
+
+## 6. Give the server your folder
+
+**The short way**, which is what the one-line installer does: install the
+GitHub tool as root (`apt install gh`, or the instructions at cli.github.com),
+then, back as `ai`:
 
 ```
 gh auth login --hostname github.com --git-protocol https --web --skip-ssh-key
@@ -113,86 +125,56 @@ gh repo clone YOUR-NAME/YOUR-REPO hub
 ```
 
 `gh auth login` shows a short code and a web address. Open the address on your
-phone, type the code, approve. That is the whole sign-in: no token to create, no
-key to paste into a website. `gh auth setup-git` is what lets `git push` work
-afterwards without asking for a password.
+phone, type the code, approve. No token to create, no key to paste anywhere.
 
-If you have no repository yet, make one instead of cloning:
+If you have no repository yet, start from the book's starter rooms and make one:
 
 ```
+git clone --depth 1 https://github.com/MichaelZelbel/teach-it-once-kit.git ~/teach-it-once-kit
+cp -R ~/teach-it-once-kit/starter-hub/. ~/hub/
 cd ~/hub && git init -b main && git add -A && git commit -m "My folder"
 gh repo create YOUR-REPO --private --source . --push
 ```
 
-### 5b. The long way: a deploy key
+**The long way**, a deploy key, if you would rather not put a GitHub login on a
+rented machine at all: `ssh-keygen -t ed25519`, paste the public half under the
+repository's **Settings**, **Deploy keys** with write access, and
+`git clone git@github.com:YOUR-NAME/YOUR-REPO.git hub`.
 
-A deploy key opens exactly one repository and nothing else, which is why it beats
-putting an account login on a server.
-
-```
-ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519
-cat ~/.ssh/id_ed25519.pub
-```
-
-In your repository on GitHub: **Settings**, **Deploy keys**, **Add deploy key**.
-Paste the public half, tick **Allow write access**. Then:
+## 7. Wire the folder the way the laptop is wired
 
 ```
-git clone git@github.com:YOUR-NAME/YOUR-REPO.git hub
+git clone --depth 1 --branch v2.3 https://github.com/MichaelZelbel/kit-bootstrap.git ~/.kit-bootstrap
+KB_BRANCH=v2.3 bash ~/.kit-bootstrap/setup-hub.sh --hub ~/hub --skip-prereqs --sources hermes
 ```
 
-## 6. Put the keys where the folder is not
+This is the same script the laptop installer runs. It tops the folder up with
+any starter room it lacks, makes the visible `skills/` the one real room with
+`.claude/skills` and `.agents/skills` as links to it (and counts what is
+reachable rather than trusting itself), sets `terminal.cwd` and PROVES it by
+having Hermes read a marker file, adds the eighteen deny rules, installs the
+kit's tools, and puts the prompt log on an hourly clock. Read what it prints.
+
+## 8. Put the keys where the folder is not
 
 ```
-nano ~/.hub-env
+umask 077 && touch ~/.hub-env && chmod 600 ~/.hub-env
+cd ~/hub && printf '.env*\n.hub-env\n' >> .gitignore
 ```
 
-```
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_CHAT_ID=...
-```
+Both halves. The morning job commits and pushes, and `git add -A` means
+everything. Hermes' own secrets (its sign-in, the Telegram token) live in its own
+home, never in the folder. See `three-traps.md` for what happens if you skip this.
 
-Then, inside the folder, a `.gitignore` containing:
-
-```
-.env*
-.hub-env
-```
-
-Both halves. The morning job runs `git add -A`, and `git add -A` means
-everything. See `three-traps.md` for what happens if you skip this.
-
-## 7. Delivery to your phone
-
-In Telegram, message **BotFather**, send `/newbot`, answer its two questions. It
-gives you a long line of text: that is `TELEGRAM_BOT_TOKEN`. Send your new bot
-any message so it is allowed to reply to you.
-
-You do not have to hunt for your chat id. Send the bot a message first, then ask
-Telegram what it saw:
+## 9. The morning brief, on Hermes' clock
 
 ```
-curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates" \
-  | jq -r '[ .result[]? | select(.message.chat.type=="private") | .message.chat.id ] | .[0]'
+HUB=~/hub bash ~/teach-it-once-kit/server/install-hermes.sh
 ```
 
-That number is `TELEGRAM_CHAT_ID`. Put both in `~/.hub-env`, then test:
-
-```
-curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
-  -d chat_id="$TELEGRAM_CHAT_ID" --data-urlencode "text=hello from my server"
-```
-
-A reply starting `{"ok":true` means delivery works. Anything else means it did
-not arrive, whatever else it says.
-
-## 8. The runner and the clock
-
-The brief is a Hermes cron job, not a shell script, so on a first build do
-section 9 first, then come back here for the clock.
-
-One command creates the job,
-meaning "at 06:00 every day, inside my folder, delivered to Telegram":
+That script checks the `AGENTS.md` ceiling (it refuses at 20,000 characters and
+warns from 19,000), points Hermes at the folder and proves it again, leaves the
+gateway to the system service from section 5, and creates the job:
 
 ```
 hermes cron create "0 6 * * *" \
@@ -203,71 +185,42 @@ hermes cron create "0 6 * * *" \
 Two things about that command earn their place. `--workdir` is the one thing
 that injects your `AGENTS.md` into a scheduled run; without it the job runs
 with no project context at all. And the clock lives inside the gateway: a
-scheduled job fires only while `hermes gateway status` says the gateway is
+scheduled job fires only while `hermes cron status` says the gateway is
 running, and a missed slot is never caught up. `hermes cron run morning-brief`
 by hand proves the job works; it proves nothing about the schedule.
 
-When a morning fails, `hermes cron incidents` has the record, and the job's
-own prompt tells it to say so out loud rather than staying quiet.
-
-## 9. Hermes, so it can hear you back (Chapter 29)
-
-Everything above sends one way. Hermes is what makes it two-way.
-
-**Check this first, before installing anything.** Hermes puts your `AGENTS.md`
-into every conversation and will not take more than 20,000 characters of it. Past
-that it keeps the beginning and the end and throws away the middle, with no error
-and no log line. Your assistant simply stops knowing what was in the middle of
-its own instructions:
+## 10. Telegram, so it can hear you back (Chapter 29)
 
 ```
-wc -m < ~/hub/AGENTS.md
+hermes setup
 ```
 
-Under 19,000 and you have room. Over 20,000 and you must move reference material
-into its own file before you go on.
+It asks for a bot token. In Telegram, message **BotFather**, send `/newbot`,
+answer its two questions, and it hands you a long line of text: that is the
+token. Send your new bot any message so it is allowed to reply to you. You never
+hunt for a chat id; Hermes works that out. Then, as root, one restart so the
+service picks the messenger up:
 
 ```
-curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
-hermes config set terminal.cwd ~/hub
+sudo /home/ai/.local/bin/hermes gateway restart --system
 ```
 
-`terminal.cwd` is the ONLY setting the agent's tools obey for their working
-folder. An earlier version of this page set `workspace`, which is not a
-recognised Hermes key: the command succeeds anyway and Hermes ignores it, so
-the assistant knows your house rules and still cannot open the folder they
-describe.
+## 11. Register it, and check it
 
-Then a service, so it comes back after a reboot. Hermes writes a better unit
-than you would by hand, and it sorts out lingering itself:
+Add the procedure to `procedures.md` (the one-line installer appends the block
+itself), with "where it runs" filled in properly at last: the server. Then the
+three commands worth remembering:
 
 ```
-hermes gateway install --start-on-login
-hermes model      # choose the AI and give it your key
-hermes setup      # connect Telegram
-hermes gateway start
-hermes gateway status
+hermes gateway status     # is my assistant awake? (never systemctl is-active: a clean stop reads "failed" there)
+hermes cron status        # will the clock fire? gateway running, ticker heartbeat, next run
+hermes cron list          # every job, its schedule, its last and next run
+hermes cron runs          # what fired, when, and whether the clock (builtin) or a hand (direct) did it
+hermes cron incidents     # anything that broke, with the stored output
 ```
-
-Read the gateway's health from `hermes gateway status`, never from
-`systemctl is-active`: a cleanly stopped gateway shows as `failed` to systemd,
-so systemd cannot tell your own stop from a crash.
-
-## 10. Register it
-
-Add the procedure to `procedures.md` in the same sitting, with the "where it
-runs" line filled in properly at last: the server. In a year that line is how you
-will remember which machine sends the thing.
 
 ## What a working run looks like
 
-The brief arrives on your phone in the morning, and the folder gained one file:
-`brief/` holds the day's page, committed and pushed. Just the brief. No keys.
-
-Three commands worth remembering afterwards:
-
-```
-hermes gateway status     # is my assistant awake?
-hermes cron runs          # did this morning's brief fire, and when?
-hermes cron incidents     # anything that broke, with the stored output
-```
+The brief arrives on your phone at 06:00, `hermes cron runs` shows the run with
+`source=builtin`, and the folder gained one file: `brief/` holds the day's page,
+committed and pushed. Just the brief. No keys.

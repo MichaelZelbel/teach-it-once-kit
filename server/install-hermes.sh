@@ -38,7 +38,7 @@ SAFE=19000
 # tag. They carry the behaviour this script must not re-learn the hard way:
 # terminal.cwd is the only lever that moves the agent, a failed one-shot still
 # exits 0, and `hermes config set` replaces a list.
-LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.2/lib.sh"
+LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/v2.3/lib.sh"
 if ! LIB="$(curl -fsSL "$LIB_URL")" || [ -z "$LIB" ]; then
   printf '\n   STOPPED: could not download the shared install code from\n   %s\n   Check the machine has internet, then run this again.\n\n' "$LIB_URL" >&2
   exit 1
@@ -214,14 +214,19 @@ kb_cron_job "$HUB" "morning-brief" "0 6 * * *" \
   "telegram" || true
 
 # --------------------------------------------------------------------------
+# The one-line installer prints its own closing block, with the system-service
+# restart the by-hand path does not need. Called from there, this script stops here.
+[ -n "${KB_CALLED_FROM_INSTALLER:-}" ] && exit 0
+
 say "What is left, and only you can do it"
 
 cat <<NEXT
    Two things need answers that are yours, so this script does not guess them.
 
-   1. Choose which AI does the thinking, and give it your key:
+   1. Sign Hermes in to your ChatGPT subscription with a code (hermes login is
+      deprecated and must not be used), or pick another AI with: $HERMES model
 
-        $HERMES model
+        $HERMES auth add openai-codex --type oauth --no-browser
 
    2. Connect Telegram, so it can hear you:
 

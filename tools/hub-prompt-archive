@@ -489,22 +489,46 @@ SPEAKER_LABEL = re.compile(r"^\[[A-Z][A-Za-z ]{0,20}\]\s*")
 
 
 def hermes_home():
-    """Where the Hermes bots keep their own store.
+    """Where Hermes keeps its own store of conversations.
 
-    Hermes is a chat-bot runner: if you have one, each bot keeps its own small database of
-    the conversations it has had, and what you typed to it lives nowhere else.
+    Hermes is the assistant this book teaches from Chapter 3 (since 2026-09-02), and every
+    conversation you have with it, on the desktop app or in a terminal, lives in a small
+    sqlite database in Hermes' own folder and nowhere else. That folder is HERMES_HOME when
+    Hermes is told one (the Windows desktop app sets it to %LOCALAPPDATA%/hermes), else
+    the platform default. The DEFAULT profile keeps its store at the root of that folder as
+    state.db; every other profile keeps its own under profiles/<name>/state.db.
 
-    HUB_HERMES_HOME wins so a test can point at a fixture. Otherwise a server-wide install,
-    then this user's own, then nothing at all, which is the normal and correct answer on a
-    computer that runs no bots.
+    HUB_HERMES_HOME wins so a test can point at a fixture. Then HERMES_HOME, then the
+    Windows default, then a server-wide install, then this user's own, then nothing at all,
+    which is the correct answer on a computer that never ran Hermes.
     """
     env = os.environ.get("HUB_HERMES_HOME")
     if env:
         return env
-    for c in ("/home/hermes/.hermes", os.path.join(home_dir(), ".hermes")):
-        if os.path.isdir(os.path.join(c, "profiles")):
+    candidates = []
+    if os.environ.get("HERMES_HOME"):
+        candidates.append(os.environ["HERMES_HOME"])
+    if os.environ.get("LOCALAPPDATA"):
+        candidates.append(os.path.join(os.environ["LOCALAPPDATA"], "hermes"))
+    candidates += ["/home/hermes/.hermes", os.path.join(home_dir(), ".hermes")]
+    for c in candidates:
+        if os.path.isfile(os.path.join(c, "state.db")) or os.path.isdir(os.path.join(c, "profiles")):
             return c
     return None
+
+
+def hermes_stores(hermes):
+    """Every (label, path) pair of a Hermes session store under one home: the default
+    profile's state.db at the root, labelled 'default', then profiles/<name>/state.db."""
+    if not hermes:
+        return []
+    out = []
+    root = os.path.join(hermes, "state.db")
+    if os.path.isfile(root):
+        out.append(("default", root))
+    for db in sorted(glob.glob(os.path.join(hermes, "profiles", "*", "state.db"))):
+        out.append((os.path.basename(os.path.dirname(db)), db))
+    return out
 
 
 def human_turns_hermes_store(hermes):
@@ -523,9 +547,10 @@ def human_turns_hermes_store(hermes):
     sqlite database per bot, holding its conversations and their messages. A bot made
     tomorrow is covered tomorrow, with nothing to install and nothing to remember.
 
-    Only conversations whose source is 'telegram' are read, because those are the ones a
-    person had. The other sources in that same database (api_server, cron, cli, webhook) are
-    programs giving the bot work, and their "user" turns are prompts a program wrote.
+    Only conversations a PERSON had are read: source 'desktop' (the Hermes desktop app),
+    'cli' (a terminal session) and 'telegram' (the messenger). The other sources in that same
+    database (api_server, cron, webhook) are programs giving Hermes work, and their "user"
+    turns are prompts a program wrote, which is not your history.
 
     The bot's replies ride along as the answer of the turn they follow. Rows are ordered by
     session, then timestamp, then insertion order, because a busy bot writes several messages
@@ -533,18 +558,17 @@ def human_turns_hermes_store(hermes):
     its own question. A machine-banner turn still swallows the replies that follow it: they
     answer the machinery, not the person, so they must never leak backward onto a real turn.
     """
-    import sqlite3  # only needed here, and only on a machine that runs bots
+    import sqlite3  # only needed here, and only on a machine that runs Hermes
     if not hermes:
         return
-    for db in sorted(glob.glob(os.path.join(hermes, "profiles", "*", "state.db"))):
-        bot = os.path.basename(os.path.dirname(db))
+    for bot, db in hermes_stores(hermes):
         try:
             # Read-only, so a live bot writing to the same database is never disturbed.
             con = sqlite3.connect("file:" + db.replace("?", "%3f") + "?mode=ro", uri=True)
             rows = con.execute(
-                "SELECT m.session_id, m.timestamp, m.role, m.content FROM messages m "
+                "SELECT m.session_id, m.timestamp, m.role, m.content, s.source FROM messages m "
                 "JOIN sessions s ON s.id = m.session_id "
-                "WHERE s.source = 'telegram' AND m.role IN ('user', 'assistant') "
+                "WHERE s.source IN ('telegram', 'desktop', 'cli') AND m.role IN ('user', 'assistant') "
                 "ORDER BY m.session_id, m.timestamp, m.rowid").fetchall()
             con.close()
         except Exception as e:
@@ -554,7 +578,7 @@ def human_turns_hermes_store(hermes):
                   "to it is NOT being archived." % (bot, e))
             continue
         cur, cur_sid = None, None
-        for sid, ts, role, txt in rows:
+        for sid, ts, role, txt, channel in rows:
             if sid != cur_sid:
                 if cur:
                     yield cur
@@ -573,8 +597,11 @@ def human_turns_hermes_store(hermes):
                     at = datetime.fromtimestamp(float(ts), timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
                 except Exception:
                     at = ""
-                cur = {"tool": "telegram", "project": bot, "at": at, "text": txt,
-                       "answers": []}
+                # "tool" says which assistant this was said to, "project" which profile of it,
+                # and "channel" through which door: desktop, cli or telegram. Until 2026-09-02
+                # every entry from this store said "telegram", which was a lie for a desktop chat.
+                cur = {"tool": "hermes", "project": bot, "channel": channel, "at": at,
+                       "text": txt, "answers": []}
             elif cur is not None and txt:
                 cur["answers"].append(txt)
         if cur:
@@ -919,7 +946,7 @@ def cmd_sources(hub, machine):
     seen = load_seen(hub)
     have, total, newest = {}, {}, {}
     for rec in harvest(hub):
-        key = (rec["tool"], rec["project"] if rec["tool"] == "telegram" else "")
+        key = (rec["tool"], rec["project"] if rec["tool"] in ("telegram", "hermes") else "")
         rid = hashlib.sha256(("%s|%s" % (rec["tool"], rec["text"])).encode("utf-8")).hexdigest()[:16]
         total[key] = total.get(key, 0) + 1
         if rid in seen:

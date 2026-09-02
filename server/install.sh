@@ -44,7 +44,7 @@ export KB_SELF_URL
 
 # The pin is an immutable TAG, never the moving v2 branch, so this installer runs
 # exactly the code that passed its end-to-end runs until this line is edited.
-KB_PIN="v2.2"
+KB_PIN="v2.3"
 LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/$KB_PIN/lib.sh"
 KIT_REPO="https://github.com/MichaelZelbel/teach-it-once-kit.git"
 AI_USER="${AI_USER:-ai}"
@@ -287,13 +287,15 @@ ok "plain keys live in $HOME/.hub-env, outside the folder, and the folder ignore
 # --workdir (the one thing that hands a scheduled run its AGENTS.md) and
 # Telegram delivery.
 say "The morning brief, on Hermes' clock"
-HUB="$HUB" bash "$KIT_DIR/server/install-hermes.sh" \
+KB_CALLED_FROM_INSTALLER=1 HUB="$HUB" bash "$KIT_DIR/server/install-hermes.sh" \
   || warn "the Hermes half reported a problem above. Read it before trusting the clock."
 
 # --- The register --------------------------------------------------------------
 # Nothing runs unlisted. One block, written once, if the folder has the file and
 # not the block.
-if [ -f "$HUB/procedures.md" ] && ! grep -q '^## Morning brief' "$HUB/procedures.md"; then
+# The starter's own register carries a "## Morning brief" EXAMPLE inside a comment, so
+# the test is for the server's line, not the heading.
+if [ -f "$HUB/procedures.md" ] && ! grep -q 'Lives: Hermes cron, the server' "$HUB/procedures.md"; then
   cat >> "$HUB/procedures.md" <<REG
 
 ## Morning brief

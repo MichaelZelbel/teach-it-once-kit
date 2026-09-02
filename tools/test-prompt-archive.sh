@@ -224,7 +224,7 @@ rm -f "$W/prompts/archive/"*.jsonl
 ( export HOME="$W/home" HUB_HOME="$W/home" HUB_HERMES_HOME="$HH" HUB_TELEGRAM_TRANSCRIPT="$W/none.jsonl"
   "$PY" "$ARC" --hub "$W" sources ) >"$W/src.out" 2>&1
 SRC_RC=$?
-[ "$SRC_RC" -ne 0 ] && grep -q "telegram/claire" "$W/src.out" \
+[ "$SRC_RC" -ne 0 ] && grep -q "hermes/claire" "$W/src.out" \
   && ok "28 sources fails and names the bot whose prompts reach none of the archive" \
   || bad "28 an entirely unarchived source was reported as healthy" "rc=$SRC_RC $(cat "$W/src.out")"
 
@@ -436,6 +436,36 @@ fi
 # 40. A busy bot writes several messages within the same second, so insertion order is the
 #     only truth about who answered what. And a reply to our own machinery's work order must
 #     vanish with it, never leak backward onto the person's previous question.
+# The Windows shape, since the Hermes switch (2026-09-02): HERMES_HOME names the store, the
+# DEFAULT profile keeps its state.db at the ROOT of that folder (no profiles/ dir at all), and a
+# person's conversations arrive with source 'desktop' or 'cli', not only 'telegram'. Before
+# this case the tool looked only under profiles/ and only at telegram, so a reader on Windows
+# had nothing filed and nothing said.
+HH3="$W/hermes3"; mkdir -p "$HH3"
+"$PY" - "$HH3" <<'PYEOF'
+import sqlite3, sys, os
+hh = sys.argv[1]
+con = sqlite3.connect(os.path.join(hh, "state.db"))
+con.execute("CREATE TABLE sessions (id TEXT, source TEXT)")
+con.execute("CREATE TABLE messages (session_id TEXT, role TEXT, content TEXT, timestamp REAL)")
+for sid, src in (("d1", "desktop"), ("c1", "cli"), ("x1", "cron")):
+    con.execute("INSERT INTO sessions VALUES (?,?)", (sid, src))
+for sid, role, txt in (("d1", "user", "typed into the desktop app about the garden fence"),
+                       ("d1", "assistant", "a reply about the fence"),
+                       ("c1", "user", "typed in a terminal about the fence quote"),
+                       ("x1", "user", "a cron job's own prompt that is not a person")):
+    con.execute("INSERT INTO messages VALUES (?,?,?,?)", (sid, role, txt, 1785875150.0))
+con.commit(); con.close()
+PYEOF
+( export HOME="$W/home3" HUB_HOME="$W/home3" HUB_PROMPT_SOURCES="hermes" HUB_TELEGRAM_TRANSCRIPT="$W/none.jsonl"
+  unset HUB_HERMES_HOME; export HERMES_HOME="$HH3"
+  mkdir -p "$W/home3" "$W/hub3/prompts/archive" && cd "$W/hub3" && "$PY" "$ARC" --hub "$W/hub3" archive ) >"$W/win.out" 2>&1
+B3="$(cat "$W/hub3/prompts/archive/"*.jsonl 2>/dev/null)"
+echo "$B3" | grep -q "garden fence"   && ok "51 HERMES_HOME with the default profile's state.db at its root is read (the Windows shape)"   || bad "51 the Windows-shaped store was not read" "$(cat "$W/win.out")"
+echo "$B3" | grep -q "terminal about the fence quote"   && ok "52 a terminal (cli) conversation counts as the person's"   || bad "52 the cli session was skipped" "$(cat "$W/win.out")"
+echo "$B3" | grep -q "cron job's own prompt"   && bad "53 a cron job's prompt was filed as if a person typed it" "$B3"   || ok "53 a cron session's prompt is not a person's and stays out"
+echo "$B3" | grep -q '"tool": *"hermes"' && echo "$B3" | grep -q '"channel": *"desktop"'   && ok "54 the entry says it was said to Hermes, through the desktop door, not 'telegram'"   || bad "54 the entry's tool or channel label is wrong" "$B3"
+
 HH2="$W/hermes2"; mkdir -p "$HH2/profiles/orderbot"
 "$PY" - "$HH2" <<'PYEOF'
 import sqlite3, sys, os
