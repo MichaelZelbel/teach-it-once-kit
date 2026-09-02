@@ -152,6 +152,12 @@ guesses; the recipe now names `people.md` and `projects.md` in rule 1, and rule 
 Evidence:
 `ownward-studio/company-memory/book/chapter-verification/ch12-16-skills-from-the-visible-room-2026-09-02.md`.
 
+Batch 8 (2026-09-02): Chapter 17. `procedures/red-lines-template.md` stops saying the `CLAUDE.md`
+pointer is what puts the rules in the room: Hermes reads `AGENTS.md` by name, the signpost is
+for Claude Code, and the developer note points at Chapter 5 instead of describing `CLAUDE.md`
+precedence. The grenade instructions now say to run the PELICAN test first. Evidence:
+`ownward-studio/company-memory/book/chapter-verification/ch17-red-lines-on-hermes-2026-09-02.md`.
+
 New 2026-08-29 (batch AH, "the thing with a last day"): `procedures/what-runs-out-and-when.md`
 (the window instead of a due date, the four questions, the self check, the cap of three a day),
 `tools/due.js` plus its `tools/hub-due` launcher, and `starter-hub/due/README.md` so a brand new

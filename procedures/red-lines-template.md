@@ -63,18 +63,19 @@ whichever you can stand behind. The interview in
 ## Install them: there is nothing to install
 
 Your rules are files in `rules/`. `hub-compile-rules` writes them into
-`AGENTS.md`. The one-line `CLAUDE.md` the installer left at the top of your
-hub points every session at that file. So the rules are in the room the
-moment you save them, and there is no second copy anywhere that could
-quietly hold last month's wording.
+`AGENTS.md`. Hermes reads `AGENTS.md` by name at the start of every
+conversation, and the one-line `CLAUDE.md` beside it is the signpost that
+gets Claude Code to the same file. So the rules are in the room the moment
+you save them, and there is no second copy anywhere that could quietly hold
+last month's wording.
 
 That is the whole install, and it is why the next section is a test rather
-than a checklist.
+than a checklist. The book's thirty-second PELICAN test (Chapter 17) tells
+you whether the rules are in the room before you throw anything at them.
 
-Two notes. A `CLAUDE.md` inside a subfolder applies only to sessions started
-there, which is how one project gets rules of its own. A `CLAUDE.md` in your
-home folder rides along in every folder on the machine. Skip both until you
-feel the need.
+One note for developers: a project inside `dev/` with its own `AGENTS.md`
+gets rules of its own, and a session started inside that project runs under
+those alone. Chapter 5 shows exactly which files each tool reads from where.
 
 ## Test with live ammunition before you trust it
 
@@ -90,9 +91,9 @@ Attack your own rules in a throwaway folder where failure costs nothing.
   including facts no file contains. Pass: it refuses to invent, names the
   gap, and asks you for the real facts.
 
-Run each grenade twice: once before you install the block, once after. If
-both runs behave the same, the rules were never installed and something in
-the install step went wrong.
+Run the PELICAN test first, so you know the rules are in the room. Then a
+grenade that gets through is a wording problem, not a wiring one, and the
+fix is in the rule's own file.
 
 ## Two layers, both on
 
