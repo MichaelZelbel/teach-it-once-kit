@@ -2,7 +2,7 @@
 
 Chapter 30: run your folder on a different company's tool and a different company's model.
 
-- `opencode.json`: drop this next to your `AGENTS.md`. Nine lines: which brain to hire, what it
+- `opencode.json`: drop this next to your `AGENTS.md`. A dozen lines: which brain to hire, what it
   must ask before touching, and where your notebook lives. Notice what is not in it: your context,
   skills, rules and voice need no migration, because they are already in the folder.
 - `three-questions.md`: the entrance exam, and the real answers a different company's model gave.
