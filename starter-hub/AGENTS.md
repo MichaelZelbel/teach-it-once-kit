@@ -32,7 +32,8 @@ purpose. If it contradicts something you believe about me, the file wins.
   files the clear ones into my profile files itself and asks me only about the
   doubtful; between reviews, file them when I ask you to.
 - **What you work out about me goes in `observations/`.** One file per fact,
-  with a one-line description at the top. Read `observations/MEMORY.md` at the
+  with a one-line description at the top so a session can tell whether to open
+  it. Read `observations/MEMORY.md` at the
   start of a session and open a fact file only when its subject comes up; do
   not read the whole folder, that is what the page is for. This folder is the
   memory every one of my assistants shares, on every machine, which is why it

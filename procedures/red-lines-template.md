@@ -5,18 +5,20 @@ your explicit yes, plus the habits that keep it from lying to you politely.
 
 Two jobs, and the second one is the one everybody skips.
 
-1. **Write them** into `AGENTS.md` in your folder. One master copy, your
-   words.
-2. **Install them** where your tool actually reads them. A file sitting in
-   a folder has no power. Something has to hand it over at the start of
-   the conversation.
+1. **Write them**, one file per rule in `rules/`, in your words.
+   `hub-compile-rules` writes the one-line version of each into `AGENTS.md`.
+2. **Check they are read.** A file sitting in a folder has no power. Your
+   tool has to read it at the start of the conversation, by name.
 
 ## The block
 
-Replace the rules section of your `AGENTS.md` with this, then edit line by
-line until every rule is one you mean. Keep the closing instruction: it is
-what turns every refusal into a draft plus a question instead of a dead
-end.
+The eight rules below are already in your folder, one file each in `rules/`,
+and `hub-compile-rules` has written the one-line version of each into
+`AGENTS.md` between two markers, musts first, so the numbers there differ from
+the numbers here. This is the readable version. Edit a rule in its own file in
+`rules/`, never inside the block, until every rule is one you mean. Keep the
+closing instruction: it is what turns every refusal into a draft plus a
+question instead of a dead end.
 
 ```
 ## My red lines
