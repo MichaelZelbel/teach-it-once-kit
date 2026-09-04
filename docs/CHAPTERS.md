@@ -307,4 +307,4 @@ copied straight into a folder.
 Published 2026-09-02 (Hermes edition): manuscript at ownward-studio `73825d7`, Leanpub `teachitonce`
 published 07:05 UTC, A4 239 pages. Chapter 9 now prints a real pocket capture (Telegram from a desk,
 and the gateway's API door) landing in `inbox/` on the test server; the kit is unchanged by it. The
-installers pinned kit-bootstrap v2.4 then; since installer v2.3.0 (2026-09-04) they pin **v2.6** (a second hub can sit beside the first with --beside, and -Hub finally works on Windows).
+installers pinned kit-bootstrap v2.4 then; since installer v2.3.1 (2026-09-04) they pin **v2.7** (a second hub can sit beside the first with --beside; -Hub finally works on Windows; and the Windows .exe pins a tag now, so both platforms fetch exactly the code their installer was built from).
