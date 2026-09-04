@@ -88,7 +88,7 @@ hub-due check               close whatever can prove itself done
 ```
 
 Two things about it are worth knowing before you use it. It **refuses anything
-without both dates**, in those words, which is the only thing standing between
+without both dates**, in those words, which is the only thing between
 this and a to-do app you abandon. And it reads `secrets/expires.txt` as one of
 its sources, so the key dates from Chapter 27 are in the same list as everything
 else and there is one thing nagging you rather than two that disagree.

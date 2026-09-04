@@ -37,7 +37,7 @@ Work the list, in the files.
       is worse than no fact, because you will act on it.
 - [ ] **Squeeze the mumbles.** Three vague lines about the same client, grown
       over three months of captures, become one line that earns its space.
-- [ ] **Re-read the standing ones.** `about-me.md` and your three priorities
+- [ ] **Re-read the ones that stay.** `about-me.md` and your three priorities
       drift too, just slower. If your priorities are word for word what they
       were three months ago, be honest about why.
 

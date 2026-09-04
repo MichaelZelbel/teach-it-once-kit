@@ -72,7 +72,7 @@ for (let i = 0; i < raw.length; i++) {
 if (!hub) hub = readDeviceEnv("HUB_DIR");
 if (!hub) hub = process.env.HUB_DIR || "";
 if (!hub) {
-  // Walk up from here. Somebody standing in their own folder should not have to say where it is.
+  // Walk up from here. Somebody sitting in their own folder should not have to say where it is.
   let d = process.cwd();
   for (let i = 0; i < 6; i++) {
     if (fs.existsSync(path.join(d, "AGENTS.md")) || fs.existsSync(path.join(d, "profile"))) { hub = d; break; }

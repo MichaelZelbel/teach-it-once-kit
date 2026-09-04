@@ -81,7 +81,7 @@ around it.
 ## No date, not eligible
 
 `hub-due add` refuses anything without both dates, in those words. That refusal is the only thing
-standing between this folder and a to-do app you stop maintaining.
+between this folder and a to-do app you stop maintaining.
 
 ## Three states, and only three
 

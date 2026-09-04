@@ -6,7 +6,7 @@ The register (Chapter 20). One block per procedure, six facts.
 The rule: never run a procedure you cannot see and stop. No procedure
 exists unless it has a block in this file, and that includes the ones
 outside this folder: the email auto-reply, the phone's bedtime routine,
-the standing order at the bank.
+the recurring payment order at the bank.
 
 Copy this shape, one block per procedure, below this comment:
 

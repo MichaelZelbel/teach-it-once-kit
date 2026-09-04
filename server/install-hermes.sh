@@ -5,7 +5,7 @@
 # you a brief every morning. What it cannot do is hear you. This script fixes
 # that. It installs Hermes, an agent that reads the same folder your assistant
 # already uses and answers you on Telegram, so you can hand it a job while you
-# are standing at a bus stop.
+# are waiting at a bus stop.
 #
 # YOU PROBABLY DO NOT NEED TO RUN THIS ON ITS OWN. The one-line installer in
 # this folder covers Chapters 28 and 29 together, and does everything below as

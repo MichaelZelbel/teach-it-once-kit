@@ -9,8 +9,8 @@ how to fill it.
 ## Why a file in your folder, and not the app's own list
 
 Your AI app knows what runs *inside the app*. It does not know about your
-email auto-reply, your phone's bedtime routine, or the standing order at
-your bank, which is the oldest procedure in your life. Your AI joined an
+email auto-reply, your phone's bedtime routine, or the recurring payment
+order at your bank, which is the oldest procedure in your life. Your AI joined an
 existing staff. The register is the staff list.
 
 It also travels. Change AI provider and the app's list goes with the app.
