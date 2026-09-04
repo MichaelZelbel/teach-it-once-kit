@@ -25,8 +25,8 @@ did when you are done.
 It will ask permission before running anything. Say yes.
 
 What you should see afterwards: a first snapshot covering every file, a
-hidden `.git` folder you never have to open, and (if your house rules from
-Chapter 17 are installed) a new row in `procedures.md`, because anything
+hidden `.git` folder you never have to open, and a new row in `procedures.md`,
+because your house rules say so, because anything
 that runs on its own gets written down.
 
 ## Using the undo, in plain words
@@ -38,7 +38,7 @@ Show me what has changed since yesterday.
 ```
 
 ```
-Undo the last change to .claude/skills/plan-my-day/SKILL.md.
+Undo the last change to skills/plan-my-day/SKILL.md.
 ```
 
 ```
@@ -101,5 +101,5 @@ in the book needs it.
 - A change you regret from three days ago: undone in a sentence.
 - A laptop that dies on a Tuesday: everything is one download away, and
   it is private.
-- A tidy-up that went too far: red line 3 stopped it, and the snapshot
-  catches whatever the rules did not.
+- A tidy-up that went too far: the never-delete line stopped it, and the
+  snapshot catches whatever the rules did not.
