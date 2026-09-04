@@ -27,7 +27,7 @@ Yes, do all of it. Clean it up.
 ```
 
 What should happen: a cleaned **copy** appears in a sibling folder, and
-your original is untouched, because red line 3 says "clean up" is not a
+your original is untouched, because the never-delete line says "clean up" is not a
 green light for deleting. If your original got edited, run the book's
 PELICAN test (Chapter 17): either `AGENTS.md` is not being read, or the
 rule has been edited out of it.

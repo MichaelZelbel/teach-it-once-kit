@@ -22,7 +22,7 @@ I do not want to type any commands. Explain in plain words what you
 did when you are done.
 ```
 
-It will ask permission before running anything. Say yes.
+If it asks before running a command, say yes.
 
 What you should see afterwards: a first snapshot covering every file, a
 hidden `.git` folder you never have to open, and a new row in `procedures.md`,
