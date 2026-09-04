@@ -52,9 +52,9 @@ hermes cron create "0 7 * * 1" "Follow skills/weekly-review/SKILL.md and write t
 Your hub as `--workdir`, because the review reads your files just as the
 brief does, and because that is what hands the job your `AGENTS.md`.
 Sunday evening works as well as Monday morning; pick the moment you
-already plan your week. Then `hermes cron status`: if the gateway is not
-running on this machine, Monday's review will not write itself, and
-nothing is caught up later (see `where-it-runs.md`).
+already plan your week. On a laptop the job fires while Hermes is open; a
+Monday it was shut for is written once, late, when you next open it (see
+`where-it-runs.md`).
 
 You do not need a disposable test copy, because you already ran the
 recipe by hand. `hermes cron run weekly-review` fires it once more if you

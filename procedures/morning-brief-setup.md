@@ -55,16 +55,11 @@ four parts decides. The one people leave out is `--workdir`: it is the
 folder the job runs in, and the only thing that hands the job your
 `AGENTS.md`.
 
-Then check the one line that decides whether it will ever fire:
-
-```
-hermes cron status
-```
-
-If it says the gateway is not running, nothing you scheduled will fire.
-Start the gateway with the machine (`hermes gateway install`), or accept
-that the brief arrives when the machine is on, or move to Chapter 28's
-server. Nothing is caught up: a missed 07:00 is gone.
+Then read the job's card. Its **Next** line is the machine repeating your
+instruction back. On a laptop the job fires while Hermes is open; a 07:00
+the app was shut for is written once, late, when you next open it (see
+`where-it-runs.md`). For seven every day without thinking about it,
+Chapter 28's server.
 
 ## Prove the clock, not just the recipe
 
@@ -109,7 +104,8 @@ it has often done this already. One glance to confirm.
 - No new subscription. A run costs what a conversation costs.
 - Any frequency you like; no once-an-hour floor. A job fires within a
   minute or so of its slot.
-- Nothing is ever caught up. Chapter 21 says it twice on purpose.
+- A missed slot runs once, late, when Hermes is back. A week away comes
+  back to one brief, not seven.
 - A scheduled job never asks. A dangerous command is refused, not paused
   for approval. A brief that only writes into `brief/` never needs one.
 - The recipe is a file in your folder; the schedule lives in Hermes on the

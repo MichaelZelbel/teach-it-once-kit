@@ -1,6 +1,6 @@
 # The Saved Prompt Card (Chapters 13 and 31)
 
-Most of your skills are read by your assistant, out of your `.claude/skills/`
+Most of your skills are read by your assistant, out of your `skills/`
 folder, without you doing anything. A few are not. The prompt that makes
 your book cover, your thumbnail, your diagram: those go into tools that
 will never see your disk. You open the file, you copy the text, you paste
@@ -8,11 +8,11 @@ it where the work happens.
 
 Those are the saved prompts. This card is how to keep them.
 
-## Rule 1: it goes in `prompts/library/`, not in `.claude/skills/`
+## Rule 1: it goes in `prompts/library/`, not in `skills/`
 
 One question tells the two apart: does your assistant run this itself,
 here, or do you paste it somewhere else? If your assistant runs it, it is
-a skill and it goes in `.claude/skills/`. If you paste it somewhere else, it is a
+a skill and it goes in `skills/`. If you paste it somewhere else, it is a
 saved prompt and it goes in `prompts/library/`.
 
 Your assistant cannot draw a book cover, so a cover prompt is always the
@@ -28,7 +28,7 @@ prompts/library/diagram-my-way.md
 Not `image-prompts.md`. One file, one job, or you will never find it.
 
 Getting the drawer wrong is quiet both ways. A saved prompt filed in
-`.claude/skills/` fires at the wrong moment, or never, because there is no job in your folder for it to
+`skills/` fires at the wrong moment, or never, because there is no job in your folder for it to
 do. A skill filed in `prompts/library/` can never be found, because
 nothing reads that folder on its own.
 
@@ -71,7 +71,7 @@ than one copy that is slightly old.
 A one-line habit that keeps it true:
 
 ```
-Which files in prompts/library/ and .claude/skills/ have I not opened in six
+Which files in prompts/library/ and skills/ have I not opened in six
 months? For each one, tell me the job it does in one line, and ask me
 whether it is still how I want that job done.
 ```

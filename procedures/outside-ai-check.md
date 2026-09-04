@@ -32,7 +32,7 @@ If you built the weekly review before this asset existed, you do not have to
 rebuild it. Add the part:
 
 ```
-Open .claude/skills/weekly-review/SKILL.md and add a fifth part, which runs ONLY when
+Open skills/weekly-review/SKILL.md and add a part, which runs ONLY when
 this is the first review of a calendar month: ask me whether I have been
 using any AI outside this folder since the last time, name the tools I
 said I use if you know them, and tell me the export prompt is saved in

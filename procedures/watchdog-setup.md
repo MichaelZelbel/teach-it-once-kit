@@ -7,7 +7,7 @@ A watchdog reads the public web and needs almost nothing out of your
 folder, so nothing ties it to the computer in front of you. Build it on
 your laptop first, so you can watch it work; move it to the machine that
 never sleeps (Chapter 28) the day you own one, because on a laptop it
-patrols only while the lid is open and Hermes' gateway is running.
+patrols only while Hermes is open.
 
 ## The five parts
 
@@ -49,8 +49,8 @@ rotates public free tiers of several search vendors.
   it write its weekly line into `watch/product-watchdog.md`, a landing
   place you already walk past, and what hands the job your house rules.
 - **It wants the machine that never sleeps.** Chapter 21's rule bites
-  hardest here. `hermes cron status` tells you whether it will fire on
-  this machine; a missed Monday is never caught up.
+  hardest here: on a laptop it patrols only while Hermes is open, and a
+  missed Monday runs once, late, when you next open it.
 - **A hand run proves the job, not the clock.** `hermes cron run` works
   with the gateway stopped and records `source=direct`; a run the clock
   fired records `source=builtin`.

@@ -148,7 +148,7 @@ That last paragraph is the part people skip and regret. An imported line is a cl
 company's AI made about you. A line you wrote yourself is a fact. Keep them apart, or in six
 months you will not be able to tell which is which.
 
-Note where the prompts go. `prompts/library/` is not `.claude/skills/`. A skill is a recipe your
+Note where the prompts go. `prompts/library/` is not `skills/`. A skill is a recipe your
 assistant reads and runs by itself; a saved prompt is text you paste into a tool that may
 never see this folder. Filing one as the other is how a folder ends up full of skills that
 never fire.
