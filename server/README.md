@@ -3,7 +3,7 @@
 Optional. Chapters 28 and 29. This solves one specific problem and nothing else.
 
 **The problem.** Hermes' clock lives inside its gateway, so a scheduled job fires only on a
-machine where the gateway is running, and a missed slot is never caught up. A brief that reads
+machine where the gateway is running, and a slot it was down for runs once, late. A brief that reads
 your real files at 6am needs a machine that is awake at 6am with Hermes running. If you work at
 a desk machine that stays on, you may never need this folder.
 

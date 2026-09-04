@@ -63,8 +63,8 @@ a human reading along, or for finding which step broke.
     `0 6 * * *` with `--workdir ~/hub` (the one thing that injects `AGENTS.md`
     into a scheduled run) and `--deliver telegram`. It does NOT fire the job to
     prove the schedule; `hermes cron run` works with no gateway at all and would
-    prove nothing. It checks the gateway instead and says a missed slot is never
-    caught up. Because the root phase installed a system service, this script
+    prove nothing. It checks the gateway instead and says a slot the gateway was down
+    for runs once, late. Because the root phase installed a system service, this script
     does not add a user service beside it.
 14. **The register.** One `## Morning brief` block appended to `procedures.md`
     if it is not there: rhythm, where it lands, where it lives, the off-switch.

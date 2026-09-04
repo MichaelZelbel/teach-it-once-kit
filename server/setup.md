@@ -186,7 +186,7 @@ Two things about that command earn their place. `--workdir` is the one thing
 that injects your `AGENTS.md` into a scheduled run; without it the job runs
 with no project context at all. And the clock lives inside the gateway: a
 scheduled job fires only while `hermes cron status` says the gateway is
-running, and a missed slot is never caught up. `hermes cron run morning-brief`
+running, and a slot it was down for runs once, late, when it is back. `hermes cron run morning-brief`
 by hand proves the job works; it proves nothing about the schedule.
 
 ## 10. Telegram, so it can hear you back (Chapter 29)

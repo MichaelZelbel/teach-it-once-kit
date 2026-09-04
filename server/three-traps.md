@@ -63,7 +63,7 @@ morning arrives as a message, not as silence. And `hermes cron incidents` keeps 
 record on the server side: a failed run is a listed incident with a first-seen time
 and the stored output, not a blank space where a message should have been. A third
 guard is free: `hermes cron status` says in one line whether the gateway is up, and a
-job with no live gateway simply does not fire, with no catch-up later.
+job with no live gateway simply does not fire until the gateway is back, and then runs once, late.
 
 ## A fourth thing, not a trap, just true
 
