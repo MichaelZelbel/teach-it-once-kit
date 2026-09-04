@@ -12,7 +12,8 @@
  * fraction, which is why ONE rule fits a job you have a week for and a tax return you have a year
  * for, with nothing to tune per item.
  *
- *   red     the last tenth, and always the last day, whatever the arithmetic says
+ *   red     the last three to fourteen days: a tenth of the window, never fewer than three
+ *           days and never more than fourteen, and always the last day
  *   orange  the last quarter
  *   yellow  the second half
  *   green   the first half
@@ -148,15 +149,57 @@ const WORDS = {
   unopened: "NOT YET",
 };
 
+// HOW LONG THE LOUD PHASE IS, in days, and it is the only place that decides.
+//
+// A pure tenth was wrong at both ends, and both were found on real dates (2026-08-29). A tenth of
+// a fortnight is 1.4 days, so a two week parking fine got exactly ONE loud morning, which is no
+// warning at all. A tenth of a year is 36 days, so a car service shouted every morning for over a
+// month, which is how you teach someone to swipe. So the loud phase is a number of DAYS a person
+// can picture, and the tenth only chooses inside it: never fewer than 3, so there is always time
+// to act, and never more than 14, so it cannot become wallpaper. Never longer than the window
+// itself either. Two constants and a clamp, not a dial: nothing here is ever set per thing.
+const LOUD_MIN_DAYS = 3;
+const LOUD_MAX_DAYS = 14;
+function loudDays(L) {
+  if (!(L >= 1)) return 1;
+  return Math.min(L, Math.max(LOUD_MIN_DAYS, Math.min(LOUD_MAX_DAYS, Math.floor((L - 1) / 10))));
+}
+
+// How many days a band lasts on a window of L days, from the same integer arithmetic bandOf uses.
+// A short window can leave a middle band empty, and that is correct rather than a bug: a fortnight
+// has no room for four steps, so it gets three.
+function bandDays(L, band) {
+  if (!(L >= 1)) return 1;
+  const redMax = loudDays(L);
+  const q = Math.floor(L / 4), h = Math.floor(L / 2);
+  if (band === "red") return redMax;
+  if (band === "orange") return Math.max(0, q - redMax);
+  if (band === "yellow") return Math.max(0, h - q);
+  if (band === "green") return Math.max(0, L - h);
+  return 0;
+}
+
+// The gap actually applied today: the ceiling for the band, but never longer than the band itself.
+// A ceiling in absolute days on a band measured in fractions is the same bug as "a tenth of a week
+// is not a day": on a 21 day window the orange band is three days long and wanted seven days of
+// silence first, so it never spoke once. Long windows are untouched; short ones now speak in every
+// band they pass through.
+function gapFor(strip, band) {
+  const ceiling = GAP[band];
+  if (!ceiling) return ceiling;
+  const L = daysBetween(strip.from, strip.to) + 1;
+  const span = bandDays(L, band);
+  if (!(span >= 1)) return 1;
+  return Math.max(1, Math.min(ceiling, span));
+}
+
 function bandOf(from, to, day) {
   if (!isDate(from) || !isDate(to) || !isDate(day)) return null;
   if (day < from) return "unopened";
   const L = daysBetween(from, to) + 1;    // days in the whole window
   const R = daysBetween(day, to) + 1;     // days left, including today
   if (L < 1) return null;
-  // The last day is always red. A tenth of seven days is less than a day, so without this floor a
-  // weekly job would never go red until it was already too late.
-  if (R <= 1 || R * 10 < L) return "red";
+  if (R <= loudDays(L)) return "red";
   if (R * 4 <= L) return "orange";
   if (R * 2 <= L) return "yellow";
   return "green";
@@ -436,7 +479,7 @@ function cmdList(day, capped) {
     const room = Math.max(0, CAP - saidToday.length);
     const fresh = live.filter((r) => {
       if (saidToday.includes(r)) return false;
-      const gap = GAP[r.band];
+      const gap = gapFor(r.strip, r.band);
       if (!gap) return false;
       return !r.lastSaid || daysBetween(r.lastSaid, day) >= gap;
     }).slice(0, room);

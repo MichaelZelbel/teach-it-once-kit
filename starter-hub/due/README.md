@@ -25,7 +25,7 @@ How loud your hub gets follows how much of the window is left, as a fraction:
 | more than half | says it once when the window opens, then at most monthly |
 | half to a quarter | a line in your brief about every fortnight |
 | a quarter to a tenth | its own line, near the top, about weekly |
-| under a tenth, and always the last day | every morning |
+| the loud days at the end: a tenth of the window, never fewer than three days and never more than fourteen | every morning |
 
 **One rule, whether the window is a week or a year.** That is the whole reason you can have a
 hundred of these. There is nothing to tune per item, and if a thing feels like it needs its own
