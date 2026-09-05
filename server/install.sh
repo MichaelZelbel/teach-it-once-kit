@@ -17,12 +17,14 @@
 #   - makes a separate account for your assistant, so it is never root
 #   - installs Hermes for that account, tells it where your folder will be, and
 #     installs its gateway as a system service (root's one job, done once)
-#   - signs Hermes in to your ChatGPT subscription with a code you type on any device
-#   - fetches your folder from GitHub (a code again), or starts a fresh one
+#   - signs Hermes in to your ChatGPT account with a code you type on any device
+#   - fetches your folder from GitHub, or starts a fresh one and creates its
+#     private GitHub repository (a code again in either case)
 #   - wires the folder exactly the way the laptop installer does, proves Hermes
 #     can read it, and schedules the morning brief on Hermes' clock, for Telegram
 #
-# What it asks you: which repository holds your folder, once. Plus the two codes.
+# What it asks you: whether a repository already holds your folder, and for a
+# fresh hub what its new private repository should be called. Plus two codes.
 # What only you can do afterwards: connect Telegram with `hermes setup`.
 #
 # The by-hand version of all of this is in server/setup.md, for when something
@@ -186,10 +188,17 @@ say "Installing your assistant"
 kb_install_hermes || die "Hermes is not on this machine and could not be installed. Read what it printed above."
 
 # The sign-in. A device code: open the address on any device, type the code.
-# The subscription is the one from Chapter 3; the server's work comes out of it.
+# This path uses ChatGPT's included Codex allowance, not an API bill.
 # `hermes login` is deprecated and is never used here. A code that runs out is
 # safe to repeat, and this whole script is safe to run again.
 say "Signing your assistant in"
+cat <<'PLAN'
+   This route uses your ChatGPT account, not an API key and not a separate
+   Codex subscription. A ChatGPT plan with Codex access is enough to try it.
+   For a hub that works every day, Plus or higher is the practical choice so
+   a small allowance does not stop scheduled work. Current plan details:
+   https://learn.chatgpt.com/docs/pricing
+PLAN
 kb_hermes_signin openai-codex \
   || warn "Hermes is not signed in yet. Everything below still gets set up, and
    the folder check will say it could not check yet. When you are ready:
@@ -235,6 +244,9 @@ say "Your folder"
 
 if [ -d "$HUB/.git" ]; then
   ok "a folder is already at $HUB; it will be brought up to date, not replaced"
+  if ! git -C "$HUB" remote get-url origin >/dev/null 2>&1; then
+    say "This hub has no online copy yet; the installer will make a private one"
+  fi
 elif [ -z "$HUB_REPO" ]; then
   cat <<'ASK'
    Chapter 18 gave your folder a private copy on GitHub. If this machine should
@@ -278,6 +290,12 @@ if [ -d "$HUB" ]; then
   grep -qxF '.hub-env' "$HUB/.gitignore" 2>/dev/null || echo '.hub-env' >> "$HUB/.gitignore"
 fi
 ok "plain keys live in $HOME/.hub-env, outside the folder, and the folder ignores any that stray in"
+
+say "Giving your hub a checked private GitHub home"
+ensure_gh_auth
+bash "$KIT_DIR/server/create-private-repo.sh" "$HUB" \
+  || die "the private GitHub repository was not created or checked. Read the reason above, then run this installer again."
+HUB_REPO="$(git -C "$HUB" remote get-url origin 2>/dev/null || true)"
 
 # --- The Hermes half: the ceiling, the folder proof, the clock ---------------
 # One script, shared with readers who built the server by hand, so there is

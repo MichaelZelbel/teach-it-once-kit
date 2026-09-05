@@ -7,9 +7,10 @@ the server as the login you were given:
 curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh | bash
 ```
 
-That does everything below, asks you which repository holds your folder, and
-shows you two codes to type on your phone. `steps/build-the-server.md` is the
-step-by-step account of what it does.
+That does everything below, explains the ChatGPT choice, asks whether a
+repository already holds your folder, and makes a checked private GitHub
+repository when the answer is no. It shows you two codes to type on your phone.
+`steps/build-the-server.md` is the step-by-step account of what it does.
 
 This page is the same thing done by hand. Two reasons to read it: you want to
 know what the one line actually did, or something has broken and you are trying
@@ -20,8 +21,11 @@ Ubuntu 24.04 machine, on Hermes 0.21.0.
 
 ## 1. Rent the machine
 
-Any small Linux server, around five euros a month. Choose Ubuntu. You get an
-address and a way to log in.
+Any small Linux server will do. The path used for this book is Hostinger KVM 2
+with Ubuntu. On 5 September 2026 its German page lists 7.99 euros a month for
+the first term and 14.99 euros a month on renewal for two years, with the term
+paid in advance. Read both current prices before buying. You get an address and
+a way to log in.
 
 ## 2. Make a user that is not the boss
 
@@ -127,7 +131,8 @@ gh repo clone YOUR-NAME/YOUR-REPO hub
 `gh auth login` shows a short code and a web address. Open the address on your
 phone, type the code, approve. No token to create, no key to paste anywhere.
 
-If you have no repository yet, start from the book's starter rooms and make one:
+If you have no repository yet, the one-line installer does this for you. By hand,
+start from the book's starter rooms and make one:
 
 ```
 git clone --depth 1 https://github.com/MichaelZelbel/teach-it-once-kit.git ~/teach-it-once-kit

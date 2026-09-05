@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+CREATE_REPO_SCRIPT="${CREATE_REPO_SCRIPT:-$ROOT/create-private-repo.sh}"
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+
+pass=0
+fail=0
+
+check() {
+  local name="$1"
+  shift
+  if "$@"; then
+    printf 'PASS: %s\n' "$name"
+    pass=$((pass + 1))
+  else
+    printf 'FAIL: %s\n' "$name"
+    fail=$((fail + 1))
+  fi
+}
+
+mkdir -p "$WORK/bin" "$WORK/hub"
+printf '# My hub\n' > "$WORK/hub/README.md"
+git -C "$WORK/hub" init -q -b main
+
+cat > "$WORK/bin/gh" <<'GH'
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$1 $2" = "repo create" ]; then
+  shift 2
+  name="$1"
+  shift
+  source_dir=""
+  private=0
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --source) source_dir="$2"; shift 2 ;;
+      --private) private=1; shift ;;
+      *) shift ;;
+    esac
+  done
+  [ "$private" -eq 1 ] || { printf 'repository was not requested as private\n' >&2; exit 3; }
+  git init --bare -q "$FAKE_REMOTE"
+  git -C "$source_dir" remote add origin "$FAKE_REMOTE"
+  git -C "$source_dir" push -q -u origin main
+  printf 'https://github.com/test/%s\n' "$name"
+elif [ "$1 $2" = "repo view" ]; then
+  printf 'true\thttps://github.com/test/hub\n'
+else
+  printf 'unexpected gh call: %s\n' "$*" >&2
+  exit 2
+fi
+GH
+chmod +x "$WORK/bin/gh"
+
+export PATH="$WORK/bin:$PATH"
+export FAKE_REMOTE="$WORK/remote.git"
+
+output="$(bash "$CREATE_REPO_SCRIPT" "$WORK/hub" hub 2>&1)"
+rc=$?
+
+check "fresh hub repository setup exits successfully" test "$rc" -eq 0
+check "fresh hub receives its first commit" git -C "$WORK/hub" rev-parse -q --verify HEAD
+check "fresh hub receives an origin" test "$(git -C "$WORK/hub" remote get-url origin)" = "$FAKE_REMOTE"
+check "first commit reaches the remote" test "$(git --git-dir "$FAKE_REMOTE" rev-parse refs/heads/main)" = "$(git -C "$WORK/hub" rev-parse HEAD)"
+check "result reports the private GitHub address" bash -c 'case "$1" in *"private GitHub repository: https://github.com/test/hub"*) exit 0;; *) exit 1;; esac' _ "$output"
+
+mkdir -p "$WORK/hub2"
+printf '# Recovered hub\n' > "$WORK/hub2/README.md"
+git -C "$WORK/hub2" init -q -b main
+git -C "$WORK/hub2" config user.name "Test User"
+git -C "$WORK/hub2" config user.email "test@example.com"
+git -C "$WORK/hub2" add README.md
+git -C "$WORK/hub2" commit -q -m "Existing local commit"
+git init --bare -q "$WORK/recovery-remote.git"
+git -C "$WORK/hub2" remote add origin "$WORK/recovery-remote.git"
+export FAKE_REMOTE="$WORK/recovery-remote.git"
+
+recovery_output="$(bash "$CREATE_REPO_SCRIPT" "$WORK/hub2" ignored 2>&1)"
+recovery_rc=$?
+
+check "a retry with an origin but no remote branch succeeds" test "$recovery_rc" -eq 0
+check "a retry pushes the missing branch" test "$(git --git-dir "$WORK/recovery-remote.git" rev-parse refs/heads/main)" = "$(git -C "$WORK/hub2" rev-parse HEAD)"
+check "a retry still verifies privacy" bash -c 'case "$1" in *"private GitHub repository: https://github.com/test/hub"*) exit 0;; *) exit 1;; esac' _ "$recovery_output"
+
+printf '\n%d passed, %d failed\n' "$pass" "$fail"
+[ "$fail" -eq 0 ]

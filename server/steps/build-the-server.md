@@ -3,9 +3,10 @@
 You are reading the checklist behind `server/install.sh`. Until 2026-09-02 this
 file was a script for an AI wizard that drove the second half of the install in
 a conversation. There is no wizard any more: the whole install is deterministic
-shell, built on the shared primitives in `kit-bootstrap`, and it asks you for
-one thing (which repository holds your folder) plus two codes. This page is for
-a human reading along, or for finding which step broke.
+shell, built on the shared primitives in `kit-bootstrap`. It explains the
+ChatGPT choice, asks whether a repository already holds your folder, asks for
+a name when it has to make a new private one, and shows two codes. This page is
+for a human reading along, or for finding which step broke.
 
 ## Phase 1, as root: the things only an administrator may do
 
@@ -35,7 +36,10 @@ a human reading along, or for finding which step broke.
 ## Phase 2, as `ai`: everything else
 
 7. **Hermes present.** `kb_install_hermes`: already there from step 3.
-8. **The sign-in.** `kb_hermes_signin openai-codex`, which runs `hermes auth add
+8. **The plan and sign-in.** The installer says that this route uses a ChatGPT
+   account and its included Codex allowance, not an API key or a separate Codex
+   subscription. Plus or higher is the practical choice for daily scheduled work.
+   Then `kb_hermes_signin openai-codex` runs `hermes auth add
    openai-codex --type oauth --no-browser`. A code and an address appear; open
    the address on any device, type the code. The window is fifteen minutes and
    an expired attempt is safe to repeat. If Hermes finds a Codex CLI login on the
@@ -57,7 +61,13 @@ a human reading along, or for finding which step broke.
 12. **Keys outside the folder.** `~/.hub-env` (mode 600) for the kit's plain
     keys, and `.env*` plus `.hub-env` in the folder's `.gitignore`, before
     anything writes a secret.
-13. **The Hermes half**, `server/install-hermes.sh`: the `AGENTS.md` ceiling
+13. **The private GitHub home.** Every path runs `create-private-repo.sh`. An
+    existing repository is pushed and checked. A fresh folder, or an existing
+    local folder with no `origin`, gets a name prompt with `hub` as the default,
+    a first commit, and a new private repository. The helper then checks that the
+    branch arrived and asks GitHub to confirm the repository is private. A
+    failure stops before any scheduled work is added.
+14. **The Hermes half**, `server/install-hermes.sh`: the `AGENTS.md` ceiling
     check (refuses at 20,000 characters, warns from 19,000), the folder proof
     again, and the morning brief: `kb_cron_job` creates `morning-brief` at
     `0 6 * * *` with `--workdir ~/hub` (the one thing that injects `AGENTS.md`
@@ -66,9 +76,9 @@ a human reading along, or for finding which step broke.
     prove nothing. It checks the gateway instead and says a slot the gateway was down
     for runs once, late. Because the root phase installed a system service, this script
     does not add a user service beside it.
-14. **The register.** One `## Morning brief` block appended to `procedures.md`
+15. **The register.** One `## Morning brief` block appended to `procedures.md`
     if it is not there: rhythm, where it lands, where it lives, the off-switch.
-15. **What is left.** Printed, not done: `hermes setup` for the Telegram token,
+16. **What is left.** Printed, not done: `hermes setup` for the Telegram token,
     then `sudo hermes gateway restart --system`, then `hermes gateway status`,
     `hermes cron status`, `hermes cron list`.
 

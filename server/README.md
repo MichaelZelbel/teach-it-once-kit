@@ -7,9 +7,10 @@ machine where the gateway is running, and a slot it was down for runs once, late
 your real files at 6am needs a machine that is awake at 6am with Hermes running. If you work at
 a desk machine that stays on, you may never need this folder.
 
-**The answer.** A small rented Linux machine, around five euros a month, holding its own clone of
-your folder, kept in step through the private repository you set up in Chapter 18, with Hermes'
-gateway as a system service that starts with the machine.
+**The answer.** A small rented Linux machine holding its own clone of your folder, kept in step
+through a private GitHub repository, with Hermes' gateway as a system service that starts with
+the machine. You can bring the repository from Chapter 18 or let the installer make a new private
+one from the starter rooms.
 
 ## Start here
 
@@ -19,13 +20,18 @@ Log in to the machine you rented and paste this one line:
 curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install.sh | bash
 ```
 
-It asks you one thing, which repository holds your folder, and shows you two codes to type on
-any device: one signs Hermes in to your ChatGPT subscription, one signs the machine in to
-GitHub. It never asks for a GitHub token, an SSH key, or a Telegram chat id.
+It first explains the ChatGPT choice. The route uses ChatGPT's included Codex allowance rather
+than API billing; Plus or higher is the practical choice for work that runs every day. Then it
+asks whether a repository already holds your folder. Paste its address to fetch it, or press Enter
+and name a new private repository. It creates the first commit, pushes it, and checks that GitHub
+reports it private. Two codes appear on any device: one signs Hermes in to ChatGPT and one signs
+the machine in to GitHub. It never asks for a GitHub token or an SSH key.
 
 | File | What it is for |
 |---|---|
 | `install.sh` | The one line above. Covers both chapters. Root's phase, then the assistant's account. Built on the shared primitives in `kit-bootstrap`, pinned to a tag. |
+| `create-private-repo.sh` | Creates and pushes a fresh private GitHub repository, or repairs a first push that did not finish, then verifies the branch and privacy before scheduled work is added. |
+| `test-create-private-repo.sh` | Runs the repository step against real local git repositories and a local replacement for GitHub's create and privacy answers. |
 | `steps/build-the-server.md` | What the installer does, step by step, for a human reading along or hunting a broken step. |
 | `setup.md` | The same build by hand, for when you want to know what it did, or something broke. |
 | `install-hermes.sh` | The Hermes half on its own, if you built the server by hand: the `AGENTS.md` ceiling, pointing Hermes at the folder and proving it, the gateway (a user service, unless the system service is already there), and the `morning-brief` cron job. |
