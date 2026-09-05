@@ -21,11 +21,13 @@
 #   - fetches your folder from GitHub, or starts a fresh one and creates its
 #     private GitHub repository (a code again in either case)
 #   - wires the folder exactly the way the laptop installer does, proves Hermes
-#     can read it, and schedules the morning brief on Hermes' clock, for Telegram
+#     can read it, and, if you say yes, puts the morning brief on Hermes' clock
 #
 # What it asks you: whether a repository already holds your folder, and for a
-# fresh hub what its new private repository should be called. Plus two codes.
-# What only you can do afterwards: connect Telegram with `hermes setup`.
+# fresh hub what its new private repository should be called; whether to connect
+# Menerio (optional); whether to put the morning brief on the clock (opt-in).
+# Plus two codes. What only you can do afterwards: paste server/open-the-door.sh,
+# then connect Telegram and the Hermes app from the web page it opens (Chapter 29).
 #
 # The by-hand version of all of this is in server/setup.md, for when something
 # breaks and you want to know what it did.
@@ -394,50 +396,35 @@ fi
 # --- What is left, and only you can do it ------------------------------------
 say "What is left, and only you can do it"
 # When this block prints, the reader is back at the administrator's prompt: the
-# hand-over ran the assistant's phase and returned. So every command below names
-# the account it runs as, and the restart is a plain systemctl line, because the
-# assistant's account has no sudo (found on the 2026-09-05 run: the old line
-# said "sudo hermes ... --system", which that account cannot run).
+# hand-over ran the assistant's phase and returned. The book's next chapter does
+# everything below from a web page, so this text sends the reader there and not
+# into the terminal: one more pasted line as root, then a browser and the app.
+# (Until 2026-09-06 it sent them into `su - ai`, `hermes gateway setup` and a
+# systemctl restart; Michael read that as the installer not finishing its job.)
 cat <<NEXT
 
-   Talk to your assistant right here, first. Switch to its account, step into
-   the folder, and start it:
+   Your assistant is running. Hermes' gateway is a service on this machine,
+   working in your folder, and it comes back after a reboot on its own. What
+   it does not have yet is a door you would want to use. The book's next
+   chapter opens two, from a web page, and only one more line is typed here.
 
-        su - $(whoami)
-        cd hub
-        hermes
+   1. As the administrator, paste the book's second line. It puts this server
+      on your private Tailscale network (make a free account at tailscale.com
+      first), runs Hermes' own web page as a service, and prints the page's
+      address, a username and a password:
 
-      Ask it "what is in my folder?". Ctrl+D leaves the chat; exit leaves the
-      account.
+        curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/open-the-door.sh | bash
 
-   Connect Telegram, so it can reach your phone and you can answer back. As the
-   $(whoami) account:
+   2. Open that address in the browser on your computer and sign in. Under
+      Channels, connect Telegram: paste the token BotFather gives you and your
+      own Telegram user id, press Enable, then Restart gateway. Message your
+      bot "what is in my folder?" from your phone. If it answers, your
+      assistant has a phone number.
 
-        hermes gateway setup
-
-      Pick Telegram from the list. It offers two roads: scan a QR code with
-      Telegram on your phone, or make the bot yourself with the account called
-      BotFather (/newbot, two questions, paste the long token it hands you).
-      Then send your new bot any message so it is allowed to answer you.
-
-   The gateway is a system service, so after Telegram is connected it needs
-   one restart. Type exit to leave the $(whoami) account, then as the
-   administrator:
-
-        systemctl restart hermes-gateway
-
-   Then ask Hermes itself how it is doing, as the $(whoami) account again:
-
-        hermes gateway status
-        hermes cron status
-        hermes cron list
-
-      Read the gateway's health from Hermes, not from systemctl: a cleanly
-      stopped gateway shows as "failed" to systemd, so systemctl cannot tell an
-      operator's stop from a crash.
-
-   Message your bot "what is in my folder?" from your phone. If it answers,
-   your assistant has a phone number.
+   3. Install the Hermes app on your computer. On its first screen choose
+      "Connect to existing Hermes" (or later: Settings, Gateways, Remote
+      gateway), give it the same address, and sign in with the username and
+      password from step 1. The app then works on this server, in your folder.
 $(if [ "$KB_MORNING_BRIEF" = "yes" ]; then cat <<'BRIEF'
 
    From the next 06:00 the morning brief arrives on it by itself. A morning the
