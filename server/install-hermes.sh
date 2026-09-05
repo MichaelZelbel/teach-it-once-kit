@@ -230,12 +230,12 @@ cat <<NEXT
 
    2. Connect Telegram, so it can hear you:
 
-        $HERMES setup
+        $HERMES gateway setup
 
-      It asks for a bot token. To get one, open Telegram, message the account
-      called BotFather, send /newbot and answer its two questions. It hands you
-      a long line of text. That is the token. Then send your new bot any message
-      so it is allowed to answer you.
+      Pick Telegram from the list. It offers two roads: scan a QR code with
+      Telegram on your phone, or make the bot yourself with the account called
+      BotFather (/newbot, two questions, paste the long token it hands you).
+      Then send your new bot any message so it is allowed to answer you.
 
    When both are done, switch it on and ask IT how it is doing:
 

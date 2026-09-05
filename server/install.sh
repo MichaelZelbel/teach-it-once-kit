@@ -74,6 +74,23 @@ if kb_is_root; then
   need_tools git curl xz jq
   ok "git, curl, xz and jq are here"
 
+  # Hermes' own installer builds one small native part (its terminal helper,
+  # node-pty) and needs a C++ compiler for it. A fresh Ubuntu server has none,
+  # and the assistant's account may not install one, so root does it here.
+  # Found on the 2026-09-05 run: without it the Hermes installer stopped,
+  # printed "sudo apt install build-essential", and this script died a line later.
+  if ! command -v g++ >/dev/null 2>&1; then
+    log "Installing the compiler Hermes' installer needs (build-essential)..."
+    if [ "${KB_APT_UPDATED:-0}" -eq 0 ]; then
+      apt-get update -y >/dev/null 2>&1 || warn "Could not refresh the software list; trying the install anyway."
+      KB_APT_UPDATED=1
+    fi
+    DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential >/dev/null 2>&1 \
+      || die "Could not install build-essential, which Hermes' installer needs. Run
+   'sudo apt install build-essential' by hand, read what it says, then run this again."
+  fi
+  ok "a C++ compiler is here, for the one part of Hermes that is built on the machine"
+
   # Installed now, as root, because the assistant's account will not be allowed
   # to install software - and that is the point of that account, not a problem
   # with it.
@@ -105,10 +122,15 @@ WHY
   if [ -x "$HERMES_BIN" ]; then
     ok "already installed: $(su - "$AI_USER" -c "'$HERMES_BIN' --version" 2>/dev/null | head -1)"
   else
-    su - "$AI_USER" -c 'curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash' >/dev/null 2>&1 \
-      || die "the Hermes installer did not finish for '$AI_USER'. Run it by hand as that
-   account and read what it prints:  curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash"
-    [ -x "$HERMES_BIN" ] || die "Hermes installed but $HERMES_BIN is not there."
+    # Its output is kept, not thrown away: when it stops, the reason is in the log
+    # and the reader is told where, instead of being sent to run it again blind.
+    HERMES_LOG="$AI_HOME/hermes-install.log"
+    su - "$AI_USER" -c 'curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash' > "$HERMES_LOG" 2>&1 \
+      || die "the Hermes installer did not finish for '$AI_USER'. Its output is in
+   $HERMES_LOG; the last lines say why. Fix that, then run this one line again."
+    chown "$AI_USER":"$AI_USER" "$HERMES_LOG" 2>/dev/null || true
+    [ -x "$HERMES_BIN" ] || die "the Hermes installer ran but left no program at $HERMES_BIN.
+   Its output is in $HERMES_LOG; the last lines say what it still needed."
     ok "installed: $(su - "$AI_USER" -c "'$HERMES_BIN' --version" 2>/dev/null | head -1)"
   fi
 
@@ -326,29 +348,60 @@ REG
   ok "register: the morning brief has its block in procedures.md"
 fi
 
+# The private copy was pushed before the register line and the Hermes half wrote
+# into the folder, so send what changed since. Quiet when there is nothing new or
+# no online copy; a push that fails is said, not hidden, and breaks nothing.
+if git -C "$HUB" remote get-url origin >/dev/null 2>&1 \
+   && [ -n "$(git -C "$HUB" status --porcelain 2>/dev/null)" ]; then
+  if git -C "$HUB" add -A >/dev/null 2>&1 \
+     && git -C "$HUB" commit -q -m "Set up the always-on server" >/dev/null 2>&1 \
+     && git -C "$HUB" push -q origin HEAD >/dev/null 2>&1; then
+    ok "pushed: the online copy has everything this run wrote into your folder"
+  else
+    warn "the last changes to the folder were not pushed. Ask your assistant to commit and push the folder, or run: git -C $HUB add -A && git -C $HUB commit -m 'Set up the server' && git -C $HUB push"
+  fi
+fi
+
 # --- What is left, and only you can do it ------------------------------------
 say "What is left, and only you can do it"
+# When this block prints, the reader is back at the administrator's prompt: the
+# hand-over ran the assistant's phase and returned. So every command below names
+# the account it runs as, and the restart is a plain systemctl line, because the
+# assistant's account has no sudo (found on the 2026-09-05 run: the old line
+# said "sudo hermes ... --system", which that account cannot run).
 cat <<NEXT
 
-   Connect Telegram, so the brief can reach your phone and you can answer back:
+   Talk to your assistant right here, first. Switch to its account, step into
+   the folder, and start it:
 
-        $(kb_hermes_bin) setup
+        su - $(whoami)
+        cd hub
+        hermes
 
-      It asks for a bot token. To get one, open Telegram, message the account
-      called BotFather, send /newbot and answer its two questions. It hands you
-      a long line of text. That is the token. Then send your new bot any message
-      so it is allowed to answer you.
+      Ask it "what is in my folder?". Ctrl+D leaves the chat; exit leaves the
+      account.
+
+   Connect Telegram, so it can reach your phone and you can answer back. As the
+   $(whoami) account:
+
+        hermes gateway setup
+
+      Pick Telegram from the list. It offers two roads: scan a QR code with
+      Telegram on your phone, or make the bot yourself with the account called
+      BotFather (/newbot, two questions, paste the long token it hands you).
+      Then send your new bot any message so it is allowed to answer you.
 
    The gateway is a system service, so after Telegram is connected it needs
-   one restart, as the administrator:
+   one restart. Type exit to leave the $(whoami) account, then as the
+   administrator:
 
-        sudo $(kb_hermes_bin) gateway restart --system
+        systemctl restart hermes-gateway
 
-   Then ask Hermes itself how it is doing, from this account:
+   Then ask Hermes itself how it is doing, as the $(whoami) account again:
 
-        $(kb_hermes_bin) gateway status
-        $(kb_hermes_bin) cron status
-        $(kb_hermes_bin) cron list
+        hermes gateway status
+        hermes cron status
+        hermes cron list
 
       Read the gateway's health from Hermes, not from systemctl: a cleanly
       stopped gateway shows as "failed" to systemd, so systemctl cannot tell an

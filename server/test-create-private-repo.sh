@@ -97,5 +97,17 @@ check "a retry with an origin but no remote branch succeeds" test "$recovery_rc"
 check "a retry pushes the missing branch" test "$(git --git-dir "$WORK/recovery-remote.git" rev-parse refs/heads/main)" = "$(git -C "$WORK/hub2" rev-parse HEAD)"
 check "a retry still verifies privacy" bash -c 'case "$1" in *"private GitHub repository: https://github.com/test/hub"*) exit 0;; *) exit 1;; esac' _ "$recovery_output"
 
+mkdir -p "$WORK/hub3"
+printf '# Ubuntu default branch\n' > "$WORK/hub3/README.md"
+git -C "$WORK/hub3" -c init.defaultBranch=master init -q
+export FAKE_REMOTE="$WORK/master-remote.git"
+
+master_output="$(bash "$CREATE_REPO_SCRIPT" "$WORK/hub3" hub 2>&1)"
+master_rc=$?
+
+check "a hub started on master is pushed as main" test "$master_rc" -eq 0
+check "the local branch is renamed to main before the first push" test "$(git -C "$WORK/hub3" branch --show-current)" = "main"
+check "the remote receives main, not master" git --git-dir "$WORK/master-remote.git" show-ref --verify --quiet refs/heads/main
+
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

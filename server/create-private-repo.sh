@@ -48,6 +48,14 @@ fi
 branch="$(git -C "$hub" branch --show-current)"
 [ -n "$branch" ] || fail "the hub has no current branch to push"
 
+# A folder started by `git init` on Ubuntu is on `master`; GitHub's own default is
+# `main`, and so is every repository the book's other chapters make. Rename before
+# the first push, while nothing points at the name yet. An existing origin is
+# left exactly as it is.
+if [ -z "$origin" ] && [ "$branch" = "master" ]; then
+  git -C "$hub" branch -M main && branch=main
+fi
+
 if [ -z "$origin" ]; then
   printf '   Creating the private GitHub repository %s and pushing the hub\n' "$repo_name"
   gh repo create "$repo_name" --private --source "$hub" --remote origin --push >/dev/null \

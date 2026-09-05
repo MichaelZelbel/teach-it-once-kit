@@ -10,15 +10,21 @@ for a human reading along, or for finding which step broke.
 
 ## Phase 1, as root: the things only an administrator may do
 
-1. **Tools.** `git`, `curl`, `xz`, `jq`, and the GitHub tool `gh`. Installed by
-   root because the assistant's account will not be allowed to install
-   software, which is the point of that account.
+1. **Tools.** `git`, `curl`, `xz`, `jq`, a C++ compiler (`build-essential`), and
+   the GitHub tool `gh`. Installed by root because the assistant's account will
+   not be allowed to install software, which is the point of that account. The
+   compiler is for Hermes' own installer, which builds one small native part
+   (its terminal helper) on the machine and, as `ai`, cannot install a compiler
+   itself: on a fresh Ubuntu server without this step it stopped and printed
+   `sudo apt install build-essential` (found 2026-09-05).
 2. **The account.** `adduser ai`. Everything after root's phase runs as `ai`,
    which can reach almost nothing. On a server the leash cannot be a question,
    so it has to be the walls.
 3. **Hermes, for that account.** Root runs Hermes' own installer as `ai`
    (`curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash`). It
-   brings its own Python; `ripgrep` is optional and it says so.
+   brings its own Python and Node; `ripgrep` is optional and it says so. Its
+   output is kept in `/home/ai/hermes-install.log`, and when it stops the
+   installer names that file instead of sending you to run it again blind.
 4. **The folder's path, before the service.** `hermes config set terminal.cwd
    /home/ai/hub`, as `ai`. The gateway copies this setting into its own
    environment once, when it starts, so it is written first. `terminal.cwd` is
@@ -78,9 +84,13 @@ for a human reading along, or for finding which step broke.
     does not add a user service beside it.
 15. **The register.** One `## Morning brief` block appended to `procedures.md`
     if it is not there: rhythm, where it lands, where it lives, the off-switch.
-16. **What is left.** Printed, not done: `hermes setup` for the Telegram token,
-    then `sudo hermes gateway restart --system`, then `hermes gateway status`,
-    `hermes cron status`, `hermes cron list`.
+16. **What is left.** Printed, not done. The reader is back at root's prompt when
+    this prints, so each line names its account: `su - ai`, `cd hub`, `hermes` to
+    talk to it in the window; `hermes gateway setup` as `ai`, Telegram picked from
+    the list (a QR-code road or the BotFather token road); then `exit` and, as
+    root, `systemctl restart hermes-gateway`, because the `ai` account has no
+    sudo; then `hermes gateway status`, `hermes cron status`, `hermes cron list`
+    as `ai`.
 
 ## What a working run looks like
 

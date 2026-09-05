@@ -51,10 +51,12 @@ curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 ```
 
 Run this as `ai`, not with `sudo`. It installs into the home folder of whoever
-runs it (`~/.local/bin/hermes`), brings its own Python, and needs only `curl`,
-`git` and `xz` on the machine, which root installs if they are missing. It will
-mention that `ripgrep` is absent and that file search falls back to `grep`; that
-is fine.
+runs it (`~/.local/bin/hermes`), brings its own Python and Node, and needs
+`curl`, `git`, `xz` and a C++ compiler on the machine, which root installs if
+they are missing (`apt install build-essential` for the compiler; it builds one
+small native part, Hermes' terminal helper, and without it the installer stops
+and asks for exactly that line). It will mention that `ripgrep` is absent and
+that file search falls back to `grep`; that is fine.
 
 ## 4. Sign in with no browser on the machine
 
@@ -196,18 +198,24 @@ by hand proves the job works; it proves nothing about the schedule.
 
 ## 10. Telegram, so it can hear you back (Chapter 29)
 
-```
-hermes setup
-```
-
-It asks for a bot token. In Telegram, message **BotFather**, send `/newbot`,
-answer its two questions, and it hands you a long line of text: that is the
-token. Send your new bot any message so it is allowed to reply to you. You never
-hunt for a chat id; Hermes works that out. Then, as root, one restart so the
-service picks the messenger up:
+As `ai`:
 
 ```
-sudo /home/ai/.local/bin/hermes gateway restart --system
+hermes gateway setup
+```
+
+A list of messengers appears; pick **Telegram**. It offers two roads, in its own
+words: `[1] Automatic (recommended)`, scan a QR code with Telegram on your phone
+and confirm, no token to copy; or `[2] Manual`, make the bot yourself with
+**BotFather** (`/newbot`, two questions, paste the long token it hands you). Send
+your new bot any message so it is allowed to reply to you; if it answers with a
+pairing code instead, approve it once on the server with `hermes pairing approve
+telegram <code>`. Then one restart so the service picks the messenger up. The
+`ai` account has no sudo, so leave it and do this as root:
+
+```
+exit
+systemctl restart hermes-gateway
 ```
 
 ## 11. Register it, and check it
