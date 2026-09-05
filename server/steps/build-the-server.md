@@ -100,6 +100,21 @@ for a human reading along, or for finding which step broke.
     sudo; then `hermes gateway status`, `hermes cron status`, `hermes cron list`
     as `ai`.
 
+## The second line, `open-the-server.sh`'s sibling: `open-the-door.sh` (Chapter 29)
+
+Run as root after the install. It installs Tailscale if it is missing and runs
+`tailscale up` (prints a sign-in address and waits), reads the private address
+with `tailscale ip -4`, asks for a username (default `ai`), generates a password
+unless `DOOR_PASSWORD` is set, replaces the three `HERMES_DASHBOARD_BASIC_AUTH_*`
+lines in `/home/ai/.hermes/.env`, writes `/etc/systemd/system/hermes-dashboard.service`
+(`User=ai`, `EnvironmentFile`, `hermes dashboard --host <address> --port 9119 --no-open`),
+enables and starts it, waits up to three minutes for `/api/status` (the first
+start builds the web page), refuses to continue unless the answer carries
+`"auth_required":true`, and prints the address, username and password with the
+two next steps: the page's **Channels** form for Telegram, and the app's
+**Settings > Gateways > Remote gateway**. `DOOR_HOST=<address>` skips Tailscale;
+the 2026-09-05 check used the box's own address that way.
+
 ## What a working run looks like
 
 The brief arrives on your phone at 06:00, and `hermes cron runs` shows a

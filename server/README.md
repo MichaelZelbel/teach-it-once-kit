@@ -31,6 +31,7 @@ the machine in to GitHub. It never asks for a GitHub token or an SSH key.
 | File | What it is for |
 |---|---|
 | `install.sh` | The one line above. Covers both chapters. Root's phase, then the assistant's account. Built on the shared primitives in `kit-bootstrap`, pinned to a tag. |
+| `open-the-door.sh` | The second pasted line, Chapter 29, as root: puts the server on the reader's Tailscale network, writes the three basic-auth lines, runs `hermes dashboard` as a system service on the private address, and checks the page asks for the password. From then on Telegram and the other messengers are connected on the page's **Channels** form, and the Hermes app connects through **Settings > Gateways > Remote gateway**. `DOOR_HOST=<address>` skips Tailscale. |
 | `create-private-repo.sh` | Creates and pushes a fresh private GitHub repository, or repairs a first push that did not finish, then verifies the branch and privacy before scheduled work is added. |
 | `test-create-private-repo.sh` | Runs the repository step against real local git repositories and a local replacement for GitHub's create and privacy answers. |
 | `steps/build-the-server.md` | What the installer does, step by step, for a human reading along or hunting a broken step. |

@@ -46,7 +46,7 @@ export KB_SELF_URL
 
 # The pin is an immutable TAG, never the moving v2 branch, so this installer runs
 # exactly the code that passed its end-to-end runs until this line is edited.
-KB_PIN="v2.4"
+KB_PIN="v2.4.1"
 LIB_URL="https://raw.githubusercontent.com/MichaelZelbel/kit-bootstrap/$KB_PIN/lib.sh"
 KIT_REPO="https://github.com/MichaelZelbel/teach-it-once-kit.git"
 AI_USER="${AI_USER:-ai}"
@@ -272,12 +272,15 @@ if [ -d "$HUB/.git" ]; then
   fi
 elif [ -z "$HUB_REPO" ]; then
   cat <<'ASK'
-   Chapter 18 gave your folder a private copy on GitHub. If this machine should
-   fetch that copy, paste the repository's address (the one that ends in .git,
-   or the https://github.com/you/name form). Press Enter to start a fresh
-   folder here instead, with the book's starter rooms.
+   Two ways to start, and the installer needs to know which:
+     1. This server joins a hub you already have, on your laptop or elsewhere.
+        Paste the address of its private GitHub copy (the one that ends in
+        .git, or the https://github.com/you/name form).
+     2. This server is your first machine. Press Enter, and the installer
+        starts a fresh folder here from the book's starter rooms; your other
+        computers can pick it up later.
 ASK
-  HUB_REPO="$(ask "Which repository holds your folder" "")"
+  HUB_REPO="$(ask "Paste the address, or press Enter for a fresh folder" "")"
 fi
 
 if [ -n "$HUB_REPO" ] && [ ! -d "$HUB/.git" ]; then
@@ -327,10 +330,11 @@ HUB_REPO="$(git -C "$HUB" remote get-url origin 2>/dev/null || true)"
 # set in the environment skips the question; with no terminal the answer is no.
 if [ "${KB_MORNING_BRIEF:-}" != "yes" ] && [ "${KB_MORNING_BRIEF:-}" != "no" ]; then
   cat <<'ASK'
-   Chapter 21's morning brief can run on this server's clock: every day at 06:00
-   it reads your profile files, writes a short brief into brief/ in your folder,
-   and sends it to Telegram once that is connected. Say no if you have not built
-   the brief yet. You can add it later by running this one line again.
+   Hermes can write you a morning brief, the book's first example job: every
+   day at 06:00 it reads your profile files, writes a short brief for the day
+   into brief/ in your folder, and sends it to Telegram once that is connected.
+   Say no if you do not want it yet. You can add it later by running this one
+   line again.
 ASK
   if ask_yes "Put the morning brief on this server's clock" "n"; then
     KB_MORNING_BRIEF=yes
@@ -441,8 +445,8 @@ $(if [ "$KB_MORNING_BRIEF" = "yes" ]; then cat <<'BRIEF'
 BRIEF
 else cat <<'BRIEF'
 
-   Nothing is on this server's clock yet. When you want Chapter 21's morning
-   brief there, run this one line again and answer yes to that question.
+   Nothing is on this server's clock yet. When you want the morning brief
+   there, run this one line again and answer yes to that question.
 BRIEF
 fi)
 

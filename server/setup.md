@@ -152,7 +152,7 @@ repository's **Settings**, **Deploy keys** with write access, and
 
 ```
 git clone --depth 1 --branch v2.4 https://github.com/MichaelZelbel/kit-bootstrap.git ~/.kit-bootstrap
-KB_BRANCH=v2.4 bash ~/.kit-bootstrap/setup-hub.sh --hub ~/hub --skip-prereqs --sources hermes
+KB_BRANCH=v2.4.1 bash ~/.kit-bootstrap/setup-hub.sh --hub ~/hub --skip-prereqs --sources hermes
 ```
 
 This is the same script the laptop installer runs. It tops the folder up with
@@ -201,29 +201,40 @@ scheduled job fires only while `hermes cron status` says the gateway is
 running, and a slot it was down for runs once, late, when it is back. `hermes cron run morning-brief`
 by hand proves the job works; it proves nothing about the schedule.
 
-## 10. Telegram, so it can hear you back (Chapter 29)
+## 10. The door: a private address and Hermes' web page (Chapter 29)
 
-As `ai`:
-
-```
-hermes gateway setup
-```
-
-A list of messengers appears; pick **Telegram**. It offers two roads, in its own
-words: `[1] Automatic (recommended)`, scan a QR code with Telegram on your phone
-and confirm, no token to copy; or `[2] Manual`, make the bot yourself with
-**BotFather** (`/newbot`, two questions, paste the long token it hands you). Send
-your new bot any message so it is allowed to reply to you; if it answers with a
-pairing code instead, approve it once on the server with `hermes pairing approve
-telegram <code>`. Then one restart so the service picks the messenger up. The
-`ai` account has no sudo, so leave it and do this as root:
+The chapter's way is one more pasted line, as root:
 
 ```
-exit
-systemctl restart hermes-gateway
+curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/open-the-door.sh | bash
 ```
 
-## 11. Register it, and check it
+By hand, the same four things. Tailscale: `curl -fsSL https://tailscale.com/install.sh | sh`,
+then `tailscale up` (prints a sign-in address), then `tailscale ip -4` for the private address.
+The three lines Hermes' documentation names, appended to `/home/ai/.hermes/.env` (mode 600,
+owned by `ai`): `HERMES_DASHBOARD_BASIC_AUTH_USERNAME`, `HERMES_DASHBOARD_BASIC_AUTH_PASSWORD`,
+`HERMES_DASHBOARD_BASIC_AUTH_SECRET` (`openssl rand -base64 32`). A unit
+`/etc/systemd/system/hermes-dashboard.service` with `User=ai`,
+`EnvironmentFile=/home/ai/.hermes/.env` and
+`ExecStart=/home/ai/.local/bin/hermes dashboard --host <private address> --port 9119 --no-open`,
+enabled and started. And the check: `curl -s http://<private address>:9119/api/status` must
+contain `"auth_required":true`. Hermes' auth gate is on for any address that is not loopback, and
+the page fails closed without a password or OAuth provider, so never bind it to a public address
+with only a password; the documentation's answer for a public address is `hermes dashboard
+register` (Nous OAuth).
+
+## 11. Telegram, from the web page (Chapter 29)
+
+Open `http://<private address>:9119` from a computer on the same Tailscale network, sign in, and
+under **Channels** choose **Telegram**: the bot token from **BotFather** (`/newbot`, two
+questions), your Telegram user id (from **userinfobot**) as the allowed user, **Enable**, then
+**Restart gateway** on the same page. The documentation describes the page as having "full
+parity with `hermes setup gateway`". In the terminal instead, as `ai`: `hermes gateway setup`,
+pick **Telegram**, then `exit` and `systemctl restart hermes-gateway` as root (the `ai` account has
+no sudo). A stranger who writes to the bot gets a pairing code; `hermes pairing approve telegram
+<code>` as `ai` lets them in.
+
+## 12. Register it, and check it
 
 Add the procedure to `procedures.md` (the one-line installer appends the block
 itself), with "where it runs" filled in properly at last: the server. Then the
