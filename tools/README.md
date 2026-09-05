@@ -1,6 +1,6 @@
 # tools
 
-Seven small programs. The installer puts them on your computer. **They are not part
+Eight small programs. The installer puts them on your computer. **They are not part
 of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
@@ -95,6 +95,28 @@ else and there is one thing nagging you rather than two that disagree.
 
 It needs no Google account and no calendar, and nothing in the program can reach
 one.
+
+The sixth you type when a fact changes, or your assistant types it for you.
+
+- **`check-built-on.js`** answers a question the notebook cannot: when a fact in
+  `world/` stopped being true, what did you write while it still held? It reads every
+  claim that carries an end date and searches `profile/`, `rules/`, `procedures.md` and
+  `AGENTS.md` for the old value, whole word, any case, and names each line. A file can
+  also say what it depends on, with a `rests_on: [subject/attribute]` line at the top,
+  and is then found even when the old value is paraphrased. A line that carries the date
+  the fact ended is history and is never reported. It changes nothing: you decide whether
+  a line is stale or is history. The same chapter as the pull below.
+
+The installer gives it a launcher, so the command is:
+
+```
+hub-check-built-on                      every fact that changed
+hub-check-built-on --claim me/city      one fact
+```
+
+Run it in your hub folder. The idea is from Rich Schefren's open-source Atlas, which
+does this with a graph database; here it is a search over text files, which is what a
+hub is made of.
 
 The last two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.

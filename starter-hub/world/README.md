@@ -87,3 +87,22 @@ python3 tools/world-pull.py --apply          # write the files
 
 You can also write these files by hand, or let your assistant write them. The formats above are
 the whole contract.
+
+## When a fact changes
+
+A claim that stops being true gets a `valid_to` date and stays. That is half the job. The
+other half is asking what you wrote while it still held. `hub-check-built-on` reads every
+claim with an end date, searches `profile/`, `rules/`, `procedures.md` and `AGENTS.md` for
+the old value, and names each line it finds. It changes nothing; you decide whether a line
+is stale or is history. Two rules make it useful:
+
+- **To keep an old value on purpose, put the date it stopped being true on the same line.**
+  "We lived in Krefeld until 2026-03-01" is history and is never reported.
+- **A file can say what it depends on.** A `rests_on: [peter-mueller/employer]` line at the
+  top of a rule or a note means the file is listed when that fact changes, even when the old
+  value is not written in it. Your assistant can add the line when it writes the file.
+
+```
+hub-check-built-on                        every fact that changed
+hub-check-built-on --claim me/city        one fact
+```
