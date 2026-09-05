@@ -201,6 +201,29 @@ scheduled job fires only while `hermes cron status` says the gateway is
 running, and a slot it was down for runs once, late, when it is back. `hermes cron run morning-brief`
 by hand proves the job works; it proves nothing about the schedule.
 
+## 9a. The watchdog, on the machine's clock
+
+The one-line installer does this as root, between the gateway service and the hand-over. By hand
+it is one line, as root, and it is safe to run again:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install-watchdog.sh | bash
+```
+
+What it builds, and why it is on root's crontab and not on `hermes cron`: the gateway's clock stops
+when the gateway does, which is exactly when a watchdog must run. It clones
+`hermes-self-devops-watchdog` at a pinned tag into `/opt/hermes-watchdog`, fetches the
+hash-verified floor, creates the `watchdog` profile for `ai` (own memory and sessions, the
+gateway's sign-in), sets the conservative deny list on that profile and reads it back and tests it
+both ways, and writes one block between `# teach-it-once:watchdog start` and `end` markers in
+root's crontab: `floor/quick-check.sh` every 5 minutes (root restarts a dead system unit once),
+`templates/selftest.sh` every 30 minutes (asks the second Hermes for one word through
+`OPERATOR_CMD`, alerts SELF-HEALING IS DOWN when it cannot), and
+`templates/run-prompt.sh six-hour-deep-check` four times a day. Alerts go out through
+`hermes send -t telegram` as `ai` (`SEND_CMD`, `SEND_HOME`), to the bot's home channel, which is
+why the reader sends the bot `/sethome` once. Logs: `/var/log/hermes-watchdog/`. Off-switch:
+delete the block from root's crontab.
+
 ## 10. The door: a private address and Hermes' web page (Chapter 29)
 
 The chapter's way is one more pasted line, as root:

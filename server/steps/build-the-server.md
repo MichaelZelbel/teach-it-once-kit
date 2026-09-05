@@ -36,6 +36,19 @@ for a human reading along, or for finding which step broke.
    install command's exit status. It starts with the machine, no login needed,
    and came back fourteen seconds after a reboot on the test server. There is
    one system gateway per machine, named `hermes-gateway.service`.
+5a. **The watchdog, on root's clock** (`server/install-watchdog.sh`, added
+   2026-09-06). Clones `hermes-self-devops-watchdog` at a pinned tag into
+   `/opt/hermes-watchdog`, fetches its hash-verified floor, makes the `watchdog`
+   profile for `ai` (own memory and sessions, the gateway's credential store),
+   sets the conservative deny list on that profile and reads it back and tests
+   it both ways, and writes one marked block into root's crontab: the floor
+   every 5 minutes (root restarts a dead system unit once, no AI), the
+   self-check every 30 minutes (one word from the second Hermes, through
+   `sudo -n -u ai`), the deep check four times a day. Alerts go out as `ai`
+   through `hermes send -t telegram`, so the reader's one bot serves both
+   Hermes, and the reader sends it `/sethome` once. Then the floor runs once.
+   Four times a day and not hourly: every run spends the reader's ChatGPT
+   allowance, the same one the assistant works from.
 6. **Hand over.** Root writes the choices it made into a small file in `ai`'s
    home, re-downloads this installer for `ai`, and switches accounts for good.
 
@@ -88,17 +101,26 @@ for a human reading along, or for finding which step broke.
     a slot the gateway was down for runs once, late. Because the root phase
     installed a system service, this script does not add a user service beside it.
     When step 14 said no, it prints one line saying so and schedules nothing.
-16. **The register.** Only when the job was scheduled: one `## Morning brief`
-    block appended to `procedures.md` if it is not there: rhythm, where it lands,
-    where it lives, the off-switch. Then whatever this run wrote into the folder
-    is committed and pushed, so the online copy is complete.
+15a. **The watchdog's self-check, once.** Root put the second Hermes on the
+    clock before the sign-in existed, so now, as `ai`, `selftest.sh` asks it for
+    one word with `NOTIFY` pointing nowhere and prints the truth: "the second
+    Hermes answers" or the honest warning with the reason (measured 2026-09-06
+    on the rig with the sign-in cancelled: "No inference provider"), and the
+    note that the clock asks again every half hour.
+16. **The register.** One `## Server watchdog` block appended to `procedures.md`
+    whenever the watchdog is on the machine, and, only when the brief was
+    scheduled, one `## Morning brief` block: rhythm, where it lands, where it
+    lives, the off-switch. Then whatever this run wrote into the folder is
+    committed and pushed, so the online copy is complete.
 17. **What is left.** Printed, not done. The reader is back at root's prompt when
-    this prints, so each line names its account: `su - ai`, `cd hub`, `hermes` to
-    talk to it in the window; `hermes gateway setup` as `ai`, Telegram picked from
-    the list (a QR-code road or the BotFather token road); then `exit` and, as
-    root, `systemctl restart hermes-gateway`, because the `ai` account has no
-    sudo; then `hermes gateway status`, `hermes cron status`, `hermes cron list`
-    as `ai`.
+    this prints. Since 2026-09-06 it no longer sends anyone into the terminal:
+    the door line as root (`open-the-door.sh`), then the web page (Channels,
+    Telegram, Enable, Restart gateway, a first message to the bot, `/sethome`
+    once so the brief and the watchdog's alerts have an address), then the
+    Hermes app on the reader's own computer ("Connect to existing Hermes" on
+    its first screen). The old closing text told the reader to `su - ai` and run
+    `hermes gateway setup` and a root restart; Michael read that as the installer
+    not finishing its job.
 
 ## The second line, `open-the-server.sh`'s sibling: `open-the-door.sh` (Chapter 29)
 

@@ -22,6 +22,10 @@
 #     private GitHub repository (a code again in either case)
 #   - wires the folder exactly the way the laptop installer does, proves Hermes
 #     can read it, and, if you say yes, puts the morning brief on Hermes' clock
+#   - puts a watchdog on the machine's own clock (server/install-watchdog.sh):
+#     a plain check that restarts a dead gateway, a second Hermes on the same
+#     sign-in that reads the logs four times a day and reports to Telegram,
+#     and a half-hourly proof that the second Hermes can still answer
 #
 # What it asks you: whether a repository already holds your folder, and for a
 # fresh hub what its new private repository should be called; whether to connect
@@ -159,6 +163,33 @@ WHY
   KB_HERMES_BIN="$HERMES_BIN"
   export KB_HERMES_BIN
   kb_install_gateway "$AI_USER" || true
+
+  # --- The watchdog ------------------------------------------------------------
+  # Root's half lives in its own script, so a server built by hand can add it
+  # alone, and so the test rig can run it alone. It is fetched from beside this
+  # installer's own address, which is the same GitHub folder for a reader and a
+  # local file for the rig. Its self-check runs once more at the end of phase 2,
+  # after the sign-in, as the assistant's account.
+  say "Putting a watchdog on the machine"
+  cat <<'WHY'
+   One day something stops: the gateway dies at three in the morning, or the
+   sign-in runs out and every job with it. So the machine gets a patrol of its
+   own, on the machine's clock rather than Hermes' clock, which stops when
+   Hermes does. A plain check with no AI in it restarts a dead gateway. A
+   second Hermes, sharing your ChatGPT sign-in and on a short leash, reads the
+   logs four times a day and tells your Telegram only when something broke or
+   was repaired. And every half hour a one-word question proves that second
+   Hermes can still answer at all.
+WHY
+  WATCHDOG_INSTALL_URL="${WATCHDOG_INSTALL_URL:-${KB_SELF_URL%/*}/install-watchdog.sh}"
+  if WD_SCRIPT="$(curl -fsSL "$WATCHDOG_INSTALL_URL")" && [ -n "$WD_SCRIPT" ]; then
+    AI_USER="$AI_USER" bash -c "$WD_SCRIPT" \
+      || warn "the watchdog reported a problem above. Everything else still runs; add it later with:
+   curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install-watchdog.sh | bash"
+  else
+    warn "could not download the watchdog's installer from $WATCHDOG_INSTALL_URL. Everything else still runs; add it later with:
+   curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/install-watchdog.sh | bash"
+  fi
 
   # `su -` starts the next phase with a clean environment, so the choices made
   # here travel in a small file the next phase reads once and deletes.
@@ -361,6 +392,24 @@ fi
 KB_CALLED_FROM_INSTALLER=1 HUB="$HUB" bash "$KIT_DIR/server/install-hermes.sh" \
   || warn "the Hermes half reported a problem above. Read it before trusting the clock."
 
+# --- The watchdog's self-check, once, now -------------------------------------------
+# Root put the second Hermes on the clock before the sign-in existed. Now the
+# sign-in is here (or was skipped), so ask that second Hermes for one word, as
+# this account, and print the truth. Nothing is sent: NOTIFY points nowhere.
+if [ -x /opt/hermes-watchdog/templates/selftest.sh ] && [ -d "$HOME/.hermes/profiles/watchdog" ]; then
+  say "Asking the second Hermes, the watchdog, to answer one word"
+  WD_STATE="$HOME/.local/state/hermes-watchdog"
+  mkdir -p "$WD_STATE"
+  if HERMES_BIN="$(kb_hermes_bin)" WATCHDOG_HOME="$HOME/.hermes/profiles/watchdog" LOG_FILE="$WD_STATE/selftest.log" \
+     STATE_DIR="$WD_STATE" NOTIFY=/nonexistent PROBE_TIMEOUT=180 \
+     bash /opt/hermes-watchdog/templates/selftest.sh >/dev/null 2>&1; then
+    ok "watchdog: the second Hermes answers, on the same sign-in as your assistant"
+  else
+    warn "watchdog: the second Hermes could not answer yet ($(tail -1 "$WD_STATE/selftest.log" 2>/dev/null | sed 's/^[^|]*| //' | cut -c1-160)).
+   It will once the sign-in is done; the self-check on the clock asks again every half hour."
+  fi
+fi
+
 # --- The register --------------------------------------------------------------
 # Nothing runs unlisted. One block, written once, if the folder has the file and
 # not the block, and only when the job was put on the clock.
@@ -377,6 +426,19 @@ Lives: Hermes cron, the server.   Off-switch: hermes cron pause morning-brief, o
 Last checked: $(date +%F).
 REG
   ok "register: the morning brief has its block in procedures.md"
+fi
+if [ -f "$HUB/procedures.md" ] && [ -x /opt/hermes-watchdog/floor/quick-check.sh ] && ! grep -q '^## Server watchdog' "$HUB/procedures.md"; then
+  cat >> "$HUB/procedures.md" <<REG
+
+## Server watchdog
+
+Does: keeps Hermes alive on the server. Every five minutes a plain check restarts the gateway if it died; every half hour it proves the second Hermes can answer; four times a day the second Hermes reads the logs and reports.
+Rhythm: 5 min, 30 min, 6 h.       Lands: my Telegram, only when something broke or was repaired.
+Lives: the machine's own clock (root's crontab), the server.
+Off-switch: as root on the server, crontab -e, delete the lines between the two "teach-it-once:watchdog" markers.
+Last checked: $(date +%F).
+REG
+  ok "register: the watchdog has its block in procedures.md"
 fi
 
 # The private copy was pushed before the register line and the Hermes half wrote
@@ -419,12 +481,19 @@ cat <<NEXT
       Channels, connect Telegram: paste the token BotFather gives you and your
       own Telegram user id, press Enable, then Restart gateway. Message your
       bot "what is in my folder?" from your phone. If it answers, your
-      assistant has a phone number.
+      assistant has a phone number. Then send it /sethome, once: that tells
+      Hermes which chat is yours, and the morning brief and the watchdog's
+      alerts both land there.
 
    3. Install the Hermes app on your computer. On its first screen choose
       "Connect to existing Hermes" (or later: Settings, Gateways, Remote
       gateway), give it the same address, and sign in with the username and
       password from step 1. The app then works on this server, in your folder.
+
+   A watchdog is on this machine's clock: a plain check restarts a dead
+   gateway, and a second Hermes on your sign-in reads the logs four times a
+   day. You hear from it on the same bot, only when something broke or was
+   repaired, or when it cannot answer at all.
 $(if [ "$KB_MORNING_BRIEF" = "yes" ]; then cat <<'BRIEF'
 
    From the next 06:00 the morning brief arrives on it by itself. A morning the

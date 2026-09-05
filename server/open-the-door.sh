@@ -180,6 +180,8 @@ $( [ -n "$GENERATED" ] && printf '\n      That password was made for you just no
    In a browser: open the address above and sign in. That is Hermes' own web
    page for this server. Under Channels it connects Telegram and the other
    messengers with a form and a Restart gateway button; no typing on the server.
+   Once your bot answers you, send it /sethome, so the brief and the watchdog's
+   alerts know which chat is yours.
 
    In the Hermes app on your computer: Settings, then Gateways, then Remote
    gateway. Enter the address above as the Remote URL, press Sign in, give the
