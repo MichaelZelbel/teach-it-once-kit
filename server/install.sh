@@ -167,6 +167,7 @@ WHY
     printf 'AI_USER=%q\n' "$AI_USER"
     printf 'KB_SKIP_HUB_PROOF=%q\n' "${KB_SKIP_HUB_PROOF:-}"
     printf 'KB_SYNC_SOURCES=%q\n' "${KB_SYNC_SOURCES:-hermes}"
+    printf 'KB_MORNING_BRIEF=%q\n' "${KB_MORNING_BRIEF:-}"
   } > "$CARRY"
   chown "$AI_USER":"$AI_USER" "$CARRY"
   chmod 0600 "$CARRY"
@@ -319,23 +320,47 @@ bash "$KIT_DIR/server/create-private-repo.sh" "$HUB" \
   || die "the private GitHub repository was not created or checked. Read the reason above, then run this installer again."
 HUB_REPO="$(git -C "$HUB" remote get-url origin 2>/dev/null || true)"
 
+# --- The morning brief, only if asked for -------------------------------------
+# Chapter 21's job is a good first job for a reader who has been through Part V,
+# and noise for one whose server is the first machine in the system. So it is
+# opt-in, and the default is no (Michael, 2026-09-05). KB_MORNING_BRIEF=yes|no
+# set in the environment skips the question; with no terminal the answer is no.
+if [ "${KB_MORNING_BRIEF:-}" != "yes" ] && [ "${KB_MORNING_BRIEF:-}" != "no" ]; then
+  cat <<'ASK'
+   Chapter 21's morning brief can run on this server's clock: every day at 06:00
+   it reads your profile files, writes a short brief into brief/ in your folder,
+   and sends it to Telegram once that is connected. Say no if you have not built
+   the brief yet. You can add it later by running this one line again.
+ASK
+  if ask_yes "Put the morning brief on this server's clock" "n"; then
+    KB_MORNING_BRIEF=yes
+  else
+    KB_MORNING_BRIEF=no
+  fi
+fi
+export KB_MORNING_BRIEF
+
 # --- The Hermes half: the ceiling, the folder proof, the clock ---------------
 # One script, shared with readers who built the server by hand, so there is
 # exactly one copy of these steps to fix. It checks the AGENTS.md ceiling, points
 # Hermes at the folder and proves it with a file read, leaves the gateway to the
-# system service from the root phase, and schedules the morning brief with
-# --workdir (the one thing that hands a scheduled run its AGENTS.md) and
-# Telegram delivery.
-say "The morning brief, on Hermes' clock"
+# system service from the root phase, and, when asked for, schedules the morning
+# brief with --workdir (the one thing that hands a scheduled run its AGENTS.md)
+# and Telegram delivery.
+if [ "$KB_MORNING_BRIEF" = "yes" ]; then
+  say "The morning brief, on Hermes' clock"
+else
+  say "Checking Hermes against your folder"
+fi
 KB_CALLED_FROM_INSTALLER=1 HUB="$HUB" bash "$KIT_DIR/server/install-hermes.sh" \
   || warn "the Hermes half reported a problem above. Read it before trusting the clock."
 
 # --- The register --------------------------------------------------------------
 # Nothing runs unlisted. One block, written once, if the folder has the file and
-# not the block.
+# not the block, and only when the job was put on the clock.
 # The starter's own register carries a "## Morning brief" EXAMPLE inside a comment, so
 # the test is for the server's line, not the heading.
-if [ -f "$HUB/procedures.md" ] && ! grep -q 'Lives: Hermes cron, the server' "$HUB/procedures.md"; then
+if [ "$KB_MORNING_BRIEF" = "yes" ] && [ -f "$HUB/procedures.md" ] && ! grep -q 'Lives: Hermes cron, the server' "$HUB/procedures.md"; then
   cat >> "$HUB/procedures.md" <<REG
 
 ## Morning brief
@@ -408,8 +433,17 @@ cat <<NEXT
       operator's stop from a crash.
 
    Message your bot "what is in my folder?" from your phone. If it answers,
-   your assistant has a phone number, and from the next 06:00 the brief arrives
-   on it by itself. Nothing is caught up: a morning the gateway was down is a
-   morning with no brief.
+   your assistant has a phone number.
+$(if [ "$KB_MORNING_BRIEF" = "yes" ]; then cat <<'BRIEF'
+
+   From the next 06:00 the morning brief arrives on it by itself. A morning the
+   gateway was down is caught up once, late, when it is back.
+BRIEF
+else cat <<'BRIEF'
+
+   Nothing is on this server's clock yet. When you want Chapter 21's morning
+   brief there, run this one line again and answer yes to that question.
+BRIEF
+fi)
 
 NEXT

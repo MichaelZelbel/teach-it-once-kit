@@ -201,6 +201,12 @@ else
 fi
 
 # --------------------------------------------------------------------------
+# The one-line installer asks first and hands the answer over in KB_MORNING_BRIEF;
+# run by hand, this script keeps its old behaviour and schedules the job.
+if [ "${KB_MORNING_BRIEF:-yes}" = "no" ]; then
+  say "The morning brief"
+  ok "clock: not scheduled, as you asked. When you want Chapter 21's brief on this clock, run the one-line installer again and answer yes."
+else
 say "Scheduling the morning brief"
 
 # This replaces the old brief.sh and its crontab line. The job runs inside
@@ -208,10 +214,11 @@ say "Scheduling the morning brief"
 # a scheduled run; Hermes delivers the reply to Telegram itself, chunking
 # included; and a morning that fails lands in `hermes cron incidents` instead
 # of looking like a quiet one. The job is created now and starts firing the
-# moment the gateway below is on; a missed slot is never caught up.
+# moment the gateway below is on; a slot the gateway was down for runs once, late.
 kb_cron_job "$HUB" "morning-brief" "0 6 * * *" \
   "Run the recipe in skills/morning-brief/SKILL.md; on an older hub it lives at .claude/skills/morning-brief/SKILL.md. It writes today's brief into brief/. When it is written, commit and push this folder, then reply with the brief's full text. If the recipe is missing or the brief cannot be written, say exactly that instead of staying quiet: a broken morning must never look like a quiet one." \
   "telegram" || true
+fi
 
 # --------------------------------------------------------------------------
 # The one-line installer prints its own closing block, with the system-service

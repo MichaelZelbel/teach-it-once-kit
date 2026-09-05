@@ -173,7 +173,12 @@ Both halves. The morning job commits and pushes, and `git add -A` means
 everything. Hermes' own secrets (its sign-in, the Telegram token) live in its own
 home, never in the folder. See `three-traps.md` for what happens if you skip this.
 
-## 9. The morning brief, on Hermes' clock
+## 9. The morning brief, on Hermes' clock (optional)
+
+The one-line installer asks before it does this (`Put the morning brief on this
+server's clock (y/n) [n]`), because a reader whose server is the first machine
+has no Chapter 21 brief to run yet. By hand, run the script when you want the
+job, or with `KB_MORNING_BRIEF=no` in front of it for everything but the job:
 
 ```
 HUB=~/hub bash ~/teach-it-once-kit/server/install-hermes.sh

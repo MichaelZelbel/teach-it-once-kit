@@ -10,7 +10,8 @@ a desk machine that stays on, you may never need this folder.
 **The answer.** A small rented Linux machine holding its own clone of your folder, kept in step
 through a private GitHub repository, with Hermes' gateway as a system service that starts with
 the machine. You can bring the repository from Chapter 18 or let the installer make a new private
-one from the starter rooms.
+one from the starter rooms. For a reader whose server is the first machine in the system, the
+brief is a later chapter, so the installer asks before it puts that job on the clock.
 
 ## Start here
 
@@ -34,7 +35,7 @@ the machine in to GitHub. It never asks for a GitHub token or an SSH key.
 | `test-create-private-repo.sh` | Runs the repository step against real local git repositories and a local replacement for GitHub's create and privacy answers. |
 | `steps/build-the-server.md` | What the installer does, step by step, for a human reading along or hunting a broken step. |
 | `setup.md` | The same build by hand, for when you want to know what it did, or something broke. |
-| `install-hermes.sh` | The Hermes half on its own, if you built the server by hand: the `AGENTS.md` ceiling, pointing Hermes at the folder and proving it, the gateway (a user service, unless the system service is already there), and the `morning-brief` cron job. |
+| `install-hermes.sh` | The Hermes half on its own, if you built the server by hand: the `AGENTS.md` ceiling, pointing Hermes at the folder and proving it, the gateway (a user service, unless the system service is already there), and the `morning-brief` cron job (skipped with `KB_MORNING_BRIEF=no`; the one-line installer asks). |
 | `three-traps.md` | The three things that went wrong building this for real, and the fixes. |
 
 The installer stands on `kit-bootstrap`, a small public repository that holds the install steps

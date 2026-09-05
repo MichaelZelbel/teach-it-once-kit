@@ -73,18 +73,26 @@ for a human reading along, or for finding which step broke.
     a first commit, and a new private repository. The helper then checks that the
     branch arrived and asks GitHub to confirm the repository is private. A
     failure stops before any scheduled work is added.
-14. **The Hermes half**, `server/install-hermes.sh`: the `AGENTS.md` ceiling
+14. **The morning brief, only if asked for.** `Put the morning brief on this
+    server's clock (y/n) [n]`. Opt-in since 2026-09-05 (Michael's call): Chapter
+    21's job is a good first job for a reader who has been through Part V and
+    noise for one whose server is the first machine. No terminal means no.
+    `KB_MORNING_BRIEF=yes` or `no` in the environment skips the question.
+15. **The Hermes half**, `server/install-hermes.sh`: the `AGENTS.md` ceiling
     check (refuses at 20,000 characters, warns from 19,000), the folder proof
-    again, and the morning brief: `kb_cron_job` creates `morning-brief` at
-    `0 6 * * *` with `--workdir ~/hub` (the one thing that injects `AGENTS.md`
-    into a scheduled run) and `--deliver telegram`. It does NOT fire the job to
-    prove the schedule; `hermes cron run` works with no gateway at all and would
-    prove nothing. It checks the gateway instead and says a slot the gateway was down
-    for runs once, late. Because the root phase installed a system service, this script
-    does not add a user service beside it.
-15. **The register.** One `## Morning brief` block appended to `procedures.md`
-    if it is not there: rhythm, where it lands, where it lives, the off-switch.
-16. **What is left.** Printed, not done. The reader is back at root's prompt when
+    again, and, when step 14 said yes, the morning brief: `kb_cron_job` creates
+    `morning-brief` at `0 6 * * *` with `--workdir ~/hub` (the one thing that
+    injects `AGENTS.md` into a scheduled run) and `--deliver telegram`. It does
+    NOT fire the job to prove the schedule; `hermes cron run` works with no
+    gateway at all and would prove nothing. It checks the gateway instead and says
+    a slot the gateway was down for runs once, late. Because the root phase
+    installed a system service, this script does not add a user service beside it.
+    When step 14 said no, it prints one line saying so and schedules nothing.
+16. **The register.** Only when the job was scheduled: one `## Morning brief`
+    block appended to `procedures.md` if it is not there: rhythm, where it lands,
+    where it lives, the off-switch. Then whatever this run wrote into the folder
+    is committed and pushed, so the online copy is complete.
+17. **What is left.** Printed, not done. The reader is back at root's prompt when
     this prints, so each line names its account: `su - ai`, `cd hub`, `hermes` to
     talk to it in the window; `hermes gateway setup` as `ai`, Telegram picked from
     the list (a QR-code road or the BotFather token road); then `exit` and, as
