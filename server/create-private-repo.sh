@@ -46,7 +46,7 @@ if ! git -C "$hub" rev-parse --verify HEAD >/dev/null 2>&1; then
 fi
 
 branch="$(git -C "$hub" branch --show-current)"
-[ -n "$branch" ] || fail "the hub has no current branch after the push"
+[ -n "$branch" ] || fail "the hub has no current branch to push"
 
 if [ -z "$origin" ]; then
   printf '   Creating the private GitHub repository %s and pushing the hub\n' "$repo_name"
@@ -61,8 +61,12 @@ fi
 git -C "$hub" ls-remote --exit-code origin "refs/heads/$branch" >/dev/null 2>&1 \
   || fail "the repository exists, but the first commit did not reach it"
 
-repo_check="$(gh repo view --json isPrivate,url --jq '[.isPrivate, .url] | @tsv' 2>/dev/null)" \
-  || fail "the repository was created, but its privacy could not be checked"
+# Asked from inside the hub. With no repository named, the GitHub tool reads the
+# remotes of the current directory, and the installer calls this script from the
+# account's home, not from the hub. Found on the 2026-09-05 end-to-end run, where
+# every install stopped here with a private repository already created and pushed.
+repo_check="$(cd "$hub" && gh repo view --json isPrivate,url --jq '[.isPrivate, .url] | @tsv' 2>/dev/null)" \
+  || fail "the repository exists, but its privacy could not be checked from $hub"
 private="${repo_check%%$'\t'*}"
 url="${repo_check#*$'\t'}"
 [ "$private" = "true" ] || fail "GitHub reports that $url is not private"

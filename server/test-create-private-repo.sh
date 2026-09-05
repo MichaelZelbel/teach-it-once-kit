@@ -48,6 +48,11 @@ if [ "$1 $2" = "repo create" ]; then
   git -C "$source_dir" push -q -u origin main
   printf 'https://github.com/test/%s\n' "$name"
 elif [ "$1 $2" = "repo view" ]; then
+  # Like the real tool: with no repository named it reads the remotes of the
+  # current directory and fails outside a repository. The helper used to ask from
+  # the account's home, and the 2026-09-05 server run stopped on exactly this.
+  git remote get-url origin >/dev/null 2>&1 \
+    || { printf 'failed to run git: fatal: not a git repository\n' >&2; exit 1; }
   printf 'true\thttps://github.com/test/hub\n'
 else
   printf 'unexpected gh call: %s\n' "$*" >&2
@@ -59,11 +64,17 @@ chmod +x "$WORK/bin/gh"
 export PATH="$WORK/bin:$PATH"
 export FAKE_REMOTE="$WORK/remote.git"
 
+# Called from a plain folder, never from inside a repository: the installer runs
+# this helper from the assistant's home, and a test started inside the kit's own
+# checkout would hand the fake GitHub tool a remote that the real run never has.
+mkdir -p "$WORK/home"
+cd "$WORK/home" || exit 1
+
 output="$(bash "$CREATE_REPO_SCRIPT" "$WORK/hub" hub 2>&1)"
 rc=$?
 
 check "fresh hub repository setup exits successfully" test "$rc" -eq 0
-check "fresh hub receives its first commit" git -C "$WORK/hub" rev-parse -q --verify HEAD
+check "fresh hub receives its first commit" bash -c 'git -C "$1" rev-parse -q --verify HEAD >/dev/null' _ "$WORK/hub"
 check "fresh hub receives an origin" test "$(git -C "$WORK/hub" remote get-url origin)" = "$FAKE_REMOTE"
 check "first commit reaches the remote" test "$(git --git-dir "$FAKE_REMOTE" rev-parse refs/heads/main)" = "$(git -C "$WORK/hub" rev-parse HEAD)"
 check "result reports the private GitHub address" bash -c 'case "$1" in *"private GitHub repository: https://github.com/test/hub"*) exit 0;; *) exit 1;; esac' _ "$output"
