@@ -14,9 +14,19 @@ skills/morning-brief/SKILL.md. When it runs, it should read my
 profile files, work out what today actually needs from my projects,
 deadlines and people, and write the brief as a new file in brief/,
 named with today's date. Under 200 words, plain words, no pep talk, no
-invented facts. Where you do not know something, say so plainly. Then
-run it once so I can see today's brief.
+invented facts. Where you do not know something, say so plainly.
+When the brief tells me to do something, the step is one I can do
+from my phone in a minute, and the full text I would copy is right
+there in the brief; never send me to a file path. Before you write
+the file, run hub-check-brief on it and fix whatever it refuses.
+Then run it once so I can see today's brief.
 ```
+
+The two new middle sentences are the delivery contract, and the check is
+its enforcement: `hub-check-brief` (installed with this kit) refuses a
+brief that sends you to a file instead of handing you the thing. A rule
+in the recipe can be forgotten by a session; the check cannot. If the
+command is missing, run this kit's installer again and it appears.
 
 You get two things: `skills/morning-brief/SKILL.md` (the recipe) and
 `brief/YYYY-MM-DD.md` (today's brief, for real).

@@ -1,6 +1,6 @@
 # tools
 
-Eight small programs. The installer puts them on your computer. **They are not part
+Nine small programs. The installer puts them on your computer. **They are not part
 of your hub folder, and that is deliberate.**
 
 Chapter 4 says your hub is a folder of text files and that nothing in it needs a
@@ -117,6 +117,18 @@ hub-check-built-on --claim me/city      one fact
 Run it in your hub folder. The idea is from Rich Schefren's open-source Atlas, which
 does this with a graph database; here it is a search over text files, which is what a
 hub is made of.
+
+- **`check-brief.js`** is the bouncer for the morning brief (Chapter 21). Before a
+  brief is written or sent, it reads the text and refuses two shapes: a file path
+  where the thing itself should be ("open skills/x.md and paste it" is a dead errand
+  on a phone), and "read it" with nothing to read. A line that starts with
+  "Sources:" may still name its file; provenance is allowed, errands are not. The
+  recipe in `procedures/morning-brief-setup.md` runs it before every brief, because
+  a promise written in a recipe can be forgotten by a session and a check cannot.
+
+```
+hub-check-brief brief/2026-09-06.md       refuse or pass one brief
+```
 
 The last two are the two arrows in Chapter 25's diagram. **Neither runs unless you
 connect a notebook**, and a reader who never connects one can ignore both.
