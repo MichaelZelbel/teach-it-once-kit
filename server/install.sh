@@ -3,8 +3,8 @@
 # Teach It Once - the always-on server, in one line.
 #
 # Chapters 28 and 29 of the book. This puts your folder on a machine that never
-# sleeps, runs Hermes there as a service that starts with the machine, puts the
-# morning brief on Hermes' own clock, and leaves the messenger one command away.
+# sleeps, runs Hermes there as a service that starts with the machine, connects
+# your Telegram bot to it, and puts the morning brief on Hermes' own clock.
 #
 # On the server you just rented, logged in as root, paste this:
 #
@@ -15,8 +15,10 @@
 # What it does on its own, first as root and then as your assistant's account:
 #   - installs what the machine is missing (git, curl, xz, jq, the GitHub tool)
 #   - makes a separate account for your assistant, so it is never root
-#   - installs Hermes for that account, tells it where your folder will be, and
-#     installs its gateway as a system service (root's one job, done once)
+#   - installs Hermes for that account, tells it where your folder will be,
+#     connects a Telegram bot of yours to it (one token pasted, one "hi" from
+#     your phone; the id is read from the bot's own message log), and installs
+#     its gateway as a system service (root's one job, done once)
 #   - signs Hermes in to your ChatGPT account with a code you type on any device
 #   - fetches your folder from GitHub, or starts a fresh one and creates its
 #     private GitHub repository (a code again in either case)
@@ -27,11 +29,12 @@
 #     sign-in that reads the logs four times a day and reports to Telegram,
 #     and a half-hourly proof that the second Hermes can still answer
 #
-# What it asks you: whether a repository already holds your folder, and for a
-# fresh hub what its new private repository should be called; whether to connect
-# Menerio (optional); whether to put the morning brief on the clock (opt-in).
-# Plus two codes. What only you can do afterwards: paste server/open-the-door.sh,
-# then connect Telegram and the Hermes app from the web page it opens (Chapter 29).
+# What it asks you: a Telegram bot token (Enter skips); whether a repository
+# already holds your folder, and for a fresh hub what its new private repository
+# should be called; whether to connect Menerio (optional); whether to put the
+# morning brief on the clock (opt-in). Plus two codes. What only you can do
+# afterwards: paste server/open-the-door.sh, then point the Hermes app on your
+# computer at the server (Chapter 29).
 #
 # The by-hand version of all of this is in server/setup.md, for when something
 # breaks and you want to know what it did.
@@ -70,6 +73,125 @@ if ! LIB="$(curl -fsSL "$LIB_URL")" || [ -z "$LIB" ]; then
 fi
 eval "$LIB"
 unset LIB
+
+# --- Telegram, from one token --------------------------------------------------
+# Hermes switches Telegram on by itself when TELEGRAM_BOT_TOKEN is in its env file
+# (gateway/config_env.py, the credential-gated enable), reads who may talk to it
+# from TELEGRAM_ALLOWED_USERS, and gives `hermes send -t telegram`, the morning
+# brief and the watchdog their address from TELEGRAM_HOME_CHANNEL, the line that
+# /sethome would otherwise write. So three lines in ~/.hermes/.env are the whole
+# connection, and the reader's id comes from the bot's own message log after one
+# "hi" from their phone, the way the other kits do it. No web page, no /sethome.
+# Until 2026-09-06 this installer left Telegram to Chapter 29's web page, and the
+# reader ended Chapter 28 with a running Hermes they could not talk to.
+# The token is never printed and never logged; it only ever travels in the URL of
+# a curl call whose errors are discarded.
+telegram_api() { curl -fsS -m 15 "https://api.telegram.org/bot$1/$2" 2>/dev/null; }
+
+telegram_write() {   # $1 env file  $2 owner  $3 token  $4 user id  $5 chat id
+  local env_file="$1" owner="$2"
+  touch "$env_file"
+  sed -i '/^TELEGRAM_BOT_TOKEN=/d;/^TELEGRAM_ALLOWED_USERS=/d;/^TELEGRAM_HOME_CHANNEL=/d' "$env_file"
+  {
+    printf 'TELEGRAM_BOT_TOKEN=%s\n' "$3"
+    printf 'TELEGRAM_ALLOWED_USERS=%s\n' "$4"
+    printf 'TELEGRAM_HOME_CHANNEL=%s\n' "$5"
+  } >> "$env_file"
+  chown "$owner":"$owner" "$env_file"
+  chmod 600 "$env_file"
+}
+
+# Waits for the reader's first message to the bot and writes the three lines.
+# Returns 0 when connected, 1 when no message came.
+telegram_hello() {   # $1 env file  $2 owner  $3 token  $4 bot username
+  local env_file="$1" owner="$2" token="$3" bot="$4" upd="" last="" uid="" cid="" who="" i
+  cat <<HOW
+   Now open @$bot in Telegram and send it any message; "hi" will do. A bot can
+   only see a chat somebody has written to, and that first message is how the
+   server learns your own Telegram number, so that only you may talk to it.
+HOW
+  ask "Press Enter once you have sent it" "" >/dev/null
+  for i in $(seq 1 20); do
+    upd="$(telegram_api "$token" 'getUpdates?timeout=0')" || upd=""
+    last="$(printf '%s' "$upd" | jq -c '[.result[]? | select(.message.chat.type=="private") | .message] | last // empty' 2>/dev/null)"
+    [ -n "$last" ] && break
+    [ "$i" -eq 1 ] && log "Waiting for your message to @$bot..."
+    sleep 3
+  done
+  if [ -z "$last" ]; then
+    warn "no message has reached @$bot yet, so the server does not know your number and nobody can talk to it. The token is kept. Write to the bot, then run this one line again; it picks up here."
+    telegram_write "$env_file" "$owner" "$token" "" ""
+    return 1
+  fi
+  uid="$(printf '%s' "$last" | jq -r '.from.id')"
+  cid="$(printf '%s' "$last" | jq -r '.chat.id')"
+  who="$(printf '%s' "$last" | jq -r '.from.first_name // .from.username // "you"')"
+  telegram_write "$env_file" "$owner" "$token" "$uid" "$cid"
+  ok "Telegram: @$bot answers $who (id $uid) and nobody else; a stranger gets a pairing code and waits for you"
+  ok "the morning brief and the watchdog's alerts land in that same chat"
+  return 0
+}
+
+# The stop itself. Returns 0 when Telegram is connected at the end of it.
+connect_telegram() {   # $1 env file  $2 owner
+  local env_file="$1" owner="$2" token="" me="" bot="" tries=0
+  # A token from an earlier run that never got its hello: finish that first.
+  token="$(sed -n 's/^TELEGRAM_BOT_TOKEN=//p' "$env_file" 2>/dev/null | head -1)"
+  if [ -n "$token" ]; then
+    if me="$(telegram_api "$token" getMe)" && printf '%s' "$me" | grep -q '"ok":true'; then
+      bot="$(printf '%s' "$me" | jq -r '.result.username // empty')"
+      ok "a bot token is already here: @$bot. What is missing is your first message to it."
+      telegram_hello "$env_file" "$owner" "$token" "$bot"
+      return $?
+    fi
+    warn "the bot token kept here from an earlier run is no longer accepted by Telegram; asking for a fresh one"
+    sed -i "/^TELEGRAM_BOT_TOKEN=/d;/^TELEGRAM_ALLOWED_USERS=/d;/^TELEGRAM_HOME_CHANNEL=/d" "$env_file"
+  fi
+  cat <<'WHY'
+   Your assistant needs an ear. On a server there is no screen, so the ear is a
+   Telegram bot of your own: you write to it from your phone, your assistant
+   answers from your folder, and the morning brief and the watchdog's alerts
+   land in the same chat. Making the bot takes two minutes, on your phone:
+
+     1. In Telegram, open the account called BotFather and send it /newbot.
+     2. It asks for a display name (anything) and a username, which must end
+        in "bot" and must be free. It answers with a long line of letters and
+        numbers in the shape 123456789:ABCdef... That is the token, and the
+        token is the bot: keep it to yourself.
+     3. Paste the token here. Press Enter with nothing to skip Telegram for
+        now; running this one line again asks again.
+WHY
+  while :; do
+    if [ -n "${KB_TELEGRAM_TOKEN:-}" ]; then
+      token="$KB_TELEGRAM_TOKEN"; KB_TELEGRAM_TOKEN=""   # from the environment, once
+    else
+      token="$(ask "Paste the bot token, or press Enter to skip" "")"
+    fi
+    if [ -z "$token" ]; then
+      warn "Telegram skipped. Your assistant has no ear yet; run this one line again when you have a bot token, and it asks for it first."
+      return 1
+    fi
+    case "$token" in
+      *:*) ;;
+      *) warn "that does not look like a bot token: BotFather's has a colon in it, 123456789:ABCdef... Paste the whole line (Enter skips)."; continue ;;
+    esac
+    case "$token" in
+      *[!A-Za-z0-9:_-]*) warn "that does not look like a bot token: it has characters a token never has. Paste the whole line from BotFather (Enter skips)."; continue ;;
+    esac
+    if me="$(telegram_api "$token" getMe)" && printf '%s' "$me" | grep -q '"ok":true'; then
+      bot="$(printf '%s' "$me" | jq -r '.result.username // empty')"
+      ok "the token is good: your bot is @$bot"
+      break
+    fi
+    tries=$((tries+1))
+    if [ "$tries" -ge 3 ]; then
+      warn "Telegram did not accept that token three times. Skipping Telegram for now; check the token against BotFather's message and run this one line again."
+      return 1
+    fi
+    warn "Telegram did not accept that token. Check it against BotFather's message and paste it again (Enter skips)."
+  done
+  telegram_hello "$env_file" "$owner" "$token" "$bot"
+}
 
 # =============================================================================
 # PHASE 1 - as root: the things only an administrator may do
@@ -151,6 +273,34 @@ WHY
     ok "hub: Hermes will work in $HUB"
   else
     warn "hub: could not set terminal.cwd for '$AI_USER'. The next phase tries again."
+  fi
+
+  # THE ORDER HERE IS LOAD-BEARING TOO. Telegram goes into Hermes' env file
+  # BEFORE the gateway service is installed, so on a first run the gateway
+  # starts with its ear already attached and nothing needs restarting. On a
+  # second run the service is already up: it is stopped while the bot's message
+  # log is read (a running gateway holds that log; Telegram hands it to one
+  # reader at a time) and started again when the lines are written.
+  say "Connecting your Telegram bot"
+  AI_ENV="$AI_HOME/.hermes/.env"
+  mkdir -p "$AI_HOME/.hermes" && chown "$AI_USER":"$AI_USER" "$AI_HOME/.hermes"
+  if grep -q '^TELEGRAM_BOT_TOKEN=.' "$AI_ENV" 2>/dev/null && grep -q '^TELEGRAM_ALLOWED_USERS=[0-9]' "$AI_ENV" 2>/dev/null; then
+    ok "Telegram is already connected on this server; not asking again"
+  elif [ "${KB_TELEGRAM_SKIP:-}" = "1" ]; then
+    warn "Telegram skipped, as asked (KB_TELEGRAM_SKIP=1)"
+  else
+    GATEWAY_WAS_UP=""
+    if systemctl is-active --quiet hermes-gateway 2>/dev/null; then
+      systemctl stop hermes-gateway >/dev/null 2>&1 && GATEWAY_WAS_UP=1
+    fi
+    connect_telegram "$AI_ENV" "$AI_USER" || true
+    if [ -n "$GATEWAY_WAS_UP" ]; then
+      if systemctl start hermes-gateway >/dev/null 2>&1; then
+        ok "the gateway is running again, with Telegram in its settings"
+      else
+        warn "the gateway did not start again: systemctl status hermes-gateway"
+      fi
+    fi
   fi
 
   say "Installing the gateway as a system service"
@@ -365,7 +515,7 @@ if [ "${KB_MORNING_BRIEF:-}" != "yes" ] && [ "${KB_MORNING_BRIEF:-}" != "no" ]; 
   cat <<'ASK'
    Hermes can write you a morning brief, the book's first example job: every
    day at 06:00 it reads your profile files, writes a short brief for the day
-   into brief/ in your folder, and sends it to Telegram once that is connected.
+   into brief/ in your folder, and sends it to your Telegram bot.
    Say no if you do not want it yet. You can add it later by running this one
    line again.
 ASK
@@ -441,6 +591,28 @@ REG
   ok "register: the watchdog has its block in procedures.md"
 fi
 
+# --- The first message, sent the way the brief and the alerts will be sent -----------
+# `hermes send` needs no model and no running gateway for Telegram: it reads the
+# token and the home channel from ~/.hermes/.env, which is exactly the path the
+# morning brief's delivery and the watchdog's notify.sh take. A message on the
+# reader's phone at the end of the run is the proof that path is open.
+TELEGRAM_STATE="none"
+if grep -q '^TELEGRAM_HOME_CHANNEL=[-0-9]' "$HOME/.hermes/.env" 2>/dev/null; then
+  TELEGRAM_STATE="connected"
+  say "Sending you the first message"
+  BOT_TOKEN="$(sed -n 's/^TELEGRAM_BOT_TOKEN=//p' "$HOME/.hermes/.env" | head -1)"
+  BOT_NAME="$(curl -fsS -m 15 "https://api.telegram.org/bot$BOT_TOKEN/getMe" 2>/dev/null | jq -r '.result.username // "your bot"')"
+  unset BOT_TOKEN
+  if printf '%s\n' "Your server is set up, and this is your assistant's chat. Write to me here from anywhere: try \"what is in my folder?\"" \
+     | "$(kb_hermes_bin)" send -t telegram -s "Teach It Once" -q >/dev/null 2>&1; then
+    ok "sent to @$BOT_NAME: look at your phone. That message went the way the morning brief and the watchdog's alerts will go"
+  else
+    warn "Hermes could not send to Telegram yet; the three lines are in $HOME/.hermes/.env. Read: $(kb_hermes_bin) send -t telegram test"
+  fi
+elif grep -q '^TELEGRAM_BOT_TOKEN=.' "$HOME/.hermes/.env" 2>/dev/null; then
+  TELEGRAM_STATE="nohello"
+fi
+
 # The private copy was pushed before the register line and the Hermes half wrote
 # into the folder, so send what changed since. Quiet when there is nothing new or
 # no online copy; a push that fails is said, not hidden, and breaks nothing.
@@ -464,11 +636,34 @@ say "What is left, and only you can do it"
 # (Until 2026-09-06 it sent them into `su - ai`, `hermes gateway setup` and a
 # systemctl restart; Michael read that as the installer not finishing its job.)
 cat <<NEXT
+$(case "$TELEGRAM_STATE" in
+  connected) cat <<'T'
 
-   Your assistant is running. Hermes' gateway is a service on this machine,
-   working in your folder, and it comes back after a reboot on its own. What
-   it does not have yet is a door you would want to use. The book's next
-   chapter opens two, from a web page, and only one more line is typed here.
+   Your assistant is running, and it has a phone number. Hermes' gateway is a
+   service on this machine, working in your folder, and it comes back after a
+   reboot on its own. Your bot on Telegram is its ear: write to it from
+   wherever you are and it answers from your folder. Nothing more is typed
+   here tonight; from now on your assistant is a chat on your phone.
+T
+  ;;
+  nohello) cat <<'T'
+
+   Your assistant is running, but nobody can talk to it yet: the bot token is
+   here and your first message to the bot never arrived. Write to the bot on
+   Telegram, then paste this one line again; it picks up at that step.
+T
+  ;;
+  *) cat <<'T'
+
+   Your assistant is running, but it has no ear yet: Telegram was skipped.
+   When you have a bot token from BotFather, paste this one line again; it
+   asks for the token first and leaves everything else as it is.
+T
+  ;;
+esac)
+
+   What is left is the book's next chapter, which puts this server on your
+   desk. Only one more line is typed here.
 
    1. As the administrator, paste the book's second line. It puts this server
       on your private Tailscale network (make a free account at tailscale.com
@@ -477,17 +672,9 @@ cat <<NEXT
 
         curl -fsSL https://raw.githubusercontent.com/MichaelZelbel/teach-it-once-kit/main/server/open-the-door.sh | bash
 
-   2. Open that address in the browser on your computer and sign in. Under
-      Channels, connect Telegram: paste the token BotFather gives you and your
-      own Telegram user id, press Enable, then Restart gateway. Message your
-      bot "what is in my folder?" from your phone. If it answers, your
-      assistant has a phone number. Then send it /sethome, once: that tells
-      Hermes which chat is yours, and the morning brief and the watchdog's
-      alerts both land there.
-
-   3. Install the Hermes app on your computer. On its first screen choose
+   2. Install the Hermes app on your computer. On its first screen choose
       "Connect to existing Hermes" (or later: Settings, Gateways, Remote
-      gateway), give it the same address, and sign in with the username and
+      gateway), give it that address, and sign in with the username and
       password from step 1. The app then works on this server, in your folder.
 
    A watchdog is on this machine's clock: a plain check restarts a dead
@@ -496,8 +683,8 @@ cat <<NEXT
    repaired, or when it cannot answer at all.
 $(if [ "$KB_MORNING_BRIEF" = "yes" ]; then cat <<'BRIEF'
 
-   From the next 06:00 the morning brief arrives on it by itself. A morning the
-   gateway was down is caught up once, late, when it is back.
+   From the next 06:00 the morning brief arrives on your bot by itself. A
+   morning the gateway was down is caught up once, late, when it is back.
 BRIEF
 else cat <<'BRIEF'
 

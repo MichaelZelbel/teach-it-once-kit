@@ -26,12 +26,15 @@ than API billing; Plus or higher is the practical choice for work that runs ever
 asks whether a repository already holds your folder. Paste its address to fetch it, or press Enter
 and name a new private repository. It creates the first commit, pushes it, and checks that GitHub
 reports it private. Two codes appear on any device: one signs Hermes in to ChatGPT and one signs
-the machine in to GitHub. It never asks for a GitHub token or an SSH key.
+the machine in to GitHub. It never asks for a GitHub token or an SSH key. Its first stop is a
+Telegram bot of yours: paste the token BotFather gives you, send the bot one message, and the
+server learns your id from the bot's own message log; the last thing the installer does is send
+you a message through it.
 
 | File | What it is for |
 |---|---|
 | `install.sh` | The one line above. Covers both chapters. Root's phase, then the assistant's account. Built on the shared primitives in `kit-bootstrap`, pinned to a tag. |
-| `open-the-door.sh` | The second pasted line, Chapter 29, as root: puts the server on the reader's Tailscale network, writes the three basic-auth lines, runs `hermes dashboard` as a system service on the private address, and checks the page asks for the password. From then on Telegram and the other messengers are connected on the page's **Channels** form, and the Hermes app connects through **Settings > Gateways > Remote gateway**. `DOOR_HOST=<address>` skips Tailscale. |
+| `open-the-door.sh` | The second pasted line, Chapter 29, as root, after Telegram is connected: puts the server on the reader's Tailscale network, writes the three basic-auth lines, runs `hermes dashboard` as a system service on the private address, and checks the page asks for the password. From then on Telegram and the other messengers are connected on the page's **Channels** form, and the Hermes app connects through **Settings > Gateways > Remote gateway**. `DOOR_HOST=<address>` skips Tailscale. |
 | `install-watchdog.sh` | Root's watchdog step, run by `install.sh` after the gateway service and before the hand-over, and runnable alone on a server built by hand. Clones the open-source `hermes-self-devops-watchdog` at a pinned tag, fetches its hash-verified floor, makes the `watchdog` profile for the assistant's account with the conservative leash (read back, tested both ways), and writes one marked block into root's crontab: the floor every 5 minutes, the self-check every 30, the second Hermes four times a day. `install.sh` then asks that second Hermes for one word after the sign-in. |
 | `create-private-repo.sh` | Creates and pushes a fresh private GitHub repository, or repairs a first push that did not finish, then verifies the branch and privacy before scheduled work is added. |
 | `test-create-private-repo.sh` | Runs the repository step against real local git repositories and a local replacement for GitHub's create and privacy answers. |

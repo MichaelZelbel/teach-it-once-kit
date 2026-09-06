@@ -30,6 +30,21 @@ for a human reading along, or for finding which step broke.
    environment once, when it starts, so it is written first. `terminal.cwd` is
    the only setting the agent's tools obey for their working folder; the old
    `workspace` key was a silent no-op.
+5a. **Telegram, from one token.** Before the gateway service, so it starts with
+   its ear attached. The reader makes a bot with BotFather and pastes the token
+   (Enter skips; `KB_TELEGRAM_TOKEN` in the environment answers once,
+   `KB_TELEGRAM_SKIP=1` skips without asking). `getMe` checks the token and names
+   the bot. Then the reader sends the bot any message and presses Enter; the
+   installer reads the bot's message log (`getUpdates`, up to a minute) for the
+   last private message and writes three lines into `/home/ai/.hermes/.env`:
+   `TELEGRAM_BOT_TOKEN`, `TELEGRAM_ALLOWED_USERS` (the sender's id) and
+   `TELEGRAM_HOME_CHANNEL` (the chat's id, what `/sethome` would write). Hermes
+   enables Telegram from the token's presence alone (`gateway/config_env.py`).
+   On a second run with the token and the allowlist already there it says so and
+   asks nothing; with a token but no hello it finishes the hello; a running
+   gateway is stopped while the log is read and started again after, because
+   Telegram hands the log to one reader at a time. The token is never printed.
+
 5. **The gateway as a system service.** `hermes gateway install --system
    --run-as-user ai --start-on-login --force`, through `kb_install_gateway`,
    which then asks Hermes whether the service is RUNNING rather than trusting the
@@ -45,8 +60,8 @@ for a human reading along, or for finding which step broke.
    every 5 minutes (root restarts a dead system unit once, no AI), the
    self-check every 30 minutes (one word from the second Hermes, through
    `sudo -n -u ai`), the deep check four times a day. Alerts go out as `ai`
-   through `hermes send -t telegram`, so the reader's one bot serves both
-   Hermes, and the reader sends it `/sethome` once. Then the floor runs once.
+   through `hermes send -t telegram`, so the reader's one bot, connected in
+   step 5a, serves both Hermes. Then the floor runs once.
    Four times a day and not hourly: every run spends the reader's ChatGPT
    allowance, the same one the assistant works from.
 6. **Hand over.** Root writes the choices it made into a small file in `ai`'s
@@ -112,15 +127,19 @@ for a human reading along, or for finding which step broke.
     scheduled, one `## Morning brief` block: rhythm, where it lands, where it
     lives, the off-switch. Then whatever this run wrote into the folder is
     committed and pushed, so the online copy is complete.
+16a. **The first message.** When the three Telegram lines are in `~/.hermes/.env`,
+    `hermes send -t telegram` as `ai` puts one message on the reader's phone: no
+    model, no running gateway, exactly the path the morning brief's delivery and
+    the watchdog's `notify.sh` take. The line says which bot it went to.
 17. **What is left.** Printed, not done. The reader is back at root's prompt when
-    this prints. Since 2026-09-06 it no longer sends anyone into the terminal:
-    the door line as root (`open-the-door.sh`), then the web page (Channels,
-    Telegram, Enable, Restart gateway, a first message to the bot, `/sethome`
-    once so the brief and the watchdog's alerts have an address), then the
-    Hermes app on the reader's own computer ("Connect to existing Hermes" on
-    its first screen). The old closing text told the reader to `su - ai` and run
-    `hermes gateway setup` and a root restart; Michael read that as the installer
-    not finishing its job.
+    this prints, and their assistant is a chat on their phone (or, when Telegram
+    was skipped or the hello never came, the text says so and how the next run
+    picks it up). Then the door line as root (`open-the-door.sh`) and the Hermes
+    app on the reader's own computer ("Connect to existing Hermes" on its first
+    screen). Until 2026-09-06 (evening) Telegram was left to Chapter 29's web page
+    and the reader ended Chapter 28 with a running Hermes they could not talk to;
+    before that, the closing text sent them into `su - ai` and `hermes gateway
+    setup`, which Michael read as the installer not finishing its job.
 
 ## The second line, `open-the-server.sh`'s sibling: `open-the-door.sh` (Chapter 29)
 
@@ -133,8 +152,9 @@ lines in `/home/ai/.hermes/.env`, writes `/etc/systemd/system/hermes-dashboard.s
 enables and starts it, waits up to three minutes for `/api/status` (the first
 start builds the web page), refuses to continue unless the answer carries
 `"auth_required":true`, and prints the address, username and password with the
-two next steps: the page's **Channels** form for Telegram, and the app's
-**Settings > Gateways > Remote gateway**. `DOOR_HOST=<address>` skips Tailscale;
+two next steps: the web page (where **Channels** shows the bot the first line
+connected and takes a second person), and the app's **Settings > Gateways >
+Remote gateway**. `DOOR_HOST=<address>` skips Tailscale;
 the 2026-09-05 check used the box's own address that way.
 
 ## What a working run looks like

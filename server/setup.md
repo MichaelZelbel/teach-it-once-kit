@@ -93,6 +93,35 @@ hermes auth list
 hermes model
 ```
 
+## 4a. Telegram, from one token (Chapter 28's first stop)
+
+The one-line installer does this as root, after `terminal.cwd` and before the gateway service,
+so the gateway starts with Telegram already in its settings. Hermes switches Telegram on by itself
+when `TELEGRAM_BOT_TOKEN` is in its env file (`gateway/config_env.py`, the credential-gated
+enable), reads who may talk to it from `TELEGRAM_ALLOWED_USERS`, and gives `hermes send -t
+telegram`, the morning brief's delivery and the watchdog's alerts their address from
+`TELEGRAM_HOME_CHANNEL`, the line `/sethome` would otherwise write. By hand, as root:
+
+1. In Telegram, **BotFather**, `/newbot`, a display name and a username ending in `bot`; it
+   answers with the token, `123456789:ABC...`. Check it: `curl -s
+   https://api.telegram.org/bot<token>/getMe` answers `"ok":true` and the bot's username.
+2. Send the new bot any message from your own Telegram, then read your id from the bot's own
+   message log: `curl -s https://api.telegram.org/bot<token>/getUpdates` carries
+   `"from":{"id":<you>` and `"chat":{"id":<the chat>` (the same number for a private chat).
+   Do this while the gateway is not running: a running gateway holds that log and Telegram hands
+   it to one reader at a time (`systemctl stop hermes-gateway` first, `start` after).
+3. Three lines in `/home/ai/.hermes/.env` (mode 600, owned by `ai`):
+
+```
+TELEGRAM_BOT_TOKEN=<token>
+TELEGRAM_ALLOWED_USERS=<your id>
+TELEGRAM_HOME_CHANNEL=<the chat id>
+```
+
+The proof, as `ai`, at the end: `hermes send -t telegram "hello"` puts a message on your phone
+with no model and no running gateway involved; the installer sends one the same way as its last
+step. Never paste the token anywhere else; `hermes send` and the watchdog reuse it from there.
+
 ## 5. The folder's path first, then the gateway, as root
 
 Two commands, in this order, and the order is the point. The gateway copies
@@ -220,8 +249,8 @@ root's crontab: `floor/quick-check.sh` every 5 minutes (root restarts a dead sys
 `templates/selftest.sh` every 30 minutes (asks the second Hermes for one word through
 `OPERATOR_CMD`, alerts SELF-HEALING IS DOWN when it cannot), and
 `templates/run-prompt.sh six-hour-deep-check` four times a day. Alerts go out through
-`hermes send -t telegram` as `ai` (`SEND_CMD`, `SEND_HOME`), to the bot's home channel, which is
-why the reader sends the bot `/sethome` once. Logs: `/var/log/hermes-watchdog/`. Off-switch:
+`hermes send -t telegram` as `ai` (`SEND_CMD`, `SEND_HOME`), to the bot's home channel, the
+`TELEGRAM_HOME_CHANNEL` line section 4a wrote. Logs: `/var/log/hermes-watchdog/`. Off-switch:
 delete the block from root's crontab.
 
 ## 10. The door: a private address and Hermes' web page (Chapter 29)
@@ -246,16 +275,15 @@ the page fails closed without a password or OAuth provider, so never bind it to 
 with only a password; the documentation's answer for a public address is `hermes dashboard
 register` (Nous OAuth).
 
-## 11. Telegram, from the web page (Chapter 29)
+## 11. A second person on the bot, from the web page (Chapter 29)
 
-Open `http://<private address>:9119` from a computer on the same Tailscale network, sign in, and
-under **Channels** choose **Telegram**: the bot token from **BotFather** (`/newbot`, two
-questions), your Telegram user id (from **userinfobot**) as the allowed user, **Enable**, then
-**Restart gateway** on the same page. The documentation describes the page as having "full
-parity with `hermes setup gateway`". In the terminal instead, as `ai`: `hermes gateway setup`,
-pick **Telegram**, then `exit` and `systemctl restart hermes-gateway` as root (the `ai` account has
-no sudo). A stranger who writes to the bot gets a pairing code; `hermes pairing approve telegram
-<code>` as `ai` lets them in.
+Telegram itself was connected in section 4a, by the installer. To let a second person write to
+the bot: open `http://<private address>:9119` from a computer on the same Tailscale network, sign
+in, and under **Channels** choose **Telegram**; add their numeric Telegram id (from
+**userinfobot**) to the allowed users, then **Restart gateway** on the same page. By hand, the
+same thing is a second id, comma-separated, on the `TELEGRAM_ALLOWED_USERS` line in
+`/home/ai/.hermes/.env`, and `systemctl restart hermes-gateway` as root. A stranger who writes
+to the bot gets a pairing code; `hermes pairing approve telegram <code>` as `ai` lets them in.
 
 ## 12. Register it, and check it
 

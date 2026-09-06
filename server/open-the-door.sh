@@ -2,11 +2,12 @@
 # =============================================================================
 # Teach It Once - open a private door to the server, in one line.
 #
-# Chapter 29. After the one-line installer has built the server, this puts a
-# private address on it (Tailscale), gives the door a username and a password,
-# runs Hermes' web page as a service on that address, and checks that the page
-# asks for the password. From then on the web page (messengers, jobs, settings)
-# and the Hermes app on your own computer both reach the server through it.
+# Chapter 29. After the one-line installer has built the server and connected
+# its Telegram bot, this puts a private address on it (Tailscale), gives the
+# door a username and a password, runs Hermes' web page as a service on that
+# address, and checks that the page asks for the password. From then on the web
+# page (settings, jobs, sessions, channels) and the Hermes app on your own
+# computer both reach the server through it.
 #
 # On the server, logged in as root, paste this:
 #
@@ -178,10 +179,10 @@ $( [ -n "$GENERATED" ] && printf '\n      That password was made for you just no
    in with the same account, so your computer is on the same private network.
 
    In a browser: open the address above and sign in. That is Hermes' own web
-   page for this server. Under Channels it connects Telegram and the other
-   messengers with a form and a Restart gateway button; no typing on the server.
-   Once your bot answers you, send it /sethome, so the brief and the watchdog's
-   alerts know which chat is yours.
+   page for this server: its settings, its sessions, its scheduled jobs, and
+   under Channels the Telegram bot the first line connected, where a second
+   person can be added with a form and a Restart gateway button. No typing on
+   the server for any of it.
 
    In the Hermes app on your computer: Settings, then Gateways, then Remote
    gateway. Enter the address above as the Remote URL, press Sign in, give the
